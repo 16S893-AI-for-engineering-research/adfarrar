@@ -1,8 +1,315 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import AboutScene from "../../components/AboutScene.astro";
+import Orrery from "../../components/Orrery.astro";
+import Timeline from "../../components/Timeline.astro";
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 
-<BaseLayout title="About Me — Allegra Farrar" description="Space engineer and researcher, from Mars trajectories to hurricane sensing.">
-  <AboutScene />
+<BaseLayout
+  title="About Me — Allegra Farrar"
+  description="Graduate researcher at MIT AeroAstro and the Media Lab, working on adaptive sensing for Earth observation, extreme weather, and community resilience."
+>
+  <!-- ============================ BIO ============================ -->
+  <section class="bio">
+    <div class="wrap">
+      <div class="bio-grid">
+        <div>
+          <span class="eyebrow">who I am</span>
+          <h1>Hi, I'm <span class="grad-text">Allegra.</span></h1>
+          <p class="lead mt-16">
+            I'm a graduate researcher at MIT, working jointly in the Media Lab and
+            the Department of Aeronautics and Astronautics with the
+            <strong>Space Enabled Research Group</strong>. I received my Bachelor of
+            Science in Mechanical Engineering from George Washington University, and
+            completed my master's thesis at MIT AeroAstro designing trajectory
+            optimization approaches that managed the uncertainty of a crewed Mars
+            lander.
+          </p>
+          <p class="mt-16">
+            My current research is shaped by the urgent need to address the
+            inequities faced by coastal communities, where the impacts of tropical
+            cyclones are amplified by limited sensing infrastructure and growing
+            climate uncertainty. In response, I'm reimagining the design of Earth
+            observation satellite missions for more timely, relevant, and actionable
+            observations.
+          </p>
+          <p class="mt-16">
+            My thesis blends my background in autonomous systems, orbital mechanics,
+            and Earth science to develop an adaptive sensing framework for
+            Earth-observing satellites, combining probabilistic machine learning
+            tools with community-informed design for real-time decision systems. My
+            goal is to construct observation methods that serve both scientific
+            inquiry and community resilience to natural hazards.
+          </p>
+
+          <div class="flex gap-16 mt-24" style="flex-wrap: wrap;">
+            <a class="btn frizzle-cursor" href={`${base}/cv/`}>Full CV &rarr;</a>
+            <a class="btn frizzle-cursor" href="mailto:adfarrar@mit.edu">adfarrar@mit.edu</a>
+          </div>
+        </div>
+
+        <div class="bio-photo">
+          <img
+            src={`${base}/images/profile.jpg`}
+            alt="Allegra Farrar"
+            width="520"
+            height="520"
+            loading="eager"
+          />
+          <span class="photo-ring" aria-hidden="true"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= INTERACTIVE ORRERY ======================= -->
+  <section class="reveal">
+    <div class="wrap">
+      <span class="eyebrow">take the scenic route</span>
+      <h2>Four places worth clicking</h2>
+      <p class="lead">
+        Earth, Mars, the Moon, and the Sun–Earth L2 point — each one is a piece of
+        how I got here. Click any of them.
+      </p>
+      <div class="mt-24">
+        <Orrery />
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== RESEARCH INTERESTS ====================== -->
+  <section class="reveal">
+    <div class="wrap">
+      <span class="eyebrow">what I work on</span>
+      <h2>Extreme weather, earlier alerts, usable data</h2>
+      <p class="lead">
+        [Placeholder — refine this language later.] The through-line across
+        everything I do: shorten the gap between when a hazard becomes detectable
+        and when someone on the ground can act on it.
+      </p>
+
+      <div class="grid cols-3 mt-40">
+        <article class="card">
+          <span class="card-num">01</span>
+          <h3>Extreme weather &amp; environmental hazards</h3>
+          <p>
+            Tropical cyclones first — cyclogenesis, rapid intensification, and the
+            near-surface wind fields that remain one of the hardest problems in
+            operational meteorology. The same framing extends to coastal flooding,
+            landslides, and drought.
+          </p>
+        </article>
+        <article class="card">
+          <span class="card-num">02</span>
+          <h3>Early alert systems</h3>
+          <p>
+            Detection is only useful if it arrives inside a decision window. I work
+            on the onboard side of that problem: what a satellite can notice, decide,
+            and flag before a storm is officially a storm.
+          </p>
+        </article>
+        <article class="card">
+          <span class="card-num">03</span>
+          <h3>Timely, usable data for regional decision-makers</h3>
+          <p>
+            Working directly with the people who issue warnings and position
+            equipment — CARICOOS, the NWS San Juan office, Landslide Ready — so the
+            metrics the system optimizes are the ones they actually use.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ MOTIVATION ========================== -->
+  <section class="reveal">
+    <div class="wrap">
+      <span class="eyebrow">why this work</span>
+      <h2>Two things put me here</h2>
+
+      <div class="grid cols-2 mt-24">
+        <article class="card motive">
+          <span class="motive-tag" style="color: var(--coral); border-color: rgba(250,90,103,0.4);">
+            the reason
+          </span>
+          <h3>Hurricane Katrina, and <em>When the Levees Broke</em></h3>
+          <p>
+            [Placeholder — your words to come.] The devastation of Hurricane Katrina,
+            and Spike Lee's documentary <em>When the Levees Broke: A Requiem in Four
+            Acts</em>, are why I care about this problem specifically. Katrina made
+            unmistakable that a hazard's damage is not distributed by meteorology
+            alone — it follows where infrastructure, information, and response
+            capacity were already thin.
+          </p>
+          <p>
+            [Placeholder: add what watching it meant to you, and how it reframed what
+            you thought engineering was for.]
+          </p>
+        </article>
+
+        <article class="card motive">
+          <span class="motive-tag" style="color: var(--sand); border-color: rgba(249,208,149,0.4);">
+            the method
+          </span>
+          <h3>Mars taught me how to act under uncertainty</h3>
+          <p>
+            [Placeholder — refine.] My master's work put a crewed-scale vehicle
+            through Mars entry using an iterative LQR approach, choosing control
+            actions that stay safe across a wide range of atmospheric conditions that
+            cannot be known at time of flight. The atmosphere was the uncertain
+            thing, and the job was to decide well anyway.
+          </p>
+          <p>
+            Swapping planets does not change that structure. On Earth I have more
+            data and far more people depending on the answer — but it is still a
+            question of choosing the next action while the atmosphere refuses to
+            resolve.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= TIMELINE =========================== -->
+  <section class="reveal">
+    <div class="wrap">
+      <span class="eyebrow">the road so far</span>
+      <h2>Research timeline</h2>
+      <p class="lead">
+        [Placeholder — you'll fill in the detail per entry; the dates are from your CV.]
+      </p>
+      <div class="card mt-24">
+        <Timeline />
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================= BEYOND THE THESIS ====================== -->
+  <section class="reveal">
+    <div class="wrap">
+      <span class="eyebrow">beyond the thesis</span>
+      <h2>Where this framework goes next</h2>
+      <p class="lead">
+        [Placeholder — expand later.] Adaptive sensing is not really about
+        hurricanes. It is about any hazard where the useful observation is rare,
+        time-critical, and currently thrown away. A few directions I want to push it.
+      </p>
+
+      <div class="grid cols-2 mt-24">
+        <article class="card">
+          <h3>Urban heat mapping</h3>
+          <p>
+            [Placeholder.] Heat is the deadliest hazard in this list and the most
+            unevenly distributed within a single city. Targeted thermal observation
+            at neighbourhood scale, triggered by conditions rather than schedule.
+          </p>
+        </article>
+        <article class="card">
+          <h3>Coastal planning &amp; erosion</h3>
+          <p>
+            [Placeholder.] Longer-horizon decisions — where to build, defend, or
+            retreat — need change detection at a cadence that current tasking
+            doesn't prioritise.
+          </p>
+        </article>
+        <article class="card">
+          <h3>Water security &amp; drought</h3>
+          <p>
+            [Placeholder — the Angola Global Classroom work fits here.] Mapping
+            aquifers and surface-water change to support local supply decisions in
+            drought-affected regions.
+          </p>
+        </article>
+        <article class="card">
+          <h3>Landslide &amp; post-storm response</h3>
+          <p>
+            [Placeholder.] The window right after a storm, when emergency managers
+            are assessing what moved and what is about to. Different urgency, same
+            architecture.
+          </p>
+        </article>
+      </div>
+
+      <div class="card center closing mt-40">
+        <span class="eyebrow center">say hello</span>
+        <h2>Questions, collaborations, or hurricane-season commiseration</h2>
+        <p class="lead center" style="margin-inline: auto;">
+          Find me in the Media Lab or AeroAstro, or read the project outline for the
+          technical detail.
+        </p>
+        <div class="flex gap-16 mt-24" style="justify-content: center; flex-wrap: wrap;">
+          <a class="btn primary frizzle-cursor" href={`${base}/project/`}>
+            The project outline &rarr;
+          </a>
+          <a class="btn frizzle-cursor" href="mailto:adfarrar@mit.edu">Email me</a>
+        </div>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
+
+<style>
+  .bio { padding-top: clamp(28px, 4.5vh, 56px); }
+
+  .bio-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    align-items: center;
+    gap: clamp(26px, 4.5vw, 60px);
+  }
+
+  .bio-photo { position: relative; justify-self: center; }
+
+  .bio-photo img {
+    width: 100%;
+    max-width: 360px;
+    border-radius: 22px;
+    border: 1px solid var(--card-bd);
+    box-shadow: 0 28px 66px -24px rgba(0, 0, 0, 0.75);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* soft accent halo behind the headshot */
+  .photo-ring {
+    position: absolute;
+    inset: -8%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0, 175, 255, 0.2), rgba(0, 175, 255, 0) 68%);
+    filter: blur(20px);
+    z-index: 0;
+    max-width: 100%;
+  }
+
+  @media (max-width: 900px) {
+    .bio-grid { grid-template-columns: 1fr; }
+    .bio-photo { order: -1; }
+  }
+
+  .card-num {
+    display: block;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    color: var(--blue);
+    margin-bottom: 9px;
+  }
+
+  .motive { display: flex; flex-direction: column; }
+
+  .motive-tag {
+    align-self: flex-start;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border: 1px solid var(--card-bd);
+    border-radius: 100px;
+    margin-bottom: 12px;
+  }
+
+  .closing { padding: clamp(30px, 4vw, 46px) clamp(22px, 3vw, 38px); }
+  .closing h2 { margin-inline: auto; max-width: 26ch; }
+</style>

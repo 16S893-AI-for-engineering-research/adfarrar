@@ -1,72 +1,270 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import HeroAnimation from "../components/HeroAnimation.astro";
+import GlobeHero from "../components/GlobeHero.astro";
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 
-<BaseLayout title="Allegra Farrar — Portfolio" description="Adaptive sensing for satellite monitoring of tropical cyclones.">
+<BaseLayout
+  title="Allegra Farrar — Adaptive Sensing for Satellite Monitoring of Tropical Cyclones"
+  description="PhD candidate at MIT AeroAstro and the Media Lab, designing adaptive sensing for Earth-observing satellites that watch tropical cyclones and environmental hazards."
+>
+  <!-- ============================= HERO ============================= -->
   <section class="hero">
-    <div class="hero-bg"><HeroAnimation /></div>
-    <div class="hero-copy">
-      <p class="pill">MIT &middot; PhD Researcher</p>
-      <h1>
-        Adaptive Sensing Design for
-        <span class="gradient-text">Advanced Satellite Monitoring</span>
-        and Warning of Tropical Cyclones
-      </h1>
-      <p class="lede">
-        I work at the intersection of space engineering, remote sensing, and extreme
-        weather — building smarter ways for satellites to watch storms as they form.
+    <div class="wrap">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">MIT AeroAstro &amp; Media Lab &middot; Space Enabled</span>
+          <h1>
+            Adaptive Sensing Design for
+            <span class="grad-text">Advanced Satellite Monitoring</span>
+            and Warning of Tropical Cyclones and Environmental Hazards
+          </h1>
+          <p class="lead mt-16">
+            Storms do not wait for the next scheduled overpass. I design Earth-observing
+            satellite missions that decide, in real time, where to look — so the
+            observations that reach forecasters and regional decision-makers arrive
+            early enough to act on.
+          </p>
+          <div class="flex gap-16 mt-24" style="flex-wrap: wrap;">
+            <a class="btn primary frizzle-cursor" href={`${base}/project/`}>
+              See the project outline &rarr;
+            </a>
+            <a class="btn frizzle-cursor" href={`${base}/about/`}>Who I am</a>
+          </div>
+        </div>
+
+        <div class="hero-figure">
+          <GlobeHero />
+          <p class="figure-note small">
+            Satellites pass; only some passes observe. A target lights up when the
+            spacecraft decides it is worth the look.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ THE IDEA =========================== -->
+  <section class="reveal">
+    <div class="wrap">
+      <span class="eyebrow">the short version</span>
+      <h2>Sensing that reacts to the storm, not to the calendar</h2>
+      <p class="lead">
+        Most Earth-observing instruments collect on a fixed plan and filter hard
+        before anything reaches the ground. That works well for building long
+        climate records — and badly for catching the hours in which a storm is
+        organising. My thesis reworks that decision.
       </p>
-      <div class="hero-actions">
-        <a class="btn frizzle-cursor" href="/adfarrar/project/">View the Project</a>
-        <a class="btn btn-storm frizzle-cursor" href="/adfarrar/about/">About Me</a>
+
+      <div class="grid cols-3 mt-40">
+        <article class="card">
+          <span class="card-num">01</span>
+          <h3>Infer, don't just measure</h3>
+          <p>
+            A Bayesian network propagates a single observation through coupled
+            ocean–atmosphere variables, so the satellite carries an estimate of
+            what it does <em>not</em> yet know.
+          </p>
+        </article>
+        <article class="card">
+          <span class="card-num">02</span>
+          <h3>Act onboard</h3>
+          <p>
+            A cheap always-on monitor watches for cyclogenesis signatures and
+            triggers the expensive inference only when something changes — within
+            a small satellite's real power and memory budget.
+          </p>
+        </article>
+        <article class="card">
+          <span class="card-num">03</span>
+          <h3>Answer to the ground</h3>
+          <p>
+            The trigger threshold comes from what regional decision-makers
+            actually need, not from forecast-skill metrics alone. Usefulness is
+            part of the design, not an afterthought.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= NUMBERS =========================== -->
+  <section class="reveal">
+    <div class="wrap">
+      <div class="grid cols-4">
+        <div class="card center stat">
+          <span class="stat-num" style="color: var(--coral);">24 h</span>
+          <p class="small">
+            average storm awareness time in the Caribbean today
+          </p>
+        </div>
+        <div class="card center stat">
+          <span class="stat-num" style="color: var(--blue);">5 d</span>
+          <p class="small">
+            lead time CARICOOS needs to prepare for landfall
+          </p>
+        </div>
+        <div class="card center stat">
+          <span class="stat-num" style="color: var(--cyan);">2017–24</span>
+          <p class="small">
+            CYGNSS operational record the work is built on
+          </p>
+        </div>
+        <div class="card center stat">
+          <span class="stat-num" style="color: var(--sand);">&lt;6 MB</span>
+          <p class="small">
+            onboard memory footprint the method has to fit inside
+          </p>
+        </div>
+      </div>
+      <p class="small mt-16">
+        Figures from my JPL SURP seminar; see the project page for sourcing.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================= ROUTES ============================ -->
+  <section class="reveal">
+    <div class="wrap">
+      <div class="entry-grid">
+        <article class="entry-card">
+          <span class="entry-kicker">01 &middot; About</span>
+          <h3>Who I am</h3>
+          <p>
+            Boston-raised, GW-trained, MIT-based. Mars trajectories became hurricane
+            sensing. There is an interactive solar system and at least one surprise.
+          </p>
+          <a class="entry-link frizzle-cursor" href={`${base}/about/`}>
+            More about me <span aria-hidden="true">&rarr;</span>
+          </a>
+        </article>
+        <article class="entry-card">
+          <span class="entry-kicker">02 &middot; Project</span>
+          <h3>What I'm building</h3>
+          <p>
+            An adaptive sensing framework for Earth-observing satellites: Bayesian
+            inference onboard, stakeholder-set thresholds, tested against CYGNSS.
+          </p>
+          <a class="entry-link frizzle-cursor" href={`${base}/project/`}>
+            Read the outline <span aria-hidden="true">&rarr;</span>
+          </a>
+        </article>
+        <article class="entry-card">
+          <span class="entry-kicker">03 &middot; Dev log</span>
+          <h3>How this site got made</h3>
+          <p>
+            What I handed to the agent, what I checked myself, and what I threw out —
+            logged per session.
+          </p>
+          <a class="entry-link frizzle-cursor" href={`${base}/devlog/`}>
+            Read the log <span aria-hidden="true">&rarr;</span>
+          </a>
+        </article>
       </div>
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  .hero {
-    position: relative;
-    min-height: calc(100vh - 72px);
-    display: flex;
+  .hero { padding-top: clamp(28px, 4.5vh, 56px); }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
     align-items: center;
+    gap: clamp(24px, 4vw, 56px);
+  }
+
+  .hero-copy h1 { max-width: 20ch; }
+
+  .hero-figure { position: relative; }
+
+  .figure-note {
+    margin: 10px auto 0;
+    max-width: 42ch;
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 940px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-figure { order: -1; }
+    .hero-copy h1 { max-width: none; }
+  }
+
+  .card-num {
+    display: block;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    color: var(--blue);
+    margin-bottom: 9px;
+  }
+
+  .stat { padding: 24px 18px; }
+
+  .stat-num {
+    display: block;
+    font-family: var(--mono);
+    font-size: clamp(26px, 3.4vw, 36px);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  .stat p { margin-inline: auto; max-width: 26ch; }
+
+  /* home page route cards, borrowed shape from a bordered 3-up grid */
+  .entry-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border: 1px solid var(--card-bd);
+    border-radius: 16px;
     overflow: hidden;
+    background: linear-gradient(180deg, rgba(172, 214, 225, 0.05), rgba(4, 7, 15, 0.2));
   }
 
-  .hero-bg {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    opacity: 0.9;
-  }
-
-  .hero-copy {
-    position: relative;
-    z-index: 2;
-    max-width: 640px;
-    padding: 3rem 2rem;
-  }
-
-  .hero-copy h1 {
-    font-size: clamp(2rem, 4.2vw, 3.2rem);
-    margin: 0.6em 0;
-  }
-
-  .lede {
-    font-size: 1.05rem;
-    max-width: 520px;
-  }
-
-  .hero-actions {
+  .entry-card {
     display: flex;
-    gap: 1rem;
-    margin-top: 1.5rem;
+    flex-direction: column;
+    padding: 24px 24px 22px;
+    border-right: 1px solid var(--card-bd);
+    transition: background 0.2s ease;
+    position: relative;
   }
 
-  @media (max-width: 640px) {
-    .hero-copy {
-      padding: 2rem 1.25rem;
-    }
+  .entry-card:last-child { border-right: none; }
+  .entry-card:hover { background: rgba(0, 175, 255, 0.06); }
+
+  .entry-kicker {
+    display: block;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 10px;
+  }
+
+  .entry-card p { flex: 1 1 auto; font-size: 14.5px; margin-bottom: 18px; }
+
+  .entry-link {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-top: auto;
+    width: fit-content;
+  }
+
+  .entry-link::after { content: ""; position: absolute; inset: 0; }
+  .entry-link:hover { color: var(--ink); }
+
+  @media (max-width: 800px) {
+    .entry-grid { grid-template-columns: 1fr; }
+    .entry-card { border-right: none; border-bottom: 1px solid var(--card-bd); }
+    .entry-card:last-child { border-bottom: none; }
   }
 </style>

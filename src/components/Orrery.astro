@@ -1,0 +1,1006 @@
+---
+/**
+ * Interactive inner solar system.
+ *
+ * Sun at the centre, Mercury/Venus/Earth/Mars in orbit, the Moon orbiting Earth,
+ * and the Sun–Earth L2 Lagrange point (where JWST sits) marked out past Earth on
+ * the anti-Sun line. Starfield behind it.
+ *
+ * Four bodies are clickable and open a modal:
+ *   Earth  -> world map with hoverable place pins
+ *   Mars   -> SM thesis
+ *   L2     -> JWST internship
+ *   Moon   -> the dance surprise
+ */
+import { pins } from "../data/pins";
+import { WORLD_PATH, WORLD_VIEWBOX, project } from "../data/world";
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const placed = pins.map((p) => ({ ...p, ...project(p.lon, p.lat) }));
+---
+
+<div class="orrery" data-orrery>
+  <canvas data-orrery-canvas aria-label="Interactive inner solar system: click Earth, Mars, the Moon, or the L2 Lagrange point" role="img"></canvas>
+
+  <p class="orrery-hint small">
+    <span class="hint-pulse"></span>
+    click a body — Earth, Mars, the Moon, or L2
+  </p>
+</div>
+
+<!-- ============================== MODALS ============================== -->
+<div class="modal-root" data-modal-root hidden>
+  <div class="modal-scrim" data-modal-close></div>
+
+  <!-- EARTH -->
+  <section class="modal" data-modal="earth" hidden aria-modal="true" role="dialog" aria-label="Earth — places">
+    <button class="modal-x frizzle-cursor" data-modal-close aria-label="Close">&times;</button>
+    <span class="eyebrow">Earth</span>
+    <h3>Places that shaped the work</h3>
+    <p class="small">Hover or tap a pin.</p>
+
+    <div class="map-holder">
+      <svg class="world" viewBox={WORLD_VIEWBOX} role="img" aria-label="World map with place markers">
+        <defs>
+          <radialGradient id="pinGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(0,175,255,0.55)" />
+            <stop offset="100%" stop-color="rgba(0,175,255,0)" />
+          </radialGradient>
+        </defs>
+        <path class="world-land" d={WORLD_PATH} />
+        {placed.map((p) => (
+          <g
+            class="pin frizzle-cursor"
+            data-pin={p.id}
+            transform={`translate(${p.x.toFixed(1)} ${p.y.toFixed(1)})`}
+            tabindex="0"
+            role="button"
+            aria-label={p.place}
+          >
+            <circle class="pin-halo" r="16" fill="url(#pinGlow)" />
+            <circle class="pin-ring" r="7" />
+            <circle class="pin-dot" r="3.2" />
+          </g>
+        ))}
+      </svg>
+
+      <div class="pin-card" data-pin-card hidden>
+        <span class="pin-card-label" data-pin-label></span>
+        <strong class="pin-card-place" data-pin-place></strong>
+        <p data-pin-blurb></p>
+      </div>
+    </div>
+
+    <ul class="pin-legend">
+      {pins.map((p) => (
+        <li>
+          <button class="pin-legend-btn frizzle-cursor" data-pin-jump={p.id}>{p.place}</button>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <!-- MARS -->
+  <section class="modal modal-mars" data-modal="mars" hidden aria-modal="true" role="dialog" aria-label="Mars — SM thesis">
+    <button class="modal-x frizzle-cursor" data-modal-close aria-label="Close">&times;</button>
+
+    <div class="mars-scene">
+      <div class="mars-surface"></div>
+      <div class="mars-haze"></div>
+      <div class="mars-haze mars-haze-2"></div>
+    </div>
+
+    <div class="mars-copy">
+      <span class="eyebrow">SM Thesis &middot; 2022</span>
+      <h3>Landing on a planet whose atmosphere won't hold still</h3>
+      <p>
+        An iterative LQR method for closed-loop trajectory optimization through
+        Mars entry — built to carry a crewed-scale vehicle to a safe landing while
+        the atmosphere it is flying through is only partly known. Nonlinear
+        atmospheric models and navigation uncertainty go in; certifiable
+        uncertainty bounds come out.
+      </p>
+      <p>
+        That question — <em>how do you choose a good action when the atmosphere is
+        the uncertain thing?</em> — is the same one driving my PhD, just pointed at
+        Earth instead of Mars.
+      </p>
+      <p class="small">
+        Farrar, A., Doerr, B., Linares, R. (2022) &middot; IAC Paris &middot; MIT AeroAstro
+      </p>
+    </div>
+  </section>
+
+  <!-- L2 / JWST -->
+  <section class="modal" data-modal="l2" hidden aria-modal="true" role="dialog" aria-label="L2 — James Webb Space Telescope">
+    <button class="modal-x frizzle-cursor" data-modal-close aria-label="Close">&times;</button>
+    <span class="eyebrow">Sun–Earth L2 &middot; 1.5 million km out</span>
+    <h3>The James Webb Space Telescope</h3>
+    <div class="l2-diagram" aria-hidden="true">
+      <span class="l2-sun"></span>
+      <span class="l2-line"></span>
+      <span class="l2-earth"></span>
+      <span class="l2-dash"></span>
+      <span class="l2-point"><em>L2</em></span>
+    </div>
+    <p>
+      [Placeholder — your JWST internship goes here.] L2 is the gravitational
+      sweet spot trailing Earth's night side, which is why Webb parks there: the
+      Sun, Earth and Moon all stay behind its sunshield so the telescope can stay
+      cold enough to see in the infrared.
+    </p>
+    <p>
+      [Placeholder: what you worked on, which team, what you learned, and what it
+      taught you about building instruments that have exactly one chance to work.]
+    </p>
+  </section>
+
+  <!-- MOON / SURPRISE -->
+  <section class="modal modal-moon" data-modal="moon" hidden aria-modal="true" role="dialog" aria-label="A surprise">
+    <button class="modal-x frizzle-cursor" data-modal-close aria-label="Close">&times;</button>
+    <span class="eyebrow">Unscheduled discovery</span>
+    <h3><span class="surprise">SURPRISE!</span></h3>
+    <p class="lead">
+      I wasn't the kid who dreamed of going to space camp. <strong>I wanted to be a
+      dancer.</strong>
+    </p>
+
+    <figure class="moon-figure">
+      <img src={`${base}/images/me-dancing.png`} alt="Allegra dancing" loading="lazy" />
+      <figcaption class="small">
+        [Placeholder: add the caption you want here — company, style, years dancing.]
+      </figcaption>
+    </figure>
+
+    <p>
+      [Placeholder: a few lines about your dance background — where you trained,
+      what you danced, what it still gives you.]
+    </p>
+    <p class="moon-punchline">…but now, I'm a fully committed space nerd. 🚀</p>
+  </section>
+</div>
+
+<style>
+  /* ------------------------------------------------------------- orrery */
+  .orrery {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-width: 620px;
+    margin-inline: auto;
+  }
+
+  .orrery canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border-radius: 20px;
+  }
+
+  .orrery-hint {
+    position: absolute;
+    left: 50%;
+    bottom: 6px;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 11px;
+    pointer-events: none;
+  }
+
+  .hint-pulse {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--blue);
+    box-shadow: 0 0 10px 2px rgba(0, 175, 255, 0.7);
+    animation: pulse 2.2s ease-in-out infinite;
+  }
+
+  /* ------------------------------------------------------------- modals */
+  .modal-root {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(12px, 3vw, 32px);
+  }
+
+  .modal-root[hidden] { display: none; }
+
+  .modal-scrim {
+    position: absolute;
+    inset: 0;
+    background: rgba(2, 4, 9, 0.82);
+    backdrop-filter: blur(7px);
+    animation: fade-in 0.25s ease;
+  }
+
+  @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+  .modal {
+    position: relative;
+    z-index: 1;
+    width: min(760px, 100%);
+    max-height: min(86vh, 880px);
+    overflow-y: auto;
+    background: linear-gradient(165deg, #0a1424, #060b16);
+    border: 1px solid var(--card-bd);
+    border-radius: 20px;
+    padding: clamp(22px, 3.4vw, 36px);
+    box-shadow: 0 34px 90px -28px rgba(0, 0, 0, 0.9);
+    animation: modal-in 0.35s cubic-bezier(0.2, 0.9, 0.2, 1.1);
+  }
+
+  .modal[hidden] { display: none; }
+
+  @keyframes modal-in {
+    from { opacity: 0; transform: scale(0.94) translateY(16px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .modal-x {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    z-index: 3;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid var(--card-bd);
+    background: rgba(4, 7, 15, 0.75);
+    color: var(--muted);
+    font-size: 21px;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .modal-x:hover { color: var(--ink); border-color: var(--blue); }
+
+  /* ---------------------------------------------------------- Earth map */
+  .map-holder { position: relative; margin-top: 16px; }
+
+  .world {
+    width: 100%;
+    height: auto;
+    background: radial-gradient(120% 140% at 50% 0%, #0b1c31, #050b16);
+    border: 1px solid var(--card-bd);
+    border-radius: 14px;
+  }
+
+  .world-land {
+    fill: rgba(23, 62, 99, 0.85);
+    stroke: rgba(82, 202, 219, 0.4);
+    stroke-width: 0.7;
+  }
+
+  .pin { cursor: pointer; }
+  .pin-halo { opacity: 0; transition: opacity 0.22s ease; }
+  .pin-ring {
+    fill: none;
+    stroke: var(--blue);
+    stroke-width: 1.4;
+    opacity: 0.75;
+    transform-origin: center;
+  }
+  .pin-dot { fill: var(--pale); transition: fill 0.2s ease; }
+
+  .pin:hover .pin-halo,
+  .pin:focus-visible .pin-halo,
+  .pin.is-active .pin-halo { opacity: 1; }
+
+  .pin:hover .pin-dot,
+  .pin:focus-visible .pin-dot,
+  .pin.is-active .pin-dot { fill: #fff; }
+
+  .pin:hover .pin-ring,
+  .pin:focus-visible .pin-ring,
+  .pin.is-active .pin-ring { stroke: var(--cyan); opacity: 1; }
+
+  .pin:focus-visible { outline: none; }
+
+  .pin-card {
+    position: absolute;
+    z-index: 4;
+    width: min(300px, 78%);
+    padding: 13px 15px;
+    border-radius: 12px;
+    background: rgba(6, 12, 22, 0.96);
+    border: 1px solid rgba(0, 175, 255, 0.4);
+    box-shadow: 0 16px 40px -14px rgba(0, 0, 0, 0.85);
+    pointer-events: none;
+    transform: translate(-50%, -108%);
+  }
+
+  .pin-card[hidden] { display: none; }
+
+  .pin-card-label {
+    display: block;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 3px;
+  }
+
+  .pin-card-place {
+    display: block;
+    font-size: 14.5px;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+
+  .pin-card p {
+    margin: 0;
+    font-size: 12.8px;
+    line-height: 1.5;
+    color: var(--muted);
+    max-width: none;
+  }
+
+  .pin-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 14px;
+  }
+
+  .pin-legend-btn {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    padding: 5px 11px;
+    border-radius: 100px;
+    border: 1px solid var(--card-bd);
+    background: var(--card);
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.18s ease;
+  }
+
+  .pin-legend-btn:hover,
+  .pin-legend-btn.is-active {
+    color: var(--ink);
+    border-color: var(--blue);
+    background: rgba(0, 175, 255, 0.12);
+  }
+
+  /* -------------------------------------------------------------- Mars */
+  .mars-scene {
+    position: relative;
+    height: clamp(150px, 24vw, 210px);
+    margin: -8px -8px 20px;
+    border-radius: 14px;
+    overflow: hidden;
+    background: linear-gradient(180deg, #140a0c 0%, #3a140e 48%, #7a3418 100%);
+  }
+
+  .mars-surface {
+    position: absolute;
+    left: -10%;
+    right: -10%;
+    bottom: -55%;
+    height: 110%;
+    border-radius: 50% 50% 0 0 / 60% 60% 0 0;
+    background: radial-gradient(120% 100% at 50% 0%, #c4652f, #8a3a17 55%, #4d1d0c 100%);
+    box-shadow: 0 -14px 50px -8px rgba(250, 140, 90, 0.4);
+  }
+
+  .mars-haze {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(249, 208, 149, 0.16), transparent 62%);
+    animation: haze 9s ease-in-out infinite alternate;
+  }
+
+  .mars-haze-2 {
+    background: linear-gradient(200deg, transparent 40%, rgba(250, 90, 103, 0.13) 100%);
+    animation-duration: 13s;
+    animation-direction: alternate-reverse;
+  }
+
+  @keyframes haze {
+    from { opacity: 0.55; transform: translateX(-3%); }
+    to   { opacity: 1;    transform: translateX(3%); }
+  }
+
+  .mars-copy { position: relative; }
+
+  /* ---------------------------------------------------------------- L2 */
+  .l2-diagram {
+    position: relative;
+    height: 74px;
+    margin: 18px 0 6px;
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+
+  .l2-sun {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #fff3d0, #f9d095 45%, #d98b2b);
+    box-shadow: 0 0 26px 6px rgba(249, 208, 149, 0.5);
+    flex: none;
+  }
+
+  .l2-line {
+    height: 1px;
+    flex: 1 1 auto;
+    background: linear-gradient(90deg, rgba(249, 208, 149, 0.5), rgba(0, 175, 255, 0.5));
+  }
+
+  .l2-earth {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 34% 32%, #7fd3ff, #1668a8 60%, #06263c);
+    box-shadow: 0 0 16px 3px rgba(0, 175, 255, 0.45);
+    flex: none;
+  }
+
+  .l2-dash {
+    width: 82px;
+    height: 1px;
+    flex: none;
+    background: repeating-linear-gradient(90deg, rgba(172, 214, 225, 0.6) 0 5px, transparent 5px 10px);
+  }
+
+  .l2-point {
+    position: relative;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--coral);
+    box-shadow: 0 0 16px 4px rgba(250, 90, 103, 0.6);
+    flex: none;
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+
+  .l2-point em {
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--mono);
+    font-size: 11px;
+    font-style: normal;
+    letter-spacing: 0.1em;
+    color: var(--coral);
+  }
+
+  /* -------------------------------------------------------------- Moon */
+  .modal-moon { text-align: center; }
+  .modal-moon .eyebrow { justify-content: center; }
+  .modal-moon p { margin-inline: auto; }
+
+  .surprise {
+    background: linear-gradient(95deg, var(--sand), var(--coral) 55%, var(--blue));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    letter-spacing: 0.02em;
+  }
+
+  .moon-figure {
+    margin: 20px auto;
+    max-width: 460px;
+  }
+
+  .moon-figure img {
+    width: 100%;
+    border-radius: 16px;
+    border: 1px solid var(--card-bd);
+    box-shadow: 0 22px 56px -22px rgba(0, 0, 0, 0.8);
+  }
+
+  .moon-figure figcaption { margin-top: 9px; }
+
+  .moon-punchline {
+    margin-top: 18px;
+    font-size: 17px;
+    color: var(--ink);
+  }
+
+  @media (max-width: 620px) {
+    .pin-card { width: min(240px, 88%); }
+  }
+</style>
+
+<script>
+  type Body = {
+    id: string;
+    name: string;
+    /** semi-major axis in scene units (0..1 of scene radius) */
+    a: number;
+    /** slight ellipticity so orbits don't look like perfect CSS circles */
+    e: number;
+    period: number;
+    phase: number;
+    radius: number;
+    /** [core, mid, edge] for the sphere gradient */
+    colors: [string, string, string];
+    clickable: boolean;
+    glow?: string;
+    /** filled each frame with screen position, for hit-testing */
+    sx?: number;
+    sy?: number;
+    sr?: number;
+  };
+
+  function initOrrery(root: HTMLElement) {
+    const canvas = root.querySelector<HTMLCanvasElement>("canvas[data-orrery-canvas]");
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    let size = 0;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    // Orbit sizes are compressed (not to scale) so all four planets fit; the
+    // ordering and relative spacing are preserved.
+    const planets: Body[] = [
+      {
+        id: "mercury", name: "Mercury",
+        a: 0.30, e: 0.06, period: 1600, phase: 1.1, radius: 3.4,
+        colors: ["#b7b0a6", "#8b8377", "#43403b"],
+        clickable: false,
+      },
+      {
+        id: "venus", name: "Venus",
+        a: 0.45, e: 0.02, period: 2700, phase: 3.8, radius: 5.4,
+        colors: ["#f6e2b8", "#d8ab6c", "#7d5a2e"],
+        clickable: false,
+      },
+      {
+        id: "earth", name: "Earth",
+        a: 0.62, e: 0.03, period: 3900, phase: 0.4, radius: 6.6,
+        colors: ["#8fdcff", "#1a76b8", "#062944"],
+        clickable: true,
+        glow: "rgba(0, 175, 255, 0.55)",
+      },
+      {
+        id: "mars", name: "Mars",
+        a: 0.82, e: 0.08, period: 6100, phase: 2.4, radius: 4.6,
+        colors: ["#ffb083", "#c1552a", "#5b1f0d"],
+        clickable: true,
+        glow: "rgba(250, 120, 80, 0.5)",
+      },
+    ];
+
+    const earth = planets[2]!;
+
+    // Moon orbits Earth; L2 sits on the Sun→Earth line, past Earth.
+    const moon = {
+      id: "moon", name: "Moon",
+      dist: 0.075, period: 320, phase: 0.0, radius: 2.4,
+      sx: 0, sy: 0, sr: 0,
+    };
+
+    const l2 = { id: "l2", name: "L2", offset: 0.11, sx: 0, sy: 0, sr: 0 };
+
+    type Star = { x: number; y: number; r: number; base: number; speed: number; ph: number };
+    let stars: Star[] = [];
+
+    let t = 0;
+    let hovered: string | null = null;
+
+    function resize() {
+      const parent = root;
+      size = parent.clientWidth;
+      canvas.width = size * dpr;
+      canvas.height = size * dpr;
+      canvas.style.width = `${size}px`;
+      canvas.style.height = `${size}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      const count = Math.max(90, Math.floor(size * size * 0.0006));
+      stars = Array.from({ length: count }, () => ({
+        x: Math.random() * size,
+        y: Math.random() * size,
+        r: Math.random() * 1.05 + 0.25,
+        base: Math.random() * 0.45 + 0.35,
+        speed: Math.random() * 0.02 + 0.006,
+        ph: Math.random() * Math.PI * 2,
+      }));
+    }
+
+    /** Slightly tilted view so orbits read as ellipses, like looking down at ~62°. */
+    const TILT = 0.42;
+
+    function orbitPoint(b: Body, angle: number, R: number, cx: number, cy: number) {
+      const rr = b.a * (1 - b.e * b.e) / (1 + b.e * Math.cos(angle));
+      const x = Math.cos(angle) * rr * R;
+      const y = Math.sin(angle) * rr * R * TILT;
+      return { x: cx + x, y: cy + y };
+    }
+
+    function drawSphere(
+      x: number, y: number, r: number,
+      colors: [string, string, string],
+      glow?: string,
+      isHovered = false
+    ) {
+      if (glow) {
+        const g = ctx.createRadialGradient(x, y, r * 0.6, x, y, r * (isHovered ? 4.6 : 3.4));
+        g.addColorStop(0, glow);
+        g.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.beginPath();
+        ctx.arc(x, y, r * (isHovered ? 4.6 : 3.4), 0, Math.PI * 2);
+        ctx.fillStyle = g;
+        ctx.fill();
+      }
+
+      // lit from the Sun (scene centre), so offset the highlight toward it
+      const body = ctx.createRadialGradient(
+        x - r * 0.36, y - r * 0.36, r * 0.08,
+        x, y, r
+      );
+      body.addColorStop(0, colors[0]);
+      body.addColorStop(0.55, colors[1]);
+      body.addColorStop(1, colors[2]);
+
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fillStyle = body;
+      ctx.fill();
+
+      if (isHovered) {
+        ctx.beginPath();
+        ctx.arc(x, y, r + 3.5, 0, Math.PI * 2);
+        ctx.strokeStyle = "rgba(255,255,255,0.75)";
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+      }
+    }
+
+    function draw() {
+      const cx = size / 2;
+      const cy = size / 2;
+      const R = size * 0.44;
+      const scale = Math.max(0.75, size / 560);
+
+      ctx.clearRect(0, 0, size, size);
+
+      // ---- stars
+      for (const s of stars) {
+        const a = Math.min(1, Math.max(0.05, s.base + Math.sin(t * s.speed + s.ph) * 0.32));
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${a})`;
+        ctx.fill();
+      }
+
+      // ---- orbit paths
+      for (const p of planets) {
+        ctx.beginPath();
+        for (let a = 0; a <= Math.PI * 2 + 0.02; a += 0.05) {
+          const pt = orbitPoint(p, a, R, cx, cy);
+          if (a === 0) ctx.moveTo(pt.x, pt.y);
+          else ctx.lineTo(pt.x, pt.y);
+        }
+        ctx.strokeStyle = p.clickable
+          ? "rgba(172, 214, 225, 0.2)"
+          : "rgba(172, 214, 225, 0.1)";
+        ctx.lineWidth = 0.8;
+        ctx.stroke();
+      }
+
+      // ---- Sun
+      const sunR = 13 * scale;
+      const corona = ctx.createRadialGradient(cx, cy, sunR * 0.5, cx, cy, sunR * 6);
+      corona.addColorStop(0, "rgba(249, 208, 149, 0.42)");
+      corona.addColorStop(0.35, "rgba(249, 208, 149, 0.12)");
+      corona.addColorStop(1, "rgba(249, 208, 149, 0)");
+      ctx.beginPath();
+      ctx.arc(cx, cy, sunR * 6, 0, Math.PI * 2);
+      ctx.fillStyle = corona;
+      ctx.fill();
+
+      const sunBody = ctx.createRadialGradient(cx - sunR * 0.2, cy - sunR * 0.2, 0, cx, cy, sunR);
+      sunBody.addColorStop(0, "#fffbef");
+      sunBody.addColorStop(0.5, "#f9d095");
+      sunBody.addColorStop(1, "#e0921f");
+      ctx.beginPath();
+      ctx.arc(cx, cy, sunR, 0, Math.PI * 2);
+      ctx.fillStyle = sunBody;
+      ctx.fill();
+
+      // ---- planets
+      for (const p of planets) {
+        if (!reduce) p.phase += (Math.PI * 2) / p.period;
+        const pt = orbitPoint(p, p.phase, R, cx, cy);
+        const r = p.radius * scale;
+        p.sx = pt.x;
+        p.sy = pt.y;
+        p.sr = r;
+        drawSphere(pt.x, pt.y, r, p.colors, p.glow, hovered === p.id);
+
+        if (p.clickable) {
+          ctx.font = `${11 * Math.max(0.85, scale)}px "JetBrains Mono", monospace`;
+          ctx.fillStyle = hovered === p.id ? "rgba(255,255,255,0.95)" : "rgba(172,214,225,0.6)";
+          ctx.textAlign = "center";
+          ctx.fillText(p.name, pt.x, pt.y + r + 15 * scale);
+        }
+      }
+
+      // ---- Moon around Earth
+      if (!reduce) moon.phase += (Math.PI * 2) / moon.period;
+      const mx = earth.sx! + Math.cos(moon.phase) * moon.dist * R;
+      const my = earth.sy! + Math.sin(moon.phase) * moon.dist * R * TILT;
+      const moonR = moon.radius * scale;
+      moon.sx = mx;
+      moon.sy = my;
+      moon.sr = moonR;
+
+      // moon orbit trace
+      ctx.beginPath();
+      ctx.ellipse(earth.sx!, earth.sy!, moon.dist * R, moon.dist * R * TILT, 0, 0, Math.PI * 2);
+      ctx.strokeStyle = "rgba(172, 214, 225, 0.13)";
+      ctx.lineWidth = 0.6;
+      ctx.stroke();
+
+      drawSphere(mx, my, moonR, ["#f2f0ea", "#b9b4aa", "#5f5b54"],
+        hovered === "moon" ? "rgba(255,255,255,0.4)" : undefined,
+        hovered === "moon");
+
+      // ---- L2, on the anti-Sun line from Earth
+      const ex = earth.sx! - cx;
+      const ey = earth.sy! - cy;
+      const elen = Math.hypot(ex, ey) || 1;
+      const lx = earth.sx! + (ex / elen) * l2.offset * R;
+      const ly = earth.sy! + (ey / elen) * l2.offset * R * 0.9;
+      const l2r = 3.4 * scale;
+      l2.sx = lx;
+      l2.sy = ly;
+      l2.sr = l2r;
+
+      // dashed tether Earth -> L2
+      ctx.save();
+      ctx.setLineDash([3, 4]);
+      ctx.beginPath();
+      ctx.moveTo(earth.sx!, earth.sy!);
+      ctx.lineTo(lx, ly);
+      ctx.strokeStyle = "rgba(250, 90, 103, 0.45)";
+      ctx.lineWidth = 0.9;
+      ctx.stroke();
+      ctx.restore();
+
+      const isL2Hover = hovered === "l2";
+      const pulse = 0.55 + Math.sin(t * 0.05) * 0.25;
+      const lg = ctx.createRadialGradient(lx, ly, 0, lx, ly, l2r * (isL2Hover ? 6 : 4.2));
+      lg.addColorStop(0, `rgba(250, 90, 103, ${pulse * (isL2Hover ? 0.85 : 0.6)})`);
+      lg.addColorStop(1, "rgba(250, 90, 103, 0)");
+      ctx.beginPath();
+      ctx.arc(lx, ly, l2r * (isL2Hover ? 6 : 4.2), 0, Math.PI * 2);
+      ctx.fillStyle = lg;
+      ctx.fill();
+
+      // little JWST hexagon
+      ctx.save();
+      ctx.translate(lx, ly);
+      ctx.rotate(t * 0.004);
+      ctx.beginPath();
+      for (let i = 0; i < 6; i++) {
+        const a = (i / 6) * Math.PI * 2;
+        const px = Math.cos(a) * l2r;
+        const py = Math.sin(a) * l2r;
+        if (i === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+      }
+      ctx.closePath();
+      ctx.fillStyle = isL2Hover ? "#ffd9b0" : "#f9d095";
+      ctx.fill();
+      ctx.restore();
+
+      ctx.font = `${10 * Math.max(0.85, scale)}px "JetBrains Mono", monospace`;
+      ctx.fillStyle = isL2Hover ? "rgba(255,255,255,0.95)" : "rgba(250, 90, 103, 0.8)";
+      ctx.textAlign = "left";
+      ctx.fillText("L2 · JWST", lx + l2r + 6 * scale, ly + 3);
+
+      t += 1;
+      requestAnimationFrame(draw);
+    }
+
+    // ---------------------------------------------------------- hit testing
+    function hitTest(mx: number, my: number): string | null {
+      const pad = 9;
+      const candidates: Array<{ id: string; x: number; y: number; r: number }> = [
+        { id: "moon", x: moon.sx, y: moon.sy, r: moon.sr },
+        { id: "l2", x: l2.sx, y: l2.sy, r: l2.sr },
+        { id: "earth", x: earth.sx ?? 0, y: earth.sy ?? 0, r: earth.sr ?? 0 },
+        { id: "mars", x: planets[3]!.sx ?? 0, y: planets[3]!.sy ?? 0, r: planets[3]!.sr ?? 0 },
+      ];
+      for (const c of candidates) {
+        if (Math.hypot(mx - c.x, my - c.y) <= c.r + pad) return c.id;
+      }
+      return null;
+    }
+
+    canvas.addEventListener("mousemove", (e) => {
+      const rect = canvas.getBoundingClientRect();
+      hovered = hitTest(e.clientX - rect.left, e.clientY - rect.top);
+      canvas.style.cursor = hovered
+        ? 'url("/adfarrar/images/mrsfrizzle-cursor.png") 6 0, pointer'
+        : "default";
+    });
+
+    canvas.addEventListener("mouseleave", () => {
+      hovered = null;
+      canvas.style.cursor = "default";
+    });
+
+    canvas.addEventListener("click", (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const id = hitTest(e.clientX - rect.left, e.clientY - rect.top);
+      if (id) openModal(id);
+    });
+
+    // keyboard fallback: cycle through the four targets
+    canvas.tabIndex = 0;
+    canvas.setAttribute("role", "button");
+    let kbIndex = -1;
+    const order = ["earth", "mars", "moon", "l2"];
+    canvas.addEventListener("keydown", (e) => {
+      if (e.key === "Tab") return;
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        if (hovered) openModal(hovered);
+        else if (kbIndex >= 0) openModal(order[kbIndex]!);
+        return;
+      }
+      if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+        e.preventDefault();
+        kbIndex = (kbIndex + 1) % order.length;
+        hovered = order[kbIndex]!;
+      }
+      if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+        e.preventDefault();
+        kbIndex = (kbIndex - 1 + order.length) % order.length;
+        hovered = order[kbIndex]!;
+      }
+    });
+
+    resize();
+    window.addEventListener("resize", resize);
+    draw();
+  }
+
+  // ------------------------------------------------------------- modal glue
+  const modalRoot = document.querySelector<HTMLElement>("[data-modal-root]");
+
+  function openModal(id: string) {
+    if (!modalRoot) return;
+    modalRoot.hidden = false;
+    modalRoot.querySelectorAll<HTMLElement>("[data-modal]").forEach((m) => {
+      m.hidden = m.dataset.modal !== id;
+    });
+    document.body.style.overflow = "hidden";
+    const active = modalRoot.querySelector<HTMLElement>(`[data-modal="${id}"]`);
+    active?.querySelector<HTMLButtonElement>(".modal-x")?.focus();
+  }
+
+  function closeModal() {
+    if (!modalRoot) return;
+    modalRoot.hidden = true;
+    modalRoot.querySelectorAll<HTMLElement>("[data-modal]").forEach((m) => (m.hidden = true));
+    document.body.style.overflow = "";
+  }
+
+  modalRoot?.querySelectorAll("[data-modal-close]").forEach((el) => {
+    el.addEventListener("click", closeModal);
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && modalRoot && !modalRoot.hidden) closeModal();
+  });
+
+  // ------------------------------------------------------------ Earth pins
+  (function setupPins() {
+    const card = document.querySelector<HTMLElement>("[data-pin-card]");
+    const labelEl = document.querySelector<HTMLElement>("[data-pin-label]");
+    const placeEl = document.querySelector<HTMLElement>("[data-pin-place]");
+    const blurbEl = document.querySelector<HTMLElement>("[data-pin-blurb]");
+    const svg = document.querySelector<SVGSVGElement>(".world");
+    const holder = document.querySelector<HTMLElement>(".map-holder");
+    if (!card || !labelEl || !placeEl || !blurbEl || !svg || !holder) return;
+
+    const data = new Map<string, { place: string; label: string; blurb: string }>();
+    document.querySelectorAll<HTMLElement>("[data-pin-payload]").forEach((el) => {
+      data.set(el.dataset.pinPayload!, {
+        place: el.dataset.place!,
+        label: el.dataset.label!,
+        blurb: el.dataset.blurb!,
+      });
+    });
+
+    function show(id: string, pinEl: SVGGElement) {
+      const d = data.get(id);
+      if (!d) return;
+
+      labelEl!.textContent = d.label;
+      placeEl!.textContent = d.place;
+      blurbEl!.textContent = d.blurb;
+      card!.hidden = false;
+
+      // position the card over the pin, in holder-relative pixels
+      const svgRect = svg!.getBoundingClientRect();
+      const pinRect = pinEl.getBoundingClientRect();
+      const holderRect = holder!.getBoundingClientRect();
+      const x = pinRect.left + pinRect.width / 2 - holderRect.left;
+      const y = pinRect.top + pinRect.height / 2 - holderRect.top;
+
+      card!.style.left = `${x}px`;
+      card!.style.top = `${y - 8}px`;
+
+      // if it would run off the top, flip below the pin
+      const cardH = card!.offsetHeight;
+      card!.style.transform = y - cardH - 16 < 0
+        ? "translate(-50%, 18px)"
+        : "translate(-50%, -108%)";
+
+      // keep it inside the map horizontally
+      const half = card!.offsetWidth / 2;
+      const maxX = svgRect.width - half - 6;
+      const clamped = Math.min(Math.max(x, half + 6), maxX);
+      card!.style.left = `${clamped}px`;
+
+      document.querySelectorAll(".pin").forEach((p) => p.classList.remove("is-active"));
+      pinEl.classList.add("is-active");
+      document.querySelectorAll("[data-pin-jump]").forEach((b) => {
+        b.classList.toggle("is-active", (b as HTMLElement).dataset.pinJump === id);
+      });
+    }
+
+    function hide() {
+      card!.hidden = true;
+      document.querySelectorAll(".pin").forEach((p) => p.classList.remove("is-active"));
+      document.querySelectorAll("[data-pin-jump]").forEach((b) => b.classList.remove("is-active"));
+    }
+
+    document.querySelectorAll<SVGGElement>(".pin").forEach((pin) => {
+      const id = pin.dataset.pin!;
+      pin.addEventListener("mouseenter", () => show(id, pin));
+      pin.addEventListener("focus", () => show(id, pin));
+      pin.addEventListener("click", (e) => {
+        e.stopPropagation();
+        show(id, pin);
+      });
+    });
+
+    // hovering off the map clears the card
+    svg.addEventListener("mouseleave", hide);
+
+    document.querySelectorAll<HTMLButtonElement>("[data-pin-jump]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const id = btn.dataset.pinJump!;
+        const pin = document.querySelector<SVGGElement>(`.pin[data-pin="${id}"]`);
+        if (pin) show(id, pin);
+      });
+    });
+  })();
+
+  document.querySelectorAll<HTMLElement>("[data-orrery]").forEach(initOrrery);
+</script>
+
+<!-- pin payloads, read by the script above (keeps content in one place: data/pins.ts) -->
+{pins.map((p) => (
+  <span
+    hidden
+    data-pin-payload={p.id}
+    data-place={p.place}
+    data-label={p.label}
+    data-blurb={p.blurb}
+  ></span>
+))}

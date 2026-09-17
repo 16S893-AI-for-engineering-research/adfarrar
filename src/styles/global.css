@@ -1,141 +1,402 @@
+/* ==========================================================================
+   Allegra Farrar — portfolio
+   Palette lifted from the "Ocean-darkmode" theme in her JPL SURP deck so the
+   site and her talks read as the same visual identity.
+   ========================================================================== */
+
 :root {
-  --bg: #05070d;
-  --bg-alt: #0b0f1c;
-  --bg-card: rgba(255, 255, 255, 0.03);
-  --border: rgba(255, 255, 255, 0.08);
-  --text: #e9ecf5;
-  --text-dim: #9aa3b8;
-  --accent-space: #4fd1ff;   /* atmosphere / satellite cyan */
-  --accent-storm: #ff7847;   /* hurricane / storm orange-red */
-  --font-display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
-  --font-body: "Inter", "Segoe UI", system-ui, sans-serif;
+  /* surfaces */
+  --bg-0: #04070f;
+  --bg-1: #070d1a;
+  --bg-2: #0b1424;
+  --navy: #031154;          /* deck accent1 — deep navy */
+
+  /* type */
+  --ink: #eef4fb;
+  --muted: #9db0c8;
+  --faint: #5c6b83;
+
+  /* accents (from the deck) */
+  --blue: #00afff;          /* dk2  — bright blue, primary accent */
+  --cyan: #52cadb;          /* accent4 — cyan */
+  --pale: #acd6e1;          /* accent3 — pale blue */
+  --mint: #7cd0bc;          /* lt2  — sea green */
+  --coral: #fa5a67;         /* accent5 — coral, used for storm/alert */
+  --sand: #f9d095;          /* accent6 — warm sand, used for Mars */
+
+  /* lines & fills */
+  --line: rgba(172, 214, 225, 0.12);
+  --card: rgba(172, 214, 225, 0.035);
+  --card-bd: rgba(172, 214, 225, 0.13);
+
+  --display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --pad: clamp(20px, 4vw, 64px);
+  --maxw: 1180px;
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
 
 html, body {
-  margin: 0;
-  padding: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font-body);
-  min-height: 100%;
+  background: var(--bg-0);
+  color: var(--ink);
 }
 
 body {
+  font-family: var(--display);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
   min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.55;
   display: flex;
   flex-direction: column;
 }
 
-h1, h2, h3, h4 {
-  font-family: var(--font-display);
+a { color: inherit; text-decoration: none; }
+img, svg { display: block; max-width: 100%; }
+ul { list-style: none; }
+
+/* --------------------------------------------------------------- backdrop */
+/* Fixed, very slowly drifting nebula wash. Sits behind everything.
+   Overflow is clipped by the html/body rule below so the oversized inset and
+   the drift transform can't widen the page. */
+html { overflow-x: hidden; }
+
+.backdrop {
+  position: fixed;
+  inset: -15%;
+  z-index: -3;
+  background:
+    radial-gradient(38% 44% at 16% 18%, rgba(0, 175, 255, 0.13), transparent 70%),
+    radial-gradient(44% 48% at 84% 74%, rgba(82, 202, 219, 0.10), transparent 72%),
+    radial-gradient(34% 38% at 62% 6%, rgba(3, 17, 84, 0.55), transparent 70%),
+    radial-gradient(52% 52% at 48% 106%, rgba(250, 90, 103, 0.07), transparent 72%),
+    var(--bg-0);
+  animation: drift 40s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes drift {
+  0%   { transform: translate3d(-3%, -2%, 0) scale(1.08); }
+  25%  { transform: translate3d( 3%, -2%, 0) scale(1.12); }
+  50%  { transform: translate3d( 3%,  3%, 0) scale(1.09); }
+  75%  { transform: translate3d(-2%,  3%, 0) scale(1.12); }
+  100% { transform: translate3d(-3%, -2%, 0) scale(1.08); }
+}
+
+.vignette {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(120% 120% at 50% 40%, transparent 58%, rgba(0, 0, 0, 0.55) 100%);
+}
+
+/* -------------------------------------------------------------- structure */
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 var(--pad);
+  width: 100%;
+}
+
+main { position: relative; flex: 1; }
+
+section {
+  padding: clamp(46px, 7.5vh, 104px) 0;
+  position: relative;
+}
+
+/* ------------------------------------------------------------------- nav */
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  backdrop-filter: blur(10px);
+  background: linear-gradient(to bottom, rgba(4, 7, 15, 0.86), rgba(4, 7, 15, 0.6));
+  border-bottom: 1px solid var(--line);
+}
+
+.site-nav .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+
+.brand-mark {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mono);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  font-size: 15px;
+  color: var(--ink);
+}
+
+.brand-mark .dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--blue);
+  box-shadow: 0 0 12px 2px rgba(0, 175, 255, 0.65);
+  animation: pulse 2.6s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; transform: scale(0.85); }
+  50%      { opacity: 1;   transform: scale(1.15); }
+}
+
+.nav-links {
+  display: flex;
+  gap: clamp(13px, 2vw, 28px);
+  font-size: 14.5px;
+}
+
+.nav-links a {
+  position: relative;
+  color: var(--muted);
+  padding: 6px 2px;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover,
+.nav-links a[aria-current="page"] { color: var(--ink); }
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--blue), var(--cyan));
+  transition: right 0.25s ease;
+}
+
+.nav-links a:hover::after,
+.nav-links a[aria-current="page"]::after { right: 0; }
+
+/* ------------------------------------------------------------- typography */
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--blue);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.eyebrow::before {
+  content: "";
+  width: 34px;
+  height: 1px;
+  background: var(--blue);
+  opacity: 0.7;
+}
+
+.eyebrow.center { justify-content: center; }
+
+h1 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.06;
+  font-size: clamp(30px, 4.6vw, 56px);
+}
+
+h2 {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.14;
+  font-size: clamp(23px, 3.2vw, 36px);
+  margin-bottom: 14px;
+}
+
+h3 {
+  font-size: clamp(16.5px, 2vw, 20px);
   font-weight: 600;
-  line-height: 1.15;
-  margin: 0 0 0.5em;
+  margin-bottom: 8px;
 }
 
-p {
-  line-height: 1.6;
-  color: var(--text-dim);
+p { color: var(--muted); max-width: 66ch; }
+p + p { margin-top: 14px; }
+
+p.lead {
+  font-size: clamp(15px, 1.55vw, 18.5px);
+  color: var(--muted);
+  max-width: 62ch;
 }
 
-a {
-  color: var(--accent-space);
-  text-decoration: none;
-}
+strong { color: var(--ink); font-weight: 600; }
+em { color: var(--pale); }
 
-a:hover {
-  text-decoration: underline;
-}
-
-.gradient-text {
-  background: linear-gradient(90deg, var(--accent-space), var(--accent-storm));
+.grad-text {
+  background: linear-gradient(95deg, var(--ink) 0%, var(--ink) 26%, var(--blue) 60%, var(--cyan) 92%);
+  background-size: 200% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  animation: sheen 9s ease-in-out 1s infinite alternate;
 }
 
-main {
-  flex: 1;
+@keyframes sheen {
+  from { background-position: 0% 50%; }
+  to   { background-position: 100% 50%; }
 }
 
-.page-shell {
-  position: relative;
-  min-height: calc(100vh - 72px);
-  overflow: hidden;
-}
-
-.content-wrap {
-  position: relative;
-  z-index: 2;
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 3rem 1.5rem 5rem;
-}
-
-.bg-canvas {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
+/* ------------------------------------------------------------- components */
 .pill {
-  display: inline-block;
-  padding: 0.3em 0.9em;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: var(--bg-card);
-  font-size: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 11.5px;
   letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--text-dim);
+  padding: 4px 11px;
+  border-radius: 100px;
+  border: 1px solid var(--card-bd);
+  background: var(--card);
+  color: var(--muted);
 }
 
 .card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 1.5rem;
+  background: var(--card);
+  border: 1px solid var(--card-bd);
+  border-radius: 16px;
+  padding: 22px;
+  transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
 }
 
+.card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(172, 214, 225, 0.26);
+  background: rgba(172, 214, 225, 0.055);
+}
+
+.card h3 { color: var(--ink); }
+
 .btn {
-  display: inline-block;
-  padding: 0.6em 1.4em;
-  border-radius: 999px;
-  border: 1px solid var(--accent-space);
-  color: var(--accent-space);
-  font-family: var(--font-display);
-  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.03em;
+  padding: 11px 20px;
+  border-radius: 100px;
+  border: 1px solid var(--card-bd);
+  background: var(--card);
+  color: var(--ink);
   cursor: pointer;
-  background: transparent;
-  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .btn:hover {
-  background: var(--accent-space);
-  color: #04121a;
-  text-decoration: none;
-  transform: translateY(-1px);
+  border-color: var(--blue);
+  box-shadow: 0 0 22px -4px rgba(0, 175, 255, 0.5);
+  transform: translateY(-2px);
 }
 
-.btn-storm {
-  border-color: var(--accent-storm);
-  color: var(--accent-storm);
+.btn.primary {
+  background: linear-gradient(120deg, rgba(0, 175, 255, 0.2), rgba(82, 202, 219, 0.14));
+  border-color: rgba(0, 175, 255, 0.4);
 }
 
-.btn-storm:hover {
-  background: var(--accent-storm);
-  color: #1a0800;
+/* ------------------------------------------------------------------ grid */
+.grid { display: grid; gap: 18px; }
+.grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+.grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+
+@media (max-width: 900px) {
+  .grid.cols-2, .grid.cols-3, .grid.cols-4 { grid-template-columns: 1fr; }
+  .nav-links { font-size: 13px; gap: 13px; }
 }
 
-/* Easter egg: hovering over nav links (or other marked elements)
-   swaps the cursor for Mrs. Frizzle from The Magic School Bus. */
+/* Five nav items don't fit a phone in one row: stack the bar and let the links
+   wrap instead of pushing the page wider than the viewport. */
+@media (max-width: 620px) {
+  .site-nav .wrap {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 9px;
+  }
+
+  .nav-links {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 14px;
+    row-gap: 5px;
+    font-size: 12.5px;
+  }
+}
+
+/* --------------------------------------------------------- scroll reveal */
+/* Sections fade up as they enter the viewport, but they overlap generously
+   so you can always see the next one coming — "scrolly telly that flows". */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.75s ease, transform 0.75s ease;
+}
+
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .backdrop { animation: none; }
+  .grad-text { animation: none; }
+}
+
+/* ---------------------------------------------------------------- footer */
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding: 30px 0 52px;
+  margin-top: 30px;
+  color: var(--faint);
+  font-size: 13px;
+}
+
+.site-footer .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* ---------------------------------------------------------- easter eggs */
+/* Mrs. Frizzle takes the wheel whenever you hover something clickable. */
 .frizzle-cursor {
   cursor: url("/adfarrar/images/mrsfrizzle-cursor.png") 6 0, pointer;
 }
+
+/* --------------------------------------------------------------- utility */
+.center { text-align: center; }
+.mt-8  { margin-top: 8px; }
+.mt-16 { margin-top: 16px; }
+.mt-24 { margin-top: 24px; }
+.mt-40 { margin-top: 40px; }
+.flex { display: flex; }
+.gap-16 { gap: 16px; }
+.small {
+  font-size: 12.5px;
+  color: var(--faint);
+  font-family: var(--mono);
+}
+
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(172, 214, 225, 0.13); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(172, 214, 225, 0.24); }

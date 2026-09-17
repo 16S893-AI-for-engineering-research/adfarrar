@@ -1,0 +1,197 @@
+---
+/**
+ * Research timeline.
+ *
+ * Edit `events` below — everything (line length, dot placement, spacing) is
+ * derived from the array, so adding an entry needs no other changes.
+ *
+ * tone: "done" | "current" | "future" — controls the dot colour.
+ */
+const events = [
+  {
+    year: "2020",
+    title: "Started graduate program at MIT AeroAstro",
+    tone: "done",
+    desc: "[Placeholder — your words.] Arrived at MIT with the Astrodynamics, Space Robotics and Controls Lab; NSF Graduate Research Fellow, MIT Presidential Fellow, GEM Fellow.",
+  },
+  {
+    year: "May 2022",
+    title: "Graduated with SM",
+    tone: "done",
+    desc: "[Placeholder.] Master's thesis: an iterative LQR method for addressing model uncertainty in the Mars entry problem. Presented at IAC Paris.",
+  },
+  {
+    year: "Fall 2022",
+    title: "Passed qualifying exams",
+    tone: "done",
+    desc: "[Placeholder.] Quals cleared — and the research direction shifted from Mars entry toward Earth observation and extreme weather.",
+  },
+  {
+    year: "2025",
+    title: "Won the JPL SURP grant",
+    tone: "done",
+    desc: "[Placeholder.] NASA JPL Strategic University Research Partnership: “An Adaptive Sensing Framework for Improved Observing and Understanding of Tropical Cyclones.”",
+  },
+  {
+    year: "2026",
+    title: "Passed proposal defense",
+    tone: "done",
+    desc: "[Placeholder.] Thesis proposal approved — Bayesian inference architecture, CYGNSS testbed, and the CARICOOS stakeholder work as one program.",
+  },
+  {
+    year: "now",
+    title: "Wrapping up thesis work",
+    tone: "current",
+    desc: "[Placeholder.] Model implementation and demonstration on CYGNSS data, plus translating regional decision requirements into observation priorities.",
+  },
+  {
+    year: "Spring 2027",
+    title: "Defend thesis 🤺",
+    tone: "future",
+    desc: "[Placeholder.] Ideally. En garde.",
+  },
+];
+
+const ROW = 96;
+const LINE_X = 108;
+const WIDTH = 940;
+const HEIGHT = events.length * ROW + 28;
+
+const toneColor: Record<string, string> = {
+  done: "var(--cyan)",
+  current: "var(--blue)",
+  future: "var(--sand)",
+};
+---
+
+<div class="timeline" data-timeline>
+  <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} width="100%" role="list" aria-label="Research timeline">
+    <!-- spine -->
+    <line
+      class="tl-spine"
+      x1={LINE_X}
+      y1="14"
+      x2={LINE_X}
+      y2={HEIGHT - 22}
+      style={`--len: ${HEIGHT - 36}px`}
+    />
+
+    {events.map((ev, i) => {
+      const y = 26 + i * ROW;
+      return (
+        <g class="tl-row" role="listitem" style={`--delay: ${i * 130}ms`}>
+          <text class="tl-year" x={LINE_X - 24} y={y + 5} text-anchor="end">
+            {ev.year}
+          </text>
+
+          {ev.tone === "current" && (
+            <circle class="tl-ping" cx={LINE_X} cy={y} r="7" style={`fill: ${toneColor[ev.tone]}`} />
+          )}
+
+          <circle
+            class="tl-dot"
+            cx={LINE_X}
+            cy={y}
+            r="7"
+            style={`fill: ${toneColor[ev.tone] ?? "var(--cyan)"}`}
+          />
+
+          <text class="tl-title" x={LINE_X + 26} y={y + 1}>{ev.title}</text>
+
+          <foreignObject x={LINE_X + 26} y={y + 12} width={WIDTH - LINE_X - 60} height="62">
+            <div class="tl-desc">{ev.desc}</div>
+          </foreignObject>
+        </g>
+      );
+    })}
+  </svg>
+</div>
+
+<style>
+  .timeline { width: 100%; }
+
+  .tl-spine {
+    stroke: var(--card-bd);
+    stroke-width: 2;
+    stroke-dasharray: var(--len);
+    stroke-dashoffset: var(--len);
+  }
+
+  .timeline.in .tl-spine {
+    animation: draw-spine 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  @keyframes draw-spine { to { stroke-dashoffset: 0; } }
+
+  .tl-row { opacity: 0; }
+
+  .timeline.in .tl-row {
+    animation: row-in 0.55s ease forwards;
+    animation-delay: calc(var(--delay) + 260ms);
+  }
+
+  @keyframes row-in {
+    from { opacity: 0; transform: translateY(9px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .tl-year {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    fill: var(--faint);
+  }
+
+  .tl-dot { stroke: var(--bg-0); stroke-width: 3; }
+
+  .tl-ping {
+    opacity: 0.5;
+    transform-origin: center;
+    transform-box: fill-box;
+    animation: tl-ping 2.4s ease-out infinite;
+  }
+
+  @keyframes tl-ping {
+    0%   { transform: scale(1);   opacity: 0.5; }
+    70%  { transform: scale(2.6); opacity: 0; }
+    100% { transform: scale(2.6); opacity: 0; }
+  }
+
+  .tl-title {
+    font-family: var(--display);
+    font-size: 16.5px;
+    font-weight: 700;
+    fill: var(--ink);
+  }
+
+  .tl-desc {
+    font-family: var(--display);
+    font-size: 13.5px;
+    line-height: 1.45;
+    color: var(--muted);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tl-spine { stroke-dashoffset: 0; }
+    .tl-row { opacity: 1; }
+    .tl-ping { animation: none; }
+  }
+</style>
+
+<script>
+  // Play the draw-on animation when the timeline scrolls into view.
+  const tls = document.querySelectorAll<HTMLElement>("[data-timeline]");
+  if (tls.length) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            e.target.classList.add("in");
+            io.unobserve(e.target);
+          }
+        }
+      },
+      { threshold: 0.15 }
+    );
+    tls.forEach((el) => io.observe(el));
+  }
+</script>

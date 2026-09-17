@@ -1,63 +1,92 @@
 # Allegra Farrar — Class Portfolio
 
-A multi-page portfolio site built with [Astro](https://astro.build) for
-16S893 (AI for Engineering Research). Covers who I am, my research project,
-and a couple of animated backgrounds because static dark backgrounds are boring.
+Portfolio site for **16.S893 · AI Agents for Engineering Research** (MIT AeroAstro, Fall 2026).
 
-Live site: https://16S893-AI-for-engineering-research.github.io/adfarrar/
+**Live:** https://16s893-ai-for-engineering-research.github.io/adfarrar/
 
 ## Pages
 
-- **Home** — landing page with a canvas hero animation: a satellite doing an
-  "adaptive sensing" sweep over a rotating hurricane.
-- **About Me** — an interactive space scene. Click Earth or Mars to travel
-  there; the Mars view has a blurb about my SM thesis (Mars entry trajectory
-  optimization under atmospheric uncertainty), and the Earth view is a stub
-  for a future world-map-with-pins feature.
-- **Project** — outline of my current PhD research: adaptive sensing design
-  for satellite monitoring and warning of tropical cyclones. Background is a
-  canvas rain-on-glass animation.
+| Page | What's there |
+| --- | --- |
+| **Home** | Project title + an abstract Earth with satellites in inclined orbits. Only some passes acquire a target — when one does, the ground target lights coral and the satellite opens a beam. That's the adaptive sensing thesis in one loop. |
+| **About Me** | Bio + headshot, an interactive inner solar system, research interests, motivation, an animated research timeline, and where the work goes beyond the thesis. |
+| **Project** | Outline of the PhD: the problem, four research questions, the onboard inference pipeline, the stakeholders it answers to, and the contribution. |
+| **CV** | Inline PDF viewer plus a structured text version (education, research, publications, grants, awards, teaching). |
+| **Dev Log** | Per-session log of what was delegated to the agent, what was verified, and what was rejected. Collapsible entries. |
+
+## The interactive solar system
+
+On the About page: Sun, Mercury, Venus, Earth and Mars on tilted elliptical orbits, the Moon orbiting Earth, and the Sun–Earth **L2** point marked on the anti-Sun line with a small hexagonal JWST. Four bodies are clickable and open a modal (no page navigation):
+
+- **Earth** → world map with hoverable place pins
+- **Mars** → SM thesis on Mars entry under atmospheric uncertainty
+- **L2** → JWST internship
+- **Moon** → a surprise
+
+Keyboard accessible: focus the canvas, arrow keys to cycle bodies, Enter to open.
 
 ## Easter egg
 
-Hover over any nav link (or button) across the site — the cursor turns into
-Mrs. Frizzle from *The Magic School Bus*. 🚌
+Hover any link or button — the cursor becomes Mrs. Frizzle from *The Magic School Bus*. 🚌
 
-## Tech stack
+## Editing content
 
-- [Astro](https://astro.build) (static site, zero client JS by default)
-- Vanilla canvas animations for the starfield, rain, and hero graphic — no
-  animation library, just `requestAnimationFrame`
-- Deployed to GitHub Pages via GitHub Actions (`.github/workflows/deploy.yml`)
+Content is deliberately separated from layout:
+
+| To change… | Edit |
+| --- | --- |
+| Map pins (places, blurbs, coordinates) | `src/data/pins.ts` |
+| Research timeline entries | the `events` array in `src/components/Timeline.astro` |
+| Dev log entries | the `entries` array in `src/pages/devlog/index.astro` |
+| Colours, fonts, spacing | the `:root` block in `src/styles/global.css` |
+| Bio / page copy | the relevant `src/pages/**/index.astro` |
+
+Sections marked `[Placeholder]` are scaffolding — real structure, wording still to be written.
+
+## Colour palette
+
+Lifted from the `Ocean-darkmode` theme in the JPL SURP deck so the site and the talks read as one identity:
+
+`#00AFFF` blue · `#52CADB` cyan · `#ACD6E1` pale · `#7CD0BC` mint · `#FA5A67` coral · `#F9D095` sand · `#031154` navy
+
+## Tech
+
+- [Astro](https://astro.build) — static output, no UI framework
+- Canvas animations written by hand (`requestAnimationFrame`), no animation library
+- World map from [Natural Earth](https://www.naturalearthdata.com/) 110m land vectors (public domain), reprojected to plate carrée and simplified with Ramer–Douglas–Peucker so lat/lon → pixel is plain arithmetic at runtime
+- Deployed to GitHub Pages via `.github/workflows/deploy.yml`
 
 ## Local development
 
 ```sh
 npm install
 npm run dev       # http://localhost:4321/adfarrar/
-npm run build     # outputs to ./dist
-npm run preview   # serve the production build locally
+npm run build     # → ./dist
+npm run preview   # serve the production build
 ```
 
-## Project structure
+## Structure
 
 ```
 src/
 ├── components/
-│   ├── AboutScene.astro     # interactive space/Mars/Earth view logic
-│   ├── HeroAnimation.astro  # satellite + hurricane canvas animation
-│   ├── Nav.astro            # shared nav bar (Easter-egg cursor lives here)
-│   ├── RainField.astro      # rain-on-window canvas background
-│   └── Starfield.astro      # twinkling starfield + shooting stars
-├── layouts/
-│   └── BaseLayout.astro     # shared <head>, nav, footer
+│   ├── GlobeHero.astro   # home: Earth + satellites + targeted beams
+│   ├── Orrery.astro      # about: clickable solar system + all four modals
+│   ├── Timeline.astro    # about: animated research timeline
+│   └── Nav.astro
+├── data/
+│   ├── pins.ts           # map pin content — edit here
+│   └── world.ts          # generated world path + lat/lon projection
+├── layouts/BaseLayout.astro
 ├── pages/
-│   ├── index.astro          # Home
-│   ├── about/index.astro    # About Me
-│   └── project/index.astro  # Project
-├── styles/
-│   └── global.css           # theme variables, shared components, cursor CSS
-└── assets/                  # source images (not directly served)
+│   ├── index.astro       ├── about/    ├── project/
+│   ├── cv/               └── devlog/
+└── styles/global.css     # design system
 
-public/images/                # served static images (cursor PNG, etc.)
+public/
+├── files/AFarrar_CV.pdf
+└── images/               # headshot, dance photo, Frizzle cursor
 ```
+
+Note: `personal_pictures/` and `supplemental-info/` are working source material and
+are gitignored — web-sized copies of what the site uses live in `public/`.

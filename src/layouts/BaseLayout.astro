@@ -7,7 +7,12 @@ interface Props {
   description?: string;
 }
 
-const { title, description = "Portfolio site for Allegra Farrar." } = Astro.props;
+const {
+  title,
+  description = "Allegra Farrar — PhD candidate, MIT AeroAstro & Media Lab. Adaptive sensing design for satellite monitoring of tropical cyclones.",
+} = Astro.props;
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 
 <!doctype html>
@@ -15,37 +20,54 @@ const { title, description = "Portfolio site for Allegra Farrar." } = Astro.prop
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/adfarrar/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
     <meta name="description" content={description} />
     <title>{title}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
   </head>
   <body>
+    <div class="backdrop"></div>
+    <div class="vignette"></div>
+
     <Nav />
+
     <main>
       <slot />
     </main>
+
     <footer class="site-footer">
-      <p>&copy; {new Date().getFullYear()} Allegra Farrar &middot; Built with Astro</p>
+      <div class="wrap">
+        <span>16.S893 &middot; AI Agents for Engineering Research &middot; Fall 2026</span>
+        <span>MIT AeroAstro &amp; Media Lab &middot; Space Enabled</span>
+      </div>
     </footer>
+
+    <script>
+      // Scroll reveal. Generous negative bottom margin + a low threshold so a
+      // section starts fading in well before it's centered — you can always see
+      // the next section arriving while still reading the current one.
+      const items = document.querySelectorAll(".reveal");
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches && items.length) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("in");
+                io.unobserve(entry.target);
+              }
+            }
+          },
+          { threshold: 0.08, rootMargin: "0px 0px -8% 0px" }
+        );
+        items.forEach((el) => io.observe(el));
+      } else {
+        items.forEach((el) => el.classList.add("in"));
+      }
+    </script>
   </body>
 </html>
-
-<style>
-  .site-footer {
-    text-align: center;
-    padding: 1.5rem;
-    color: var(--text-dim);
-    font-size: 0.85rem;
-    border-top: 1px solid var(--border);
-  }
-
-  .site-footer p {
-    margin: 0;
-  }
-</style>

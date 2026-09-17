@@ -1,0 +1,400 @@
+---
+/**
+ * Home hero graphic.
+ *
+ * An abstract Earth — graticule sphere with soft limb glow, slowly rotating —
+ * with several satellites in inclined orbits passing over it. On some passes a
+ * satellite acquires a ground target: the target lights up coral/red, the
+ * satellite opens a beam onto it, and the beam closes once the pass is done.
+ * That's the "adaptive sensing" idea in one loop: not every pass observes, and
+ * the ones that do are chosen by what's happening on the ground.
+ */
+---
+
+<div class="globe-wrap">
+  <canvas data-globe aria-label="Abstract Earth with satellites performing targeted observations" role="img"></canvas>
+</div>
+
+<style>
+  .globe-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-width: 520px;
+    margin-inline: auto;
+  }
+
+  .globe-wrap canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+</style>
+
+<script>
+  type Target = {
+    lat: number;
+    lon: number;
+    /** 0 = dormant, ramps to 1 while being observed */
+    heat: number;
+    active: boolean;
+  };
+
+  type Sat = {
+    /** orbital radius as a multiple of globe radius */
+    alt: number;
+    inclination: number;
+    /** longitude of ascending node — spreads the orbit planes apart */
+    node: number;
+    phase: number;
+    speed: number;
+    /** index into targets[] while acquiring, else -1 */
+    locked: number;
+    beam: number;
+  };
+
+  function initGlobe(canvas: HTMLCanvasElement) {
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    let size = 0;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    // Ground targets, roughly over tropical-cyclone basins.
+    const targets: Target[] = [
+      { lat: 18, lon: -66, heat: 0, active: false },   // Caribbean / Puerto Rico
+      { lat: 14, lon: -55, heat: 0, active: false },   // tropical Atlantic
+      { lat: 25, lon: -90, heat: 0, active: false },   // Gulf of Mexico
+      { lat: 15, lon: 125, heat: 0, active: false },   // W. Pacific
+      { lat: -18, lon: 45, heat: 0, active: false },   // SW Indian
+    ];
+
+    const sats: Sat[] = [
+      { alt: 1.36, inclination: 0.42, node: 0.2, phase: 0.0, speed: 0.0062, locked: -1, beam: 0 },
+      { alt: 1.52, inclination: -0.6, node: 2.1, phase: 2.2, speed: 0.0048, locked: -1, beam: 0 },
+      { alt: 1.26, inclination: 0.85, node: 4.0, phase: 4.1, speed: 0.0074, locked: -1, beam: 0 },
+    ];
+
+    let spin = 0;
+    let frame = 0;
+
+    function resize() {
+      const parent = canvas.parentElement;
+      size = parent ? parent.clientWidth : 480;
+      canvas.width = size * dpr;
+      canvas.height = size * dpr;
+      canvas.style.width = `${size}px`;
+      canvas.style.height = `${size}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    /** Project a lat/lon on the rotating globe into screen space. */
+    function projectSurface(lat: number, lon: number, R: number, cx: number, cy: number) {
+      const phi = (lat * Math.PI) / 180;
+      const lambda = (lon * Math.PI) / 180 + spin;
+      const x = Math.cos(phi) * Math.sin(lambda);
+      const y = Math.sin(phi);
+      const z = Math.cos(phi) * Math.cos(lambda);
+      return { x: cx + x * R, y: cy - y * R, z, visible: z > 0 };
+    }
+
+    /** Satellite position in screen space for its current orbit angle. */
+    function projectSat(sat: Sat, R: number, cx: number, cy: number) {
+      const a = sat.phase;
+      // circular orbit in its own plane, then tilted by inclination and rotated to its node
+      const ox = Math.cos(a);
+      const oy = Math.sin(a);
+      const xi = ox;
+      const yi = oy * Math.cos(sat.inclination);
+      const zi = oy * Math.sin(sat.inclination);
+      const cosN = Math.cos(sat.node);
+      const sinN = Math.sin(sat.node);
+      const x = xi * cosN - zi * sinN;
+      const z = xi * sinN + zi * cosN;
+      const y = yi;
+      const r = R * sat.alt;
+      return { x: cx + x * r, y: cy - y * r, z, front: z > 0 };
+    }
+
+    function drawGlobe(cx: number, cy: number, R: number) {
+      // limb glow
+      const glow = ctx.createRadialGradient(cx, cy, R * 0.82, cx, cy, R * 1.22);
+      glow.addColorStop(0, "rgba(0, 175, 255, 0.22)");
+      glow.addColorStop(0.5, "rgba(0, 175, 255, 0.07)");
+      glow.addColorStop(1, "rgba(0, 175, 255, 0)");
+      ctx.beginPath();
+      ctx.arc(cx, cy, R * 1.22, 0, Math.PI * 2);
+      ctx.fillStyle = glow;
+      ctx.fill();
+
+      // body — lit from upper-left, deep navy on the terminator
+      const body = ctx.createRadialGradient(
+        cx - R * 0.35, cy - R * 0.4, R * 0.1,
+        cx, cy, R
+      );
+      body.addColorStop(0, "#12558f");
+      body.addColorStop(0.45, "#0a2f55");
+      body.addColorStop(1, "#03102a");
+      ctx.beginPath();
+      ctx.arc(cx, cy, R, 0, Math.PI * 2);
+      ctx.fillStyle = body;
+      ctx.fill();
+
+      // graticule — meridians and parallels, clipped to the sphere
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(cx, cy, R, 0, Math.PI * 2);
+      ctx.clip();
+
+      ctx.strokeStyle = "rgba(82, 202, 219, 0.17)";
+      ctx.lineWidth = 0.8;
+
+      // parallels
+      for (let lat = -60; lat <= 60; lat += 30) {
+        ctx.beginPath();
+        let started = false;
+        for (let lon = -180; lon <= 180; lon += 4) {
+          const p = projectSurface(lat, lon, R, cx, cy);
+          if (!p.visible) { started = false; continue; }
+          if (!started) { ctx.moveTo(p.x, p.y); started = true; }
+          else ctx.lineTo(p.x, p.y);
+        }
+        ctx.stroke();
+      }
+
+      // meridians
+      for (let lon = -180; lon < 180; lon += 30) {
+        ctx.beginPath();
+        let started = false;
+        for (let lat = -90; lat <= 90; lat += 3) {
+          const p = projectSurface(lat, lon, R, cx, cy);
+          if (!p.visible) { started = false; continue; }
+          if (!started) { ctx.moveTo(p.x, p.y); started = true; }
+          else ctx.lineTo(p.x, p.y);
+        }
+        ctx.stroke();
+      }
+
+      // equator, slightly brighter
+      ctx.strokeStyle = "rgba(172, 214, 225, 0.3)";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      let started = false;
+      for (let lon = -180; lon <= 180; lon += 3) {
+        const p = projectSurface(0, lon, R, cx, cy);
+        if (!p.visible) { started = false; continue; }
+        if (!started) { ctx.moveTo(p.x, p.y); started = true; }
+        else ctx.lineTo(p.x, p.y);
+      }
+      ctx.stroke();
+
+      ctx.restore();
+
+      // crisp terminator edge
+      ctx.beginPath();
+      ctx.arc(cx, cy, R, 0, Math.PI * 2);
+      ctx.strokeStyle = "rgba(0, 175, 255, 0.4)";
+      ctx.lineWidth = 1.1;
+      ctx.stroke();
+    }
+
+    function drawOrbit(sat: Sat, R: number, cx: number, cy: number) {
+      ctx.beginPath();
+      let started = false;
+      const saved = sat.phase;
+      for (let a = 0; a <= Math.PI * 2 + 0.05; a += 0.06) {
+        sat.phase = a;
+        const p = projectSat(sat, R, cx, cy);
+        // only draw the near half so the orbit reads as passing behind the globe
+        if (!p.front) { started = false; continue; }
+        if (!started) { ctx.moveTo(p.x, p.y); started = true; }
+        else ctx.lineTo(p.x, p.y);
+      }
+      sat.phase = saved;
+      ctx.strokeStyle = "rgba(172, 214, 225, 0.16)";
+      ctx.lineWidth = 0.8;
+      ctx.stroke();
+    }
+
+    function drawSatellite(x: number, y: number, angle: number, observing: boolean) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(angle);
+      const s = Math.max(1, size / 460);
+      ctx.scale(s, s);
+
+      // solar panels
+      ctx.fillStyle = observing ? "rgba(250, 90, 103, 0.9)" : "rgba(0, 175, 255, 0.85)";
+      ctx.fillRect(-11, -1.6, 7, 3.2);
+      ctx.fillRect(4, -1.6, 7, 3.2);
+
+      // bus
+      ctx.fillStyle = "#e8f1fb";
+      ctx.fillRect(-3.2, -2.4, 6.4, 4.8);
+
+      ctx.restore();
+    }
+
+    function drawBeam(
+      sx: number, sy: number,
+      tx: number, ty: number,
+      strength: number
+    ) {
+      const dx = tx - sx;
+      const dy = ty - sy;
+      const len = Math.hypot(dx, dy) || 1;
+      const nx = -dy / len;
+      const ny = dx / len;
+      const spread = 7 * Math.max(1, size / 460);
+
+      const g = ctx.createLinearGradient(sx, sy, tx, ty);
+      g.addColorStop(0, `rgba(250, 90, 103, ${0.34 * strength})`);
+      g.addColorStop(1, `rgba(250, 90, 103, ${0.05 * strength})`);
+
+      ctx.beginPath();
+      ctx.moveTo(sx, sy);
+      ctx.lineTo(tx + nx * spread, ty + ny * spread);
+      ctx.lineTo(tx - nx * spread, ty - ny * spread);
+      ctx.closePath();
+      ctx.fillStyle = g;
+      ctx.fill();
+    }
+
+    function drawTarget(t: Target, R: number, cx: number, cy: number) {
+      const p = projectSurface(t.lat, t.lon, R, cx, cy);
+      if (!p.visible) return;
+
+      const scale = Math.max(1, size / 460);
+      const heat = t.heat;
+
+      if (heat > 0.02) {
+        // hot: coral bloom + expanding ring
+        const bloom = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 16 * scale * heat);
+        bloom.addColorStop(0, `rgba(250, 90, 103, ${0.55 * heat})`);
+        bloom.addColorStop(1, "rgba(250, 90, 103, 0)");
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 16 * scale * heat, 0, Math.PI * 2);
+        ctx.fillStyle = bloom;
+        ctx.fill();
+
+        const ring = ((frame % 70) / 70);
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, (3 + ring * 13) * scale, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(250, 90, 103, ${0.4 * heat * (1 - ring)})`;
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+      }
+
+      // the dot itself — pale when dormant, coral when observed
+      const r = (1.9 + heat * 1.1) * scale;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+      ctx.fillStyle = heat > 0.05
+        ? `rgba(255, 138, 145, ${0.65 + 0.35 * heat})`
+        : "rgba(172, 214, 225, 0.5)";
+      ctx.fill();
+    }
+
+    function step() {
+      const cx = size / 2;
+      const cy = size / 2;
+      const R = size * 0.3;
+
+      ctx.clearRect(0, 0, size, size);
+
+      spin += reduce ? 0 : 0.0016;
+
+      // orbit paths behind everything
+      for (const sat of sats) drawOrbit(sat, R, cx, cy);
+
+      // satellites that are currently behind the globe
+      const drawnBehind: Sat[] = [];
+      const drawnFront: Sat[] = [];
+      for (const sat of sats) {
+        const p = projectSat(sat, R, cx, cy);
+        (p.front ? drawnFront : drawnBehind).push(sat);
+      }
+
+      for (const sat of drawnBehind) {
+        const p = projectSat(sat, R, cx, cy);
+        ctx.globalAlpha = 0.25;
+        drawSatellite(p.x, p.y, sat.phase + Math.PI / 2, false);
+        ctx.globalAlpha = 1;
+      }
+
+      drawGlobe(cx, cy, R);
+
+      // decide acquisitions, advance beams
+      for (const sat of sats) {
+        if (!reduce) sat.phase += sat.speed;
+
+        const p = projectSat(sat, R, cx, cy);
+
+        if (sat.locked >= 0) {
+          const t = targets[sat.locked];
+          const tp = projectSurface(t.lat, t.lon, R, cx, cy);
+          // hold the lock only while both are on the near side and roughly overhead
+          const stillGood = p.front && tp.visible && Math.hypot(tp.x - p.x, tp.y - p.y) < R * 1.5;
+          sat.beam = stillGood
+            ? Math.min(1, sat.beam + 0.05)
+            : Math.max(0, sat.beam - 0.06);
+          if (sat.beam <= 0 && !stillGood) {
+            targets[sat.locked].active = false;
+            sat.locked = -1;
+          }
+        } else if (p.front && !reduce) {
+          // look for a target this satellite is currently over
+          for (let i = 0; i < targets.length; i++) {
+            const t = targets[i];
+            if (t.active) continue;
+            const tp = projectSurface(t.lat, t.lon, R, cx, cy);
+            if (!tp.visible) continue;
+            if (Math.hypot(tp.x - p.x, tp.y - p.y) < R * 0.62) {
+              // not every eligible pass observes — that's the adaptive part
+              if (Math.random() < 0.05) {
+                sat.locked = i;
+                t.active = true;
+              }
+              break;
+            }
+          }
+        }
+      }
+
+      // target heat follows whether anything is beaming at it
+      for (const t of targets) {
+        t.heat = t.active
+          ? Math.min(1, t.heat + 0.045)
+          : Math.max(0, t.heat - 0.02);
+      }
+
+      for (const t of targets) drawTarget(t, R, cx, cy);
+
+      // beams + front satellites on top
+      for (const sat of sats) {
+        if (sat.locked >= 0 && sat.beam > 0.01) {
+          const p = projectSat(sat, R, cx, cy);
+          const t = targets[sat.locked];
+          const tp = projectSurface(t.lat, t.lon, R, cx, cy);
+          if (p.front && tp.visible) drawBeam(p.x, p.y, tp.x, tp.y, sat.beam);
+        }
+      }
+
+      for (const sat of drawnFront) {
+        const p = projectSat(sat, R, cx, cy);
+        drawSatellite(p.x, p.y, sat.phase + Math.PI / 2, sat.locked >= 0 && sat.beam > 0.3);
+      }
+
+      frame += 1;
+      requestAnimationFrame(step);
+    }
+
+    resize();
+    window.addEventListener("resize", resize);
+    step();
+  }
+
+  document.querySelectorAll<HTMLCanvasElement>("canvas[data-globe]").forEach(initGlobe);
+</script>

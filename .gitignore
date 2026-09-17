@@ -22,3 +22,7 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# working source material, not published
+/supplemental-info/
+/personal_pictures/

@@ -1,107 +1,290 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import RainField from "../../components/RainField.astro";
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+const questions = [
+  {
+    n: "01",
+    q: "In what ways do current observation networks persist climate uncertainty that limit actionable decision windows, and what are the resulting technical needs?",
+  },
+  {
+    n: "02",
+    q: "How does regional vulnerability and response capacity shape the science metrics for meaningful decision making, redefining what counts as an “extreme weather event”?",
+  },
+  {
+    n: "03",
+    q: "How does the classification of data as signal, noise, or outlier shift when scientific priorities are reweighted toward decision relevance rather than forecast improvement alone?",
+  },
+  {
+    n: "04",
+    q: "What are the decision-relevant metrics for regional planners during dynamic climate events, and how do they map to data availability?",
+  },
+];
 ---
 
 <BaseLayout
   title="Project — Allegra Farrar"
-  description="Adaptive Sensing Design for Advanced Satellite Monitoring and Warning of Tropical Cyclones."
+  description="Adaptive Sensing Design for Advanced Satellite Monitoring and Warning of Tropical Cyclones and Environmental Hazards."
 >
-  <div class="page-shell">
-    <RainField />
-    <div class="content-wrap">
-      <p class="pill">Research Project</p>
+  <section class="proj-hero">
+    <div class="wrap">
+      <span class="eyebrow">PhD thesis &middot; MIT AeroAstro &middot; Space Enabled</span>
       <h1>
         Adaptive Sensing Design for
-        <span class="gradient-text">Advanced Satellite Monitoring</span>
-        and Warning of Tropical Cyclones
+        <span class="grad-text">Advanced Satellite Monitoring</span>
+        and Warning of Tropical Cyclones and Environmental Hazards
       </h1>
+      <p class="lead mt-16">
+        A redesign of remote sensing mission objectives and data collection
+        decisions that best serve the decision-making and resilience of regions
+        consistently faced with climate extremes and dynamic weather.
+      </p>
+      <p class="small mt-16">
+        [Placeholder — this page is scaffolded from your JPL SURP seminar; refine
+        the language when you have time.]
+      </p>
+    </div>
+  </section>
 
-      <p class="summary">
-        Tropical cyclones can intensify and shift course quickly, and a lot of the
-        most dangerous behavior happens at scales and timescales that today's
-        satellite constellations aren't tuned to catch. This project asks: what
-        would it look like if a satellite sensor could adapt — in near real time
-        — to focus its attention where a storm is actually doing something
-        interesting?
+  <section class="reveal">
+    <div class="wrap">
+      <span class="eyebrow">the problem</span>
+      <h2>The most useful hours are the ones we sample worst</h2>
+      <div class="grid cols-2 mt-24">
+        <div>
+          <p>
+            Near-surface wind speed remains one of the hardest problems in
+            operational meteorology. Large-scale winds high in the atmosphere or over
+            open ocean are modelled well; the speed, direction, and gusts near the
+            surface — the part that determines what happens to a coastline — are not.
+          </p>
+          <p>
+            Meanwhile the observation system is largely fixed-schedule. Invests are
+            declared from satellite imagery, and if a disturbance organises beneath
+            thick cloud, imagers will not resolve it immediately. Forecast models
+            underestimate TC intensity and are limited by the quality of their
+            initialisations. The hours in which a storm decides what it is going to
+            become are exactly the hours we under-sample.
+          </p>
+        </div>
+        <div>
+          <p>
+            There is a second problem layered on the first: what gets discarded.
+            Onboard quality flags throw away observations under strict criteria, and
+            forecast pipelines lean on heavily filtered Level 2 products. A wind
+            speed estimate tells you the magnitude of forcing at a location — the raw
+            delay-Doppler map tells you the <em>character</em> of the environment
+            producing it, which is what matters for early action.
+          </p>
+          <p>
+            Storm awareness time in the Caribbean averages about 24 hours. CARICOOS
+            needs a minimum of five days to position equipment and prepare for
+            landfall. That gap is the target.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <span class="eyebrow">research questions</span>
+      <h2>Four questions holding the work together</h2>
+      <div class="grid cols-2 mt-24">
+        {questions.map((item) => (
+          <article class="card q-card">
+            <span class="q-num">{item.n}</span>
+            <p>{item.q}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <span class="eyebrow">the approach</span>
+      <h2>Inference onboard, thresholds from the ground</h2>
+      <p class="lead">
+        Adaptive sensing is a data collection approach where a system adjusts how it
+        gathers observations in real time based on changing conditions or incoming
+        data. Mine has two inference layers and a decision layer, sized to run on a
+        CubeSat-class platform.
       </p>
 
-      <section class="outline">
-        <h2>Project Outline</h2>
-        <div class="outline-grid">
-          <div class="card">
-            <h3>Motivation</h3>
-            <p>
-              Highly localized extreme-weather scenarios (rapid intensification,
-              eyewall replacement, sudden track changes) are often under-sampled by
-              fixed-schedule satellite observation, which can miss the exact moment
-              a storm's structure is changing fastest.
-            </p>
-          </div>
-          <div class="card">
-            <h3>Approach</h3>
-            <p>
-              Design an adaptive sensing scheme that lets a satellite (or
-              constellation) re-task its observation strategy based on evolving
-              storm state — trading blanket coverage for smarter, targeted looks
-              at the regions and moments that matter most for forecasting and
-              warning.
-            </p>
-          </div>
-          <div class="card">
-            <h3>Why it matters</h3>
-            <p>
-              Better-timed, better-targeted observations feed directly into
-              forecast models and warning systems, which is ultimately about
-              giving people on the ground more accurate, more timely information
-              about a storm that's about to affect them.
-            </p>
-          </div>
-          <div class="card">
-            <h3>Background</h3>
-            <p>
-              This work builds on a foundation in space engineering and remote
-              sensing, plus prior research on Mars entry trajectories under
-              atmospheric uncertainty — a different planet, but a similar
-              question: how do you act well when the atmosphere won't sit still?
-            </p>
-          </div>
-        </div>
-      </section>
+      <ol class="pipeline mt-40">
+        <li class="card">
+          <span class="pipe-step">Always on</span>
+          <h3>SNR monitor</h3>
+          <p>
+            A low-cost CNN watches for changes consistent with cyclogenesis
+            signatures — for CYGNSS, changes in the delay-Doppler map. Roughly 1 W
+            continuous.
+          </p>
+        </li>
+        <li class="card">
+          <span class="pipe-step">Corroborate</span>
+          <h3>Constellation agreement</h3>
+          <p>
+            Cross-satellite SNR agreement check, so a single noisy instrument does
+            not trigger the expensive path on its own.
+          </p>
+        </li>
+        <li class="card">
+          <span class="pipe-step">Layer A</span>
+          <h3>DAG-GP inference</h3>
+          <p>
+            Triggered, not continuous. A Bayesian network of Gaussian processes
+            traces how one new observation changes the estimated environmental state
+            <em>and its uncertainty</em> across coupled variables. Structure fixed a
+            priori from known geophysical relationships, not learned from data.
+          </p>
+        </li>
+        <li class="card">
+          <span class="pipe-step">Layer B</span>
+          <h3>Decision model</h3>
+          <p>
+            An expected-loss threshold set by stakeholder cost, not forecast skill
+            alone. Output is an action: continue baseline, trigger advanced sensing,
+            or alert.
+          </p>
+        </li>
+      </ol>
+
+      <p class="small mt-24">
+        Builds on the DAG-GP framework from Ben Ayton's thesis (MIT, 2022) and
+        Aglietti et al. (2020). Combined onboard footprint: ~1 W continuous CNN plus
+        sub-millisecond triggered DAG-GP bursts, under 6 MB memory — inside CYGNSS's
+        38 W spacecraft power budget and typical CubeSat OBC memory limits.
+      </p>
     </div>
-  </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <span class="eyebrow">who it answers to</span>
+      <h2>Design informed by the people issuing the warnings</h2>
+      <div class="grid cols-3 mt-24">
+        <article class="card">
+          <h3>CARICOOS</h3>
+          <p>
+            The Caribbean Coastal Ocean Observing System deploys and processes
+            coastal in-situ observation equipment, and positions gliders in
+            coordination with AOML. Five days of lead time is their working minimum.
+          </p>
+        </article>
+        <article class="card">
+          <h3>NWS San Juan</h3>
+          <p>
+            Works directly with the National Hurricane Center and issues both
+            official warnings and unofficial guidance on natural hazards across the
+            island.
+          </p>
+        </article>
+        <article class="card">
+          <h3>Landslide Ready</h3>
+          <p>
+            Trains emergency managers on assessing data to support preparation —
+            especially in the post-storm window.
+          </p>
+        </article>
+      </div>
+      <p class="mt-24">
+        Charts of billion-dollar disasters do not capture what regional stability
+        actually looks like: they miss the tropical storms, coastal flooding, and
+        southern-region wildfires Puerto Rico faces consistently. Part of this work
+        is building a decision-needs traceability matrix — mapping what capability
+        exists, what exists but is not disseminated as an alert, and what does not
+        exist in a usable form at all.
+      </p>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <span class="eyebrow">contribution</span>
+      <h2>What this adds</h2>
+      <div class="grid cols-2 mt-24">
+        <article class="card">
+          <p>
+            Contributes to real-time optimisation of remote sensing by implementing
+            capabilities that detect extreme weather <em>onset</em>, not just mature
+            storms.
+          </p>
+        </article>
+        <article class="card">
+          <p>
+            Addresses the cyclogenesis problem by advancing near-surface sensing
+            capability during pre-genesis and onset.
+          </p>
+        </article>
+        <article class="card">
+          <p>
+            Demonstrates a design cycle driven by learned end-user needs rather than
+            assumed ones.
+          </p>
+        </article>
+        <article class="card">
+          <p>
+            Translates data-processing procedures into decision needs, giving
+            stronger metrics for prioritisation.
+          </p>
+        </article>
+      </div>
+
+      <div class="flex gap-16 mt-40" style="flex-wrap: wrap;">
+        <a class="btn primary frizzle-cursor" href={`${base}/about/`}>How I got here &rarr;</a>
+        <a class="btn frizzle-cursor" href={`${base}/cv/`}>CV &amp; publications</a>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
-  .summary {
-    max-width: 680px;
-    font-size: 1.05rem;
+  .proj-hero { padding-top: clamp(28px, 4.5vh, 56px); }
+  .proj-hero h1 { max-width: 26ch; }
+
+  .q-card { display: flex; gap: 14px; align-items: flex-start; }
+
+  .q-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--blue);
+    padding-top: 3px;
+    flex: none;
   }
 
-  h1 {
-    font-size: clamp(1.9rem, 3.6vw, 2.8rem);
-    max-width: 780px;
-  }
+  .q-card p { font-size: 14.5px; margin: 0; }
 
-  .outline {
-    margin-top: 2.5rem;
-  }
-
-  .outline-grid {
+  .pipeline {
+    list-style: none;
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.25rem;
-    margin-top: 1.25rem;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    counter-reset: none;
+    position: relative;
   }
 
-  .outline-grid h3 {
-    color: var(--accent-space);
-    font-size: 1.05rem;
+  .pipeline li { display: flex; flex-direction: column; }
+
+  .pipe-step {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 10px;
   }
 
-  @media (max-width: 720px) {
-    .outline-grid {
-      grid-template-columns: 1fr;
-    }
+  .pipeline p { font-size: 14px; }
+
+  @media (max-width: 1000px) {
+    .pipeline { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (max-width: 620px) {
+    .pipeline { grid-template-columns: 1fr; }
   }
 </style>

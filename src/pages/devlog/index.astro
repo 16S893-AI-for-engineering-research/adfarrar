@@ -1,0 +1,264 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+/**
+ * Dev log entries.
+ *
+ * Add new entries at the TOP of this array (newest first). Each `body` item is
+ * one paragraph; give it a `badge` of "delegated" | "checked" | "rejected" to get
+ * the coloured label, or leave the badge off for a plain paragraph.
+ *
+ * `open: true` starts the entry expanded.
+ */
+const entries = [
+  {
+    date: "17 September 2026",
+    title: "Redesign — new palette, orbital system, timeline, CV and dev log",
+    open: true,
+    body: [
+      {
+        badge: "delegated",
+        text: "Full visual redesign after the first version came out looking generic. Pulled the colour scheme directly out of my JPL SURP deck rather than picking accents by hand — the agent unzipped the .pptx, read the theme XML, and found the “Ocean-darkmode” scheme (bright blue #00AFFF, cyan #52CADB, coral #FA5A67, sand #F9D095, deep navy #031154). Site now matches the deck I actually present from.",
+      },
+      {
+        badge: "delegated",
+        text: "Replaced the home hero animation. Old one was a flat hurricane spiral I didn't like; new one is an abstract graticule Earth with three satellites in inclined orbits, where only some passes acquire a target — the target lights coral and the satellite opens a beam. That is the adaptive sensing idea in one loop instead of a caption.",
+      },
+      {
+        badge: "delegated",
+        text: "Built the interactive inner solar system for the About page: Sun, Mercury, Venus, Earth, Mars on tilted elliptical orbits, the Moon orbiting Earth, and Sun–Earth L2 marked on the anti-Sun line with a small hexagonal JWST. Earth, Mars, Moon and L2 are clickable and open modals rather than new pages. Canvas hit-testing, keyboard arrow navigation as a fallback.",
+      },
+      {
+        badge: "checked",
+        text: "The world map inside the Earth modal is real data, not a hand-drawn approximation. Pulled Natural Earth 110m land vectors (public domain), reprojected to plate carrée in Python, simplified with Ramer–Douglas–Peucker down to 28 KB of SVG path, and dropped islands below an area threshold. Plate carrée specifically so pin placement from lat/lon is plain arithmetic with no projection library at runtime. Rendered it to PNG and looked at it before wiring it in.",
+      },
+      {
+        badge: "checked",
+        text: "Verified the shooting stars were actually gone from the starfield, not just turned down — the old Starfield component was deleted outright rather than left in with a flag, since nothing uses it any more. Confirmed the rain-on-window canvas is also gone from the project page.",
+      },
+      {
+        badge: "rejected",
+        text: "Did not let the agent write my bio, motivation, or timeline detail. It has my real dates from the CV and the structure I asked for, but every content section is marked [Placeholder] where the wording is mine to write. Same for the JWST internship and the dance section — structure is up so I can see the layout, words come later.",
+      },
+      {
+        text: "Verification path: full npm run build after each page; Playwright screenshots of every page at desktop and mobile widths; console-error check on all five routes; the Natural Earth path rendered to PNG and inspected before use. Not yet verified: no cross-browser pass beyond Chromium, and the inline PDF <object> viewer is untested in Firefox and Safari.",
+      },
+    ],
+  },
+  {
+    date: "17 September 2026",
+    title: "First scaffold — Astro site, three pages, Mrs. Frizzle cursor",
+    open: false,
+    body: [
+      {
+        badge: "delegated",
+        text: "Scaffolded the initial Astro project with Home, About and Project pages, a shared layout and nav, and a GitHub Actions workflow for Pages deployment. Also three canvas animations: twinkling starfield, rain-on-window, and a satellite sweeping a hurricane.",
+      },
+      {
+        badge: "delegated",
+        text: "Easter egg: the agent took my Mrs. Frizzle PNG, flood-filled the solid white background to transparent with Pillow, trimmed and resized it to 34×64, and wired it up as a CSS custom cursor on every link and button.",
+      },
+      {
+        badge: "rejected",
+        text: "Rejected most of this design on review. It looked like a generic dark portfolio template — not my style, the hurricane hero graphic did not read as anything, the shooting stars were disorienting, and the abstract Earth/Mars circles on the About page sat on top of the text. Kept the Astro setup, the Frizzle cursor, and the deployment workflow; everything visual got rebuilt.",
+      },
+      {
+        text: "Verification path: build passed, Playwright screenshots of all three pages, no console errors, and the cursor PNG confirmed loading 200 on every route. The thing screenshots could not tell me was whether I liked it — that took actually opening it.",
+      },
+    ],
+  },
+];
+
+const badgeLabel: Record<string, string> = {
+  delegated: "Delegated",
+  checked: "Checked",
+  rejected: "Rejected / open",
+};
+---
+
+<BaseLayout
+  title="Dev Log — Allegra Farrar"
+  description="What I delegated to the agent, what I verified myself, and what I rejected — logged per session."
+>
+  <section class="log-hero">
+    <div class="wrap">
+      <span class="eyebrow">AI-use dev log</span>
+      <h1>Dev log</h1>
+      <p class="lead mt-16">
+        What I handed to the agent, how I checked it, and what I did not accept.
+        Updated per working session — newest first.
+      </p>
+
+      <ul class="legend mt-24">
+        <li><span class="badge delegated">Delegated</span> work the agent produced</li>
+        <li><span class="badge checked">Checked</span> how I verified it</li>
+        <li><span class="badge rejected">Rejected / open</span> what I turned down or left unresolved</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      {entries.map((entry) => (
+        <article class="log-entry">
+          <p class="log-date">{entry.date}</p>
+          <h2
+            class="log-toggle frizzle-cursor"
+            tabindex="0"
+            role="button"
+            aria-expanded={entry.open ? "true" : "false"}
+          >
+            <span class="log-chevron" aria-hidden="true"></span>
+            {entry.title}
+          </h2>
+          <div class="log-body" hidden={!entry.open}>
+            {entry.body.map((p) => (
+              <p>
+                {p.badge && (
+                  <span class:list={["badge", p.badge]}>{badgeLabel[p.badge]}</span>
+                )}
+                {p.text}
+              </p>
+            ))}
+          </div>
+        </article>
+      ))}
+
+      <p class="small mt-40">
+        Built with <a class="frizzle-cursor" href="https://github.com/earendil-works/pi-coding-agent" target="_blank" rel="noopener">pi</a>
+        on MIT Parley, and read before merging.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .log-hero { padding-top: clamp(28px, 4.5vh, 56px); padding-bottom: 0; }
+
+  .legend {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    font-size: 13.5px;
+    color: var(--muted);
+  }
+
+  .legend li { display: flex; align-items: center; gap: 10px; }
+
+  .badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 5px;
+    margin-right: 8px;
+    vertical-align: 1.5px;
+    flex: none;
+  }
+
+  .badge.delegated {
+    background: rgba(0, 175, 255, 0.13);
+    color: var(--blue);
+    border: 1px solid rgba(0, 175, 255, 0.35);
+  }
+
+  .badge.checked {
+    background: rgba(124, 208, 188, 0.13);
+    color: var(--mint);
+    border: 1px solid rgba(124, 208, 188, 0.35);
+  }
+
+  .badge.rejected {
+    background: rgba(250, 90, 103, 0.12);
+    color: var(--coral);
+    border: 1px solid rgba(250, 90, 103, 0.35);
+  }
+
+  .log-entry {
+    border-left: 2px solid var(--card-bd);
+    padding-left: 22px;
+    margin-bottom: 34px;
+    position: relative;
+  }
+
+  .log-entry::before {
+    content: "";
+    position: absolute;
+    left: -5px;
+    top: 6px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--blue);
+    box-shadow: 0 0 10px 2px rgba(0, 175, 255, 0.5);
+  }
+
+  .log-date {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 8px;
+  }
+
+  .log-toggle {
+    font-size: clamp(17px, 2.1vw, 21px);
+    line-height: 1.3;
+    margin-bottom: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    user-select: none;
+    transition: color 0.18s ease;
+  }
+
+  .log-toggle:hover { color: var(--blue); }
+  .log-toggle:focus-visible { outline: 2px solid var(--blue); outline-offset: 4px; }
+
+  .log-chevron {
+    flex: none;
+    width: 8px;
+    height: 8px;
+    margin-top: 0.44em;
+    border-right: 2px solid var(--blue);
+    border-bottom: 2px solid var(--blue);
+    transform: rotate(45deg);
+    transition: transform 0.22s ease;
+  }
+
+  .log-toggle[aria-expanded="true"] .log-chevron { transform: rotate(-135deg); }
+
+  .log-body p {
+    margin-bottom: 12px;
+    max-width: 82ch;
+    font-size: 14.5px;
+    line-height: 1.62;
+  }
+
+  .log-body p:last-child { margin-bottom: 0; }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>(".log-toggle").forEach((toggle) => {
+    const body = toggle.nextElementSibling as HTMLElement | null;
+    if (!body) return;
+
+    function flip() {
+      const open = toggle.getAttribute("aria-expanded") === "true";
+      toggle.setAttribute("aria-expanded", open ? "false" : "true");
+      body!.hidden = open;
+    }
+
+    toggle.addEventListener("click", flip);
+    toggle.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        flip();
+      }
+    });
+  });
+</script>
