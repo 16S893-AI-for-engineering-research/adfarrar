@@ -14,13 +14,6 @@ const pdf = `${base}/files/AFarrar_CV.pdf`;
       <div class="cv-head">
         <div>
           <span class="eyebrow">curriculum vitae</span>
-          <h1>Allegra Farrar</h1>
-          <p class="lead mt-16">
-            Reimagining space technology to address the uncertainties of Earth's
-            climate — developing real-time computational and mission design
-            strategies for Earth-observing satellites to improve the study of
-            tropical cyclones and transient, unpredictable climate trends.
-          </p>
           <p class="small mt-16">Cambridge, MA 02139 &middot; adfarrar@mit.edu</p>
         </div>
         <div class="cv-actions">
@@ -32,26 +25,6 @@ const pdf = `${base}/files/AFarrar_CV.pdf`;
           </a>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- ---------------------------------------------- inline PDF viewer -->
-  <section class="reveal cv-embed-section">
-    <div class="wrap">
-      <div class="cv-embed">
-        <object data={pdf} type="application/pdf" aria-label="Allegra Farrar CV">
-          <div class="cv-fallback">
-            <p>
-              Your browser will not display the PDF inline.
-              <a class="frizzle-cursor" href={pdf} download>Download it instead &darr;</a>
-            </p>
-          </div>
-        </object>
-      </div>
-      <p class="small mt-16">
-        Scroll inside the frame, or download the PDF above. A text summary follows
-        for anything that does not render.
-      </p>
     </div>
   </section>
 
@@ -286,27 +259,6 @@ const pdf = `${base}/files/AFarrar_CV.pdf`;
   @media (max-width: 780px) {
     .cv-head { grid-template-columns: 1fr; align-items: start; }
     .cv-actions { flex-direction: row; flex-wrap: wrap; }
-  }
-
-  .cv-embed-section { padding-top: clamp(20px, 3vh, 34px); }
-
-  .cv-embed {
-    border: 1px solid var(--card-bd);
-    border-radius: 16px;
-    overflow: hidden;
-    background: #0a1120;
-    height: min(78vh, 900px);
-  }
-
-  .cv-embed object { width: 100%; height: 100%; }
-
-  .cv-fallback {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    padding: 30px;
-    text-align: center;
   }
 
   .cv-when {
