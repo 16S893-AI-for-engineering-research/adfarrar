@@ -16,15 +16,18 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
         <div class="hero-copy">
           <span class="eyebrow">MIT AeroAstro &amp; Media Lab &middot; Space Enabled</span>
           <h1>
-            Adaptive Sensing Design for
-            <span class="grad-text">Advanced Satellite Monitoring</span>
-            and Warning of Tropical Cyclones and Environmental Hazards
+            AI-Assisted Onboard
+            <span class="grad-text">Decision-Making Tools</span>
+            for Addressing Real-Time Environmental Hazards
           </h1>
           <p class="lead mt-16">
-            Storms do not wait for the next scheduled overpass. I design Earth-observing
-            satellite missions that decide, in real time, where to look — so the
-            observations that reach forecasters and regional decision-makers arrive
-            early enough to act on.
+            Welcome! I'm Allegra Farrar, a PhD Candidate in my final year of study at
+            MIT AeroAstro. My work centers on developing inferencing algorithms to
+            assist satellites and other observation tools to catch and distribute
+            critical information to the regional entities in need of it the most. For
+            this project, we'll be using AI to design and optimize how these
+            algorithms are architecting. Take a look through the website and learn
+            more!
           </p>
           <div class="flex gap-16 mt-24" style="flex-wrap: wrap;">
             <a class="btn primary frizzle-cursor" href={`${base}/project/`}>
@@ -36,91 +39,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
         <div class="hero-figure">
           <GlobeHero />
-          <p class="figure-note small">
-            Satellites pass; only some passes observe. A target lights up when the
-            spacecraft decides it is worth the look.
-          </p>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- ============================ THE IDEA =========================== -->
-  <section class="reveal">
-    <div class="wrap">
-      <span class="eyebrow">the short version</span>
-      <h2>Sensing that reacts to the storm, not to the calendar</h2>
-      <p class="lead">
-        Most Earth-observing instruments collect on a fixed plan and filter hard
-        before anything reaches the ground. That works well for building long
-        climate records — and badly for catching the hours in which a storm is
-        organising. My thesis reworks that decision.
-      </p>
-
-      <div class="grid cols-3 mt-40">
-        <article class="card">
-          <span class="card-num">01</span>
-          <h3>Infer, don't just measure</h3>
-          <p>
-            A Bayesian network propagates a single observation through coupled
-            ocean–atmosphere variables, so the satellite carries an estimate of
-            what it does <em>not</em> yet know.
-          </p>
-        </article>
-        <article class="card">
-          <span class="card-num">02</span>
-          <h3>Act onboard</h3>
-          <p>
-            A cheap always-on monitor watches for cyclogenesis signatures and
-            triggers the expensive inference only when something changes — within
-            a small satellite's real power and memory budget.
-          </p>
-        </article>
-        <article class="card">
-          <span class="card-num">03</span>
-          <h3>Answer to the ground</h3>
-          <p>
-            The trigger threshold comes from what regional decision-makers
-            actually need, not from forecast-skill metrics alone. Usefulness is
-            part of the design, not an afterthought.
-          </p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================= NUMBERS =========================== -->
-  <section class="reveal">
-    <div class="wrap">
-      <div class="grid cols-4">
-        <div class="card center stat">
-          <span class="stat-num" style="color: var(--coral);">24 h</span>
-          <p class="small">
-            average storm awareness time in the Caribbean today
-          </p>
-        </div>
-        <div class="card center stat">
-          <span class="stat-num" style="color: var(--blue);">5 d</span>
-          <p class="small">
-            lead time CARICOOS needs to prepare for landfall
-          </p>
-        </div>
-        <div class="card center stat">
-          <span class="stat-num" style="color: var(--cyan);">2017–24</span>
-          <p class="small">
-            CYGNSS operational record the work is built on
-          </p>
-        </div>
-        <div class="card center stat">
-          <span class="stat-num" style="color: var(--sand);">&lt;6 MB</span>
-          <p class="small">
-            onboard memory footprint the method has to fit inside
-          </p>
-        </div>
-      </div>
-      <p class="small mt-16">
-        Figures from my JPL SURP seminar; see the project page for sourcing.
-      </p>
     </div>
   </section>
 
@@ -130,33 +50,21 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
       <div class="entry-grid">
         <article class="entry-card">
           <span class="entry-kicker">01 &middot; About</span>
-          <h3>Who I am</h3>
-          <p>
-            Boston-raised, GW-trained, MIT-based. Mars trajectories became hurricane
-            sensing. There is an interactive solar system and at least one surprise.
-          </p>
+          <h3>Who am I?</h3>
           <a class="entry-link frizzle-cursor" href={`${base}/about/`}>
             More about me <span aria-hidden="true">&rarr;</span>
           </a>
         </article>
         <article class="entry-card">
           <span class="entry-kicker">02 &middot; Project</span>
-          <h3>What I'm building</h3>
-          <p>
-            An adaptive sensing framework for Earth-observing satellites: Bayesian
-            inference onboard, stakeholder-set thresholds, tested against CYGNSS.
-          </p>
+          <h3>What's my research?</h3>
           <a class="entry-link frizzle-cursor" href={`${base}/project/`}>
             Read the outline <span aria-hidden="true">&rarr;</span>
           </a>
         </article>
         <article class="entry-card">
           <span class="entry-kicker">03 &middot; Dev log</span>
-          <h3>How this site got made</h3>
-          <p>
-            What I handed to the agent, what I checked myself, and what I threw out —
-            logged per session.
-          </p>
+          <h3>How AI is Being Used?</h3>
           <a class="entry-link frizzle-cursor" href={`${base}/devlog/`}>
             Read the log <span aria-hidden="true">&rarr;</span>
           </a>
@@ -176,44 +84,15 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
     gap: clamp(24px, 4vw, 56px);
   }
 
-  .hero-copy h1 { max-width: 20ch; }
+  .hero-copy h1 { max-width: 22ch; }
 
   .hero-figure { position: relative; }
-
-  .figure-note {
-    margin: 10px auto 0;
-    max-width: 42ch;
-    text-align: center;
-    line-height: 1.5;
-  }
 
   @media (max-width: 940px) {
     .hero-grid { grid-template-columns: 1fr; }
     .hero-figure { order: -1; }
     .hero-copy h1 { max-width: none; }
   }
-
-  .card-num {
-    display: block;
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.16em;
-    color: var(--blue);
-    margin-bottom: 9px;
-  }
-
-  .stat { padding: 24px 18px; }
-
-  .stat-num {
-    display: block;
-    font-family: var(--mono);
-    font-size: clamp(26px, 3.4vw, 36px);
-    font-weight: 700;
-    line-height: 1.1;
-    margin-bottom: 10px;
-  }
-
-  .stat p { margin-inline: auto; max-width: 26ch; }
 
   /* home page route cards, borrowed shape from a bordered 3-up grid */
   .entry-grid {
@@ -247,7 +126,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
     margin-bottom: 10px;
   }
 
-  .entry-card p { flex: 1 1 auto; font-size: 14.5px; margin-bottom: 18px; }
+  .entry-card h3 { flex: 1 1 auto; margin-bottom: 18px; }
 
   .entry-link {
     font-family: var(--mono);
