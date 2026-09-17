@@ -1,0 +1,107 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import RainField from "../../components/RainField.astro";
+---
+
+<BaseLayout
+  title="Project — Allegra Farrar"
+  description="Adaptive Sensing Design for Advanced Satellite Monitoring and Warning of Tropical Cyclones."
+>
+  <div class="page-shell">
+    <RainField />
+    <div class="content-wrap">
+      <p class="pill">Research Project</p>
+      <h1>
+        Adaptive Sensing Design for
+        <span class="gradient-text">Advanced Satellite Monitoring</span>
+        and Warning of Tropical Cyclones
+      </h1>
+
+      <p class="summary">
+        Tropical cyclones can intensify and shift course quickly, and a lot of the
+        most dangerous behavior happens at scales and timescales that today's
+        satellite constellations aren't tuned to catch. This project asks: what
+        would it look like if a satellite sensor could adapt — in near real time
+        — to focus its attention where a storm is actually doing something
+        interesting?
+      </p>
+
+      <section class="outline">
+        <h2>Project Outline</h2>
+        <div class="outline-grid">
+          <div class="card">
+            <h3>Motivation</h3>
+            <p>
+              Highly localized extreme-weather scenarios (rapid intensification,
+              eyewall replacement, sudden track changes) are often under-sampled by
+              fixed-schedule satellite observation, which can miss the exact moment
+              a storm's structure is changing fastest.
+            </p>
+          </div>
+          <div class="card">
+            <h3>Approach</h3>
+            <p>
+              Design an adaptive sensing scheme that lets a satellite (or
+              constellation) re-task its observation strategy based on evolving
+              storm state — trading blanket coverage for smarter, targeted looks
+              at the regions and moments that matter most for forecasting and
+              warning.
+            </p>
+          </div>
+          <div class="card">
+            <h3>Why it matters</h3>
+            <p>
+              Better-timed, better-targeted observations feed directly into
+              forecast models and warning systems, which is ultimately about
+              giving people on the ground more accurate, more timely information
+              about a storm that's about to affect them.
+            </p>
+          </div>
+          <div class="card">
+            <h3>Background</h3>
+            <p>
+              This work builds on a foundation in space engineering and remote
+              sensing, plus prior research on Mars entry trajectories under
+              atmospheric uncertainty — a different planet, but a similar
+              question: how do you act well when the atmosphere won't sit still?
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .summary {
+    max-width: 680px;
+    font-size: 1.05rem;
+  }
+
+  h1 {
+    font-size: clamp(1.9rem, 3.6vw, 2.8rem);
+    max-width: 780px;
+  }
+
+  .outline {
+    margin-top: 2.5rem;
+  }
+
+  .outline-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+    margin-top: 1.25rem;
+  }
+
+  .outline-grid h3 {
+    color: var(--accent-space);
+    font-size: 1.05rem;
+  }
+
+  @media (max-width: 720px) {
+    .outline-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

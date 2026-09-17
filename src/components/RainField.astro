@@ -1,0 +1,107 @@
+---
+// Realistic-ish rain-on-window canvas background: streak droplets that
+// fall and occasionally leave a trailing smear, like rain against glass.
+---
+
+<canvas class="bg-canvas" data-rainfield></canvas>
+
+<script>
+  type Drop = {
+    x: number;
+    y: number;
+    length: number;
+    speed: number;
+    width: number;
+    opacity: number;
+    wobble: number;
+    wobbleSpeed: number;
+  };
+
+  function initRain(canvas: HTMLCanvasElement) {
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let width = 0;
+    let height = 0;
+    let dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let drops: Drop[] = [];
+
+    function makeDrop(): Drop {
+      return {
+        x: Math.random() * width,
+        y: Math.random() * -height,
+        length: Math.random() * 18 + 10,
+        speed: Math.random() * 4 + 4,
+        width: Math.random() * 1.2 + 0.6,
+        opacity: Math.random() * 0.35 + 0.25,
+        wobble: Math.random() * Math.PI * 2,
+        wobbleSpeed: Math.random() * 0.02 + 0.01,
+      };
+    }
+
+    function resize() {
+      const parent = canvas.parentElement;
+      width = parent ? parent.clientWidth : window.innerWidth;
+      height = parent ? parent.clientHeight : window.innerHeight;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      const density = 0.00045;
+      const count = Math.max(60, Math.floor(width * height * density));
+      drops = Array.from({ length: count }, makeDrop);
+    }
+
+    function draw() {
+      // slight persistent trail for a "wet glass" smear feel
+      ctx.fillStyle = "rgba(4, 6, 12, 0.28)";
+      ctx.fillRect(0, 0, width, height);
+
+      for (const drop of drops) {
+        drop.wobble += drop.wobbleSpeed;
+        const sway = Math.sin(drop.wobble) * 0.6;
+
+        const gradient = ctx.createLinearGradient(
+          drop.x,
+          drop.y,
+          drop.x + sway,
+          drop.y + drop.length
+        );
+        gradient.addColorStop(0, `rgba(180, 210, 255, 0)`);
+        gradient.addColorStop(0.5, `rgba(190, 215, 255, ${drop.opacity})`);
+        gradient.addColorStop(1, `rgba(190, 215, 255, 0)`);
+
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = drop.width;
+        ctx.beginPath();
+        ctx.moveTo(drop.x, drop.y);
+        ctx.lineTo(drop.x + sway, drop.y + drop.length);
+        ctx.stroke();
+
+        // small highlight dot at the head to suggest a droplet bead
+        ctx.beginPath();
+        ctx.arc(drop.x, drop.y, drop.width * 0.9, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(210, 230, 255, ${drop.opacity * 0.6})`;
+        ctx.fill();
+
+        drop.y += drop.speed;
+        drop.x += sway * 0.05;
+
+        if (drop.y > height) {
+          drop.y = Math.random() * -40;
+          drop.x = Math.random() * width;
+        }
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    resize();
+    window.addEventListener("resize", resize);
+    draw();
+  }
+
+  document.querySelectorAll<HTMLCanvasElement>("canvas[data-rainfield]").forEach(initRain);
+</script>

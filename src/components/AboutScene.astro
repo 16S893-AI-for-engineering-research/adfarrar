@@ -1,0 +1,228 @@
+---
+// Interactive "About Me" space scene:
+// - Space view: Earth + Mars, click a planet to travel there.
+// - Mars view: SM thesis blurb (Mars trajectory optimization under
+//   atmospheric uncertainty), with a way back to space.
+// - Earth view: placeholder for the Phase 2 world-map pins feature.
+---
+
+<div class="scene" data-scene="space">
+  <canvas class="bg-canvas" data-starfield data-shooting="true"></canvas>
+
+  <!-- SPACE VIEW -->
+  <div class="view view-space" data-view="space">
+    <div class="scene-header">
+      <p class="pill">Click a planet to explore</p>
+      <h2>Hi, I'm Allegra.</h2>
+      <p class="intro">
+        I'm a space engineer and researcher who splits my time thinking about
+        storms on Earth and trajectories to Mars. Pick a world to learn more.
+      </p>
+    </div>
+
+    <button class="planet planet-earth frizzle-cursor" type="button" data-target="earth" aria-label="Explore Earth">
+      <span class="planet-glow"></span>
+      <span class="planet-label">Earth</span>
+    </button>
+
+    <button class="planet planet-mars frizzle-cursor" type="button" data-target="mars" aria-label="Explore Mars">
+      <span class="planet-glow"></span>
+      <span class="planet-label">Mars</span>
+    </button>
+  </div>
+
+  <!-- MARS VIEW -->
+  <div class="view view-mars" data-view="mars" hidden>
+    <button class="back-btn frizzle-cursor" type="button" data-back>&larr; Back to space</button>
+    <div class="mars-content card">
+      <span class="pill">SM Thesis</span>
+      <h2>Mars Trajectory Optimization for Crewed Landing</h2>
+      <p>
+        My master's thesis tackled trajectory optimization for a crewed Mars
+        landing, explicitly accounting for <strong>atmospheric uncertainty</strong>
+        during entry, descent, and landing. Mars' thin, variable atmosphere makes
+        it a genuinely hard guidance problem: the same trajectory that lands safely
+        on one day might miss its target on another, purely because of how the
+        atmosphere behaved that day.
+      </p>
+      <p>
+        The work focused on building trajectory designs and control strategies
+        that stay robust across that uncertainty — a theme that, it turns out,
+        rhymes a lot with my current work on adaptive sensing for tropical
+        cyclones: both are about making good decisions when you can't fully
+        trust your model of a violent, dynamic atmosphere.
+      </p>
+    </div>
+    <div class="mars-planet"></div>
+  </div>
+
+  <!-- EARTH VIEW (Phase 2 placeholder) -->
+  <div class="view view-earth" data-view="earth" hidden>
+    <button class="back-btn frizzle-cursor" type="button" data-back>&larr; Back to space</button>
+    <div class="earth-content card">
+      <span class="pill">Coming soon</span>
+      <h2>A map of places I've called home</h2>
+      <p>
+        This is where an interactive world map will live — with pins for
+        Washington DC, Pasadena (JPL), Cambridge (MIT), and where I grew up
+        near Hyde Park &amp; Canton, MA. Check back soon!
+      </p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .scene {
+    position: relative;
+    min-height: calc(100vh - 72px);
+    overflow: hidden;
+  }
+
+  .view {
+    position: relative;
+    z-index: 2;
+    min-height: calc(100vh - 72px);
+  }
+
+  .scene-header {
+    max-width: 600px;
+    padding: 3rem 2rem 1rem;
+  }
+
+  .scene-header h2 {
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  }
+
+  .intro {
+    max-width: 520px;
+  }
+
+  .planet {
+    position: absolute;
+    background: none;
+    border: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    transition: transform 0.3s ease;
+  }
+
+  .planet:hover {
+    transform: scale(1.06);
+  }
+
+  .planet-glow {
+    display: block;
+    border-radius: 50%;
+    box-shadow: 0 0 60px 10px rgba(0, 0, 0, 0.4);
+  }
+
+  .planet-earth {
+    top: 22%;
+    left: 18%;
+  }
+
+  .planet-earth .planet-glow {
+    width: 140px;
+    height: 140px;
+    background: radial-gradient(circle at 35% 30%, #7fd3ff, #1c6fa8 55%, #0b2d45 100%);
+    box-shadow: 0 0 70px 14px rgba(79, 209, 255, 0.35);
+  }
+
+  .planet-mars {
+    bottom: 18%;
+    right: 20%;
+  }
+
+  .planet-mars .planet-glow {
+    width: 90px;
+    height: 90px;
+    background: radial-gradient(circle at 35% 30%, #ffab7f, #a8451c 55%, #451a0b 100%);
+    box-shadow: 0 0 60px 12px rgba(255, 120, 71, 0.35);
+  }
+
+  .planet-label {
+    font-family: var(--font-display);
+    color: var(--text);
+    letter-spacing: 0.05em;
+  }
+
+  .back-btn {
+    position: absolute;
+    top: 1.5rem;
+    left: 1.75rem;
+    z-index: 3;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 0.5em 1.1em;
+    border-radius: 999px;
+    font-family: var(--font-display);
+  }
+
+  .back-btn:hover {
+    color: var(--accent-space);
+    border-color: var(--accent-space);
+  }
+
+  .mars-content,
+  .earth-content {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 4.5rem 1.75rem 3rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .mars-planet {
+    position: absolute;
+    right: 8%;
+    top: 20%;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #ffab7f, #a8451c 55%, #451a0b 100%);
+    box-shadow: 0 0 90px 20px rgba(255, 120, 71, 0.25);
+    z-index: 1;
+  }
+
+  @media (max-width: 780px) {
+    .planet-earth {
+      left: 8%;
+    }
+    .planet-mars {
+      right: 8%;
+    }
+    .mars-planet {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  function setupAboutScene(root: HTMLElement) {
+    const views = root.querySelectorAll<HTMLElement>("[data-view]");
+
+    function showView(name: string) {
+      views.forEach((view) => {
+        view.hidden = view.dataset.view !== name;
+      });
+      root.dataset.scene = name;
+    }
+
+    root.querySelectorAll<HTMLButtonElement>("[data-target]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const target = btn.dataset.target;
+        if (target) showView(target);
+      });
+    });
+
+    root.querySelectorAll<HTMLButtonElement>("[data-back]").forEach((btn) => {
+      btn.addEventListener("click", () => showView("space"));
+    });
+  }
+
+  document.querySelectorAll<HTMLElement>(".scene").forEach(setupAboutScene);
+</script>

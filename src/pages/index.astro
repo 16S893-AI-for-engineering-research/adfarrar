@@ -1,0 +1,72 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import HeroAnimation from "../components/HeroAnimation.astro";
+---
+
+<BaseLayout title="Allegra Farrar — Portfolio" description="Adaptive sensing for satellite monitoring of tropical cyclones.">
+  <section class="hero">
+    <div class="hero-bg"><HeroAnimation /></div>
+    <div class="hero-copy">
+      <p class="pill">MIT &middot; PhD Researcher</p>
+      <h1>
+        Adaptive Sensing Design for
+        <span class="gradient-text">Advanced Satellite Monitoring</span>
+        and Warning of Tropical Cyclones
+      </h1>
+      <p class="lede">
+        I work at the intersection of space engineering, remote sensing, and extreme
+        weather — building smarter ways for satellites to watch storms as they form.
+      </p>
+      <div class="hero-actions">
+        <a class="btn frizzle-cursor" href="/adfarrar/project/">View the Project</a>
+        <a class="btn btn-storm frizzle-cursor" href="/adfarrar/about/">About Me</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: calc(100vh - 72px);
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    opacity: 0.9;
+  }
+
+  .hero-copy {
+    position: relative;
+    z-index: 2;
+    max-width: 640px;
+    padding: 3rem 2rem;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(2rem, 4.2vw, 3.2rem);
+    margin: 0.6em 0;
+  }
+
+  .lede {
+    font-size: 1.05rem;
+    max-width: 520px;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  @media (max-width: 640px) {
+    .hero-copy {
+      padding: 2rem 1.25rem;
+    }
+  }
+</style>

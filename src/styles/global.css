@@ -1,0 +1,141 @@
+:root {
+  --bg: #05070d;
+  --bg-alt: #0b0f1c;
+  --bg-card: rgba(255, 255, 255, 0.03);
+  --border: rgba(255, 255, 255, 0.08);
+  --text: #e9ecf5;
+  --text-dim: #9aa3b8;
+  --accent-space: #4fd1ff;   /* atmosphere / satellite cyan */
+  --accent-storm: #ff7847;   /* hurricane / storm orange-red */
+  --font-display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Inter", "Segoe UI", system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.15;
+  margin: 0 0 0.5em;
+}
+
+p {
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+
+a {
+  color: var(--accent-space);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, var(--accent-space), var(--accent-storm));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+main {
+  flex: 1;
+}
+
+.page-shell {
+  position: relative;
+  min-height: calc(100vh - 72px);
+  overflow: hidden;
+}
+
+.content-wrap {
+  position: relative;
+  z-index: 2;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 5rem;
+}
+
+.bg-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.pill {
+  display: inline-block;
+  padding: 0.3em 0.9em;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.5rem;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.6em 1.4em;
+  border-radius: 999px;
+  border: 1px solid var(--accent-space);
+  color: var(--accent-space);
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  cursor: pointer;
+  background: transparent;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.btn:hover {
+  background: var(--accent-space);
+  color: #04121a;
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
+.btn-storm {
+  border-color: var(--accent-storm);
+  color: var(--accent-storm);
+}
+
+.btn-storm:hover {
+  background: var(--accent-storm);
+  color: #1a0800;
+}
+
+/* Easter egg: hovering over nav links (or other marked elements)
+   swaps the cursor for Mrs. Frizzle from The Magic School Bus. */
+.frizzle-cursor {
+  cursor: url("/adfarrar/images/mrsfrizzle-cursor.png") 6 0, pointer;
+}
