@@ -83,11 +83,24 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
     gap: clamp(24px, 4vw, 56px);
   }
 
-  .hero-copy h1 { max-width: 22ch; color: var(--blue); }
+  .hero-copy h1 {
+    max-width: 22ch;
+    background: linear-gradient(100deg, #50b495 0%, #52cadb 45%, #fb3f45 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: title-sheen 9s ease-in-out 1s infinite alternate;
+  }
+
+  @keyframes title-sheen {
+    from { background-position: 0% 50%; }
+    to   { background-position: 100% 50%; }
+  }
 
   .hero-copy .subtitle {
     font-size: clamp(15px, 1.8vw, 20px);
-    color: var(--muted);
+    color: #ffffff;
     max-width: 40ch;
     font-weight: 700;
   }
@@ -98,6 +111,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
     .hero-grid { grid-template-columns: 1fr; }
     .hero-figure { order: -1; }
     .hero-copy h1 { max-width: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-copy h1 { animation: none; background-position: 0% 50%; }
   }
 
   /* home page route cards, borrowed shape from a bordered 3-up grid */
