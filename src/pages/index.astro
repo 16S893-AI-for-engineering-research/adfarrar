@@ -14,14 +14,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
     <div class="wrap">
       <div class="hero-grid">
         <div class="hero-copy">
-          <span class="eyebrow">MIT AeroAstro &amp; Media Lab &middot; Space Enabled</span>
-          <h1>
-            AI-Assisted Onboard
-            <span class="grad-text">Decision-Making Tools</span>
-            for Addressing Real-Time Environmental Hazards
-          </h1>
+          <h1>Earth-to-Orbit</h1>
+          <p class="subtitle mt-8">
+            Addressing the Information Gap for Effective Extreme Weather Planning
+          </p>
           <p class="lead mt-16">
-            Welcome! I'm Allegra Farrar, a PhD Candidate in my final year of study at
+            Welcome! I'm Allegra, a phd candidate in my final year of study at
             MIT AeroAstro. My work centers on developing inferencing algorithms to
             assist satellites and other observation tools to catch and distribute
             critical information to the regional entities in need of it the most. For
@@ -29,6 +27,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
             algorithms are architecting. Take a look through the website and learn
             more!
           </p>
+          <span class="eyebrow">MIT AeroAstro &amp; Media Lab &middot; Space Enabled</span>
           <div class="flex gap-16 mt-24" style="flex-wrap: wrap;">
             <a class="btn primary frizzle-cursor" href={`${base}/project/`}>
               See the project outline &rarr;
@@ -86,6 +85,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
   .hero-copy h1 { max-width: 22ch; }
 
+  .hero-copy .subtitle {
+    font-size: clamp(15px, 1.8vw, 20px);
+    color: var(--muted);
+    max-width: 40ch;
+  }
+
   .hero-figure { position: relative; }
 
   @media (max-width: 940px) {
@@ -114,7 +119,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
   }
 
   .entry-card:last-child { border-right: none; }
-  .entry-card:hover { background: rgba(0, 175, 255, 0.06); }
+  .entry-card:hover { background: rgba(80, 180, 149, 0.06); }
 
   .entry-kicker {
     display: block;

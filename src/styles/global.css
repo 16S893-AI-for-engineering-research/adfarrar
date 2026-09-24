@@ -5,6 +5,10 @@
    ========================================================================== */
 
 :root {
+  /* Saved palette options — ask to swap the base accent color to any of these:
+     #00AFFF (blue), #FB3F45 (red), #F6C649 (yellow), #031154 (navy),
+     #9A6561 (mauve), #ACD6E1 (pale blue), #52CADB (cyan) */
+
   /* surfaces */
   --bg-0: #04070f;
   --bg-1: #070d1a;
@@ -17,7 +21,7 @@
   --faint: #5c6b83;
 
   /* accents (from the deck) */
-  --blue: #00afff;          /* dk2  — bright blue, primary accent */
+  --blue: #50b495;          /* base accent color */
   --cyan: #52cadb;          /* accent4 — cyan */
   --pale: #acd6e1;          /* accent3 — pale blue */
   --mint: #7cd0bc;          /* lt2  — sea green */
@@ -71,7 +75,7 @@ html { overflow-x: hidden; }
   inset: -15%;
   z-index: -3;
   background:
-    radial-gradient(38% 44% at 16% 18%, rgba(0, 175, 255, 0.13), transparent 70%),
+    radial-gradient(38% 44% at 16% 18%, rgba(80, 180, 149, 0.13), transparent 70%),
     radial-gradient(44% 48% at 84% 74%, rgba(82, 202, 219, 0.10), transparent 72%),
     radial-gradient(34% 38% at 62% 6%, rgba(3, 17, 84, 0.55), transparent 70%),
     radial-gradient(52% 52% at 48% 106%, rgba(250, 90, 103, 0.07), transparent 72%),
@@ -146,7 +150,7 @@ section {
   height: 9px;
   border-radius: 50%;
   background: var(--blue);
-  box-shadow: 0 0 12px 2px rgba(0, 175, 255, 0.65);
+  box-shadow: 0 0 12px 2px rgba(80, 180, 149, 0.65);
   animation: pulse 2.6s ease-in-out infinite;
 }
 
@@ -304,13 +308,13 @@ em { color: var(--pale); }
 
 .btn:hover {
   border-color: var(--blue);
-  box-shadow: 0 0 22px -4px rgba(0, 175, 255, 0.5);
+  box-shadow: 0 0 22px -4px rgba(80, 180, 149, 0.5);
   transform: translateY(-2px);
 }
 
 .btn.primary {
-  background: linear-gradient(120deg, rgba(0, 175, 255, 0.2), rgba(82, 202, 219, 0.14));
-  border-color: rgba(0, 175, 255, 0.4);
+  background: linear-gradient(120deg, rgba(80, 180, 149, 0.2), rgba(82, 202, 219, 0.14));
+  border-color: rgba(80, 180, 149, 0.4);
 }
 
 /* ------------------------------------------------------------------ grid */
