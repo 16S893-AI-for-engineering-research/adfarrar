@@ -38,6 +38,24 @@ const questions = [
         decisions that best serve the decision-making and resilience of regions
         consistently faced with climate extremes and dynamic weather.
       </p>
+
+      <div class="patch-wrap mt-40">
+        <img
+          class="patch-img"
+          src={`${base}/images/earth-to-orbit-patch.svg`}
+          alt="Earth-to-Orbit mission patch: a satellite in orbit over a cyclone spiral on the Earth's limb"
+          width="260"
+          height="260"
+        />
+        <div class="patch-overlay">
+          <p>
+            A causal graph model links storm drivers — like wind shear and ocean
+            heat content — to what a satellite observes, turning each new
+            measurement into an updated, real-time read on cyclogenesis and
+            infrastructure risk.
+          </p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -266,6 +284,57 @@ const questions = [
 
   @media (prefers-reduced-motion: reduce) {
     .proj-title .title-ombre { animation: none; background-position: 0% 50%; }
+  }
+
+  .patch-wrap {
+    position: relative;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .patch-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    transition: filter 0.3s ease, transform 0.3s ease;
+  }
+
+  .patch-wrap:hover .patch-img,
+  .patch-wrap:focus-within .patch-img {
+    filter: grayscale(1) brightness(0.45);
+    transform: scale(1.03);
+  }
+
+  .patch-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 26px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+
+  .patch-wrap:hover .patch-overlay,
+  .patch-wrap:focus-within .patch-overlay {
+    opacity: 1;
+  }
+
+  .patch-overlay p {
+    margin: 0;
+    max-width: none;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    line-height: 1.5;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+    text-align: center;
   }
 
   .q-card { display: flex; gap: 14px; align-items: flex-start; }

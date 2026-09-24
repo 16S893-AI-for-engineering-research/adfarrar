@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <clipPath id="patch-clip">
+      <circle cx="200" cy="200" r="165" />
+    </clipPath>
+
+    <radialGradient id="space-bg" cx="35%" cy="30%" r="80%">
+      <stop offset="0%" stop-color="#0b1740" />
+      <stop offset="55%" stop-color="#031154" />
+      <stop offset="100%" stop-color="#020a33" />
+    </radialGradient>
+
+    <linearGradient id="earth-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#52cadb" />
+      <stop offset="55%" stop-color="#50b495" />
+      <stop offset="100%" stop-color="#2f8f74" />
+    </linearGradient>
+
+    <linearGradient id="ring-trim" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#50b495" />
+      <stop offset="50%" stop-color="#52cadb" />
+      <stop offset="100%" stop-color="#fb3f45" />
+    </linearGradient>
+  </defs>
+
+  <!-- outer bezel -->
+  <circle cx="200" cy="200" r="190" fill="#020615" stroke="url(#ring-trim)" stroke-width="6" />
+  <circle cx="200" cy="200" r="178" fill="none" stroke="#eef4fb" stroke-width="1.5" opacity="0.55" />
+
+  <g clip-path="url(#patch-clip)">
+    <circle cx="200" cy="200" r="165" fill="url(#space-bg)" />
+    <circle cx="107.3" cy="173.1" r="1.02" fill="#eef4fb" opacity="0.59"/>
+<circle cx="169.8" cy="117.7" r="1.47" fill="#eef4fb" opacity="0.58"/>
+<circle cx="173.9" cy="153.5" r="0.80" fill="#eef4fb" opacity="0.62"/>
+<circle cx="210.1" cy="188.9" r="1.43" fill="#eef4fb" opacity="0.62"/>
+<circle cx="211.9" cy="132.1" r="1.96" fill="#eef4fb" opacity="0.42"/>
+<circle cx="64.5" cy="173.6" r="1.25" fill="#eef4fb" opacity="0.65"/>
+<circle cx="173.4" cy="150.4" r="1.98" fill="#eef4fb" opacity="0.60"/>
+<circle cx="209.9" cy="176.8" r="0.90" fill="#eef4fb" opacity="0.78"/>
+<circle cx="160.9" cy="190.5" r="1.90" fill="#eef4fb" opacity="0.48"/>
+<circle cx="260.6" cy="150.2" r="1.48" fill="#eef4fb" opacity="0.57"/>
+<circle cx="205.9" cy="150.5" r="0.99" fill="#eef4fb" opacity="0.60"/>
+<circle cx="222.1" cy="161.9" r="1.59" fill="#eef4fb" opacity="0.71"/>
+<circle cx="259.8" cy="143.8" r="1.34" fill="#eef4fb" opacity="0.59"/>
+<circle cx="241.5" cy="132.3" r="1.04" fill="#eef4fb" opacity="0.48"/>
+<circle cx="198.4" cy="141.1" r="1.70" fill="#eef4fb" opacity="0.82"/>
+<circle cx="337.7" cy="115.8" r="1.67" fill="#eef4fb" opacity="0.70"/>
+<circle cx="178.2" cy="150.6" r="1.16" fill="#eef4fb" opacity="0.47"/>
+<circle cx="114.4" cy="140.8" r="1.05" fill="#eef4fb" opacity="0.88"/>
+<circle cx="266.7" cy="139.9" r="1.27" fill="#eef4fb" opacity="0.40"/>
+<circle cx="279.2" cy="117.8" r="1.46" fill="#eef4fb" opacity="0.61"/>
+<circle cx="287.0" cy="131.4" r="1.04" fill="#eef4fb" opacity="0.36"/>
+<circle cx="263.2" cy="147.7" r="1.56" fill="#eef4fb" opacity="0.83"/>
+<circle cx="216.2" cy="188.0" r="0.75" fill="#eef4fb" opacity="0.39"/>
+<circle cx="289.0" cy="124.5" r="1.80" fill="#eef4fb" opacity="0.43"/>
+<circle cx="173.3" cy="161.2" r="1.33" fill="#eef4fb" opacity="0.39"/>
+<circle cx="169.2" cy="175.0" r="1.73" fill="#eef4fb" opacity="0.43"/>
+<circle cx="210.3" cy="153.5" r="0.81" fill="#eef4fb" opacity="0.57"/>
+<circle cx="263.6" cy="163.6" r="0.71" fill="#eef4fb" opacity="0.77"/>
+<circle cx="89.3" cy="162.4" r="1.91" fill="#eef4fb" opacity="0.74"/>
+<circle cx="164.8" cy="139.5" r="0.80" fill="#eef4fb" opacity="0.83"/>
+<circle cx="225.1" cy="176.9" r="1.10" fill="#eef4fb" opacity="0.37"/>
+<circle cx="137.7" cy="141.8" r="1.40" fill="#eef4fb" opacity="0.85"/>
+<circle cx="126.4" cy="168.1" r="1.87" fill="#eef4fb" opacity="0.71"/>
+<circle cx="62.2" cy="132.7" r="1.30" fill="#eef4fb" opacity="0.88"/>
+<circle cx="255.8" cy="132.0" r="1.61" fill="#eef4fb" opacity="0.78"/>
+<circle cx="278.1" cy="100.5" r="1.53" fill="#eef4fb" opacity="0.81"/>
+<circle cx="172.3" cy="119.2" r="1.42" fill="#eef4fb" opacity="0.71"/>
+<circle cx="108.7" cy="137.8" r="1.35" fill="#eef4fb" opacity="0.59"/>
+<circle cx="284.2" cy="162.9" r="1.18" fill="#eef4fb" opacity="0.61"/>
+<circle cx="305.5" cy="168.0" r="1.58" fill="#eef4fb" opacity="0.44"/>
+<circle cx="227.3" cy="177.0" r="0.73" fill="#eef4fb" opacity="0.88"/>
+<circle cx="175.5" cy="151.0" r="0.94" fill="#eef4fb" opacity="0.71"/>
+<circle cx="212.5" cy="178.5" r="1.88" fill="#eef4fb" opacity="0.68"/>
+<circle cx="98.7" cy="179.7" r="1.15" fill="#eef4fb" opacity="0.58"/>
+<circle cx="273.9" cy="161.7" r="0.91" fill="#eef4fb" opacity="0.62"/>
+<circle cx="199.7" cy="164.3" r="1.13" fill="#eef4fb" opacity="0.37"/>
+
+
+    <!-- earth limb -->
+    <ellipse cx="200" cy="410" rx="230" ry="230" fill="url(#earth-grad)" />
+    <!-- latitude lines for a subtle globe-curve feel -->
+    <path d="M 35 230 Q 200 205 365 230" fill="none" stroke="#eef4fb" stroke-width="1" opacity="0.25" />
+    <path d="M 50 255 Q 200 232 350 255" fill="none" stroke="#eef4fb" stroke-width="1" opacity="0.2" />
+
+    <!-- cyclone spiral sitting on the earth limb -->
+    <path d="M 210.00 258.00 L 210.90 258.71 L 211.35 259.75 L 211.38 260.98 L 210.97 262.27 L 210.10 263.48 L 208.82 264.47 L 207.18 265.11 L 205.29 265.28 L 203.29 264.93 L 201.33 264.01 L 199.57 262.52 L 198.17 260.52 L 197.28 258.11 L 197.01 255.42 L 197.44 252.62 L 198.61 249.89 L 200.50 247.44 L 203.03 245.45 L 206.09 244.09 L 209.52 243.50 L 213.12 243.78 L 216.65 244.97 L 219.90 247.06 L 222.62 249.96 L 224.62 253.55 L 225.72 257.63 L 225.79 261.98 L 224.79 266.33 L 222.70 270.42 L 219.61 273.98 L 215.65 276.75 L 211.03 278.53 L 206.00 279.16 L 200.85 278.54 L 195.89 276.65 L 191.43 273.56 L 187.77 269.40 L 185.17 264.37 L 183.82 258.76 L 183.87 252.87 L 185.36 247.05 L 188.25 241.66 L 192.43 237.04 L 197.70 233.49 L 203.77 231.27 L 210.30 230.57 L 216.93 231.46 L 223.26 233.96 L 228.89 237.97 L 233.47 243.30 L 236.69 249.67 L 238.31 256.73 L 238.19 264.09 L 236.28 271.31 L 232.65 277.96 L 227.45 283.63 L 220.96 287.95 L 213.52 290.63 L 205.54 291.46 L 197.49 290.34" fill="none" stroke="#eef4fb" stroke-width="3.2" stroke-linecap="round" opacity="0.92" />
+    <circle cx="208" cy="258" r="3" fill="#fb3f45" />
+
+    <!-- satellite orbit path -->
+    <path d="M 342.27 159.21 L 343.11 163.46 L 343.26 167.90 L 342.71 172.49 L 341.47 177.21 L 339.53 182.05 L 336.92 186.97 L 333.64 191.96 L 329.71 196.99 L 325.14 202.03 L 319.97 207.06 L 314.21 212.06 L 307.90 216.99 L 301.05 221.85 L 293.72 226.60 L 285.93 231.22 L 277.73 235.68 L 269.14 239.98 L 260.22 244.08 L 251.00 247.96 L 241.53 251.61 L 231.87 255.01 L 222.04 258.14 L 212.11 260.99 L 202.12 263.54 L 192.13 265.78 L 182.16 267.70 L 172.29 269.29 L 162.55 270.54 L 152.99 271.45 L 143.67 272.01 L 134.61 272.22 L 125.88 272.08 L 117.50 271.59 L 109.53 270.75 L 102.00 269.56 L 94.95 268.03 L 88.41 266.18 L 82.41 264.00 L 76.98 261.51 L 72.16 258.72 L 67.95 255.64 L 64.40 252.29 L 61.50 248.69 L 59.27 244.85 L 57.73 240.79 L 56.89 236.54 L 56.74 232.10 L 57.29 227.51 L 58.53 222.79 L 60.47 217.95 L 63.08 213.03 L 66.36 208.04 L 70.29 203.01 L 74.86 197.97 L 80.03 192.94 L 85.79 187.94 L 92.10 183.01 L 98.95 178.15 L 106.28 173.40 L 114.07 168.78 L 122.27 164.32 L 130.86 160.02 L 139.78 155.92 L 149.00 152.04 L 158.47 148.39 L 168.13 144.99 L 177.96 141.86 L 187.89 139.01 L 197.88 136.46 L 207.87 134.22 L 217.84 132.30 L 227.71 130.71 L 237.45 129.46 L 247.01 128.55 L 256.33 127.99 L 265.39 127.78 L 274.12 127.92 L 282.50 128.41 L 290.47 129.25 L 298.00 130.44 L 305.05 131.97 L 311.59 133.82 L 317.59 136.00 L 323.02 138.49 L 327.84 141.28 L 332.05 144.36 L 335.60 147.71 L 338.50 151.31 L 340.73 155.15 L 342.27 159.21" fill="none" stroke="#eef4fb" stroke-width="1.4" stroke-dasharray="3 5" opacity="0.55" />
+
+    <!-- satellite riding the orbit -->
+    <g transform="translate(318, 122) rotate(-40)">
+      
+  <g id="sat-icon">
+    <rect x="-5" y="-3.5" width="10" height="7" rx="1.2" fill="#eef4fb" stroke="#031154" stroke-width="0.8"/>
+    <rect x="-15" y="-2.2" width="8" height="4.4" fill="#52cadb" stroke="#031154" stroke-width="0.6"/>
+    <rect x="7" y="-2.2" width="8" height="4.4" fill="#52cadb" stroke="#031154" stroke-width="0.6"/>
+    <line x1="0" y1="-3.5" x2="0" y2="-8" stroke="#eef4fb" stroke-width="0.8"/>
+  </g>
+
+    </g>
+  </g>
+
+  <!-- inner ring line to seat the text -->
+  <circle cx="200" cy="200" r="165" fill="none" stroke="#eef4fb" stroke-width="1.5" opacity="0.6" />
+
+  <!-- curved text -->
+  <path id="topArc" d="M 50.57 213.07 A 150 150 0 1 1 349.43 213.07" fill="none" />
+  <path id="bottomArc" d="M 349.43 213.07 A 150 150 0 0 0 50.57 213.07" fill="none" />
+
+  <text font-family="'JetBrains Mono', ui-monospace, monospace" font-size="17" font-weight="700" letter-spacing="2.5" fill="#eef4fb">
+    <textPath href="#topArc" startOffset="50%" text-anchor="middle">EARTH-TO-ORBIT</textPath>
+  </text>
+  <text font-family="'JetBrains Mono', ui-monospace, monospace" font-size="10.5" font-weight="600" letter-spacing="1.6" fill="#acd6e1">
+    <textPath href="#bottomArc" startOffset="50%" text-anchor="middle">ADAPTIVE SENSING &#8226; MIT AEROASTRO</textPath>
+  </text>
+</svg>
