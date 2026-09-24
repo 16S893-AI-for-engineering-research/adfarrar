@@ -83,12 +83,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
     gap: clamp(24px, 4vw, 56px);
   }
 
-  .hero-copy h1 { max-width: 22ch; }
+  .hero-copy h1 { max-width: 22ch; color: var(--blue); }
 
   .hero-copy .subtitle {
     font-size: clamp(15px, 1.8vw, 20px);
     color: var(--muted);
     max-width: 40ch;
+    font-weight: 700;
   }
 
   .hero-figure { position: relative; }
