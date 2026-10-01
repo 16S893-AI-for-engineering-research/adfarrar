@@ -285,28 +285,28 @@ const badgeLabel: Record<string, string> = {
                 </h2>
                 <div class="log-body" hidden={!day.open}>
                   {day.body.map((p) => (
-                    <p>
-                      {p.badge && (
-                        <span class:list={["badge", p.badge]}>{badgeLabel[p.badge]}</span>
-                      )}
-                      {p.text}
-                      {p.figureLink && (
-                        <>
-                          {" "}
-                          <a href={p.figureLink} target="_blank" rel="noopener" class="inline-fig-link frizzle-cursor">
-                            → {p.figureLinkLabel}
-                          </a>
-                        </>
-                      )}
+                    <>
+                      <p>
+                        {p.badge && (
+                          <span class:list={["badge", p.badge]}>{badgeLabel[p.badge]}</span>
+                        )}
+                        {p.text}
+                      </p>
                       {p.paperLink && (
-                        <>
-                          {" "}
+                        <p class="entry-link">
                           <a href={p.paperLink} target="_blank" rel="noopener" class="inline-fig-link frizzle-cursor">
                             → View paper
                           </a>
-                        </>
+                        </p>
                       )}
-                    </p>
+                      {p.figureLink && (
+                        <p class="entry-link">
+                          <a href={p.figureLink} target="_blank" rel="noopener" class="inline-fig-link frizzle-cursor">
+                            → {p.figureLinkLabel}
+                          </a>
+                        </p>
+                      )}
+                    </>
                   ))}
                 </div>
               </article>
