@@ -14,6 +14,7 @@ interface LogParagraph {
   text: string;
   figureLink?: string;
   figureLinkLabel?: string;
+  paperLink?: string;
 }
 
 interface DayEntry {
@@ -53,7 +54,8 @@ const weeks: WeekGroup[] = [
           {
             text: "I didn't explicitly say to use the physics equations — the agent chose that over bitmap tracing on its own, which I thought was interesting. I'll still continue finishing the test and function subagents from the Sept 29 session, as implementing that workflow will be useful for the overall research project.",
             figureLink: "/adfarrar/images/figure9_comparison.png",
-            figureLinkLabel: "View figure9_comparison.png",
+            figureLinkLabel: "View reproduced figure",
+            paperLink: "/adfarrar/files/IEEE_GRSM_GNSSR_Tutorial_06985926.pdf",
           },
         ],
       },
@@ -293,6 +295,14 @@ const badgeLabel: Record<string, string> = {
                           {" "}
                           <a href={p.figureLink} target="_blank" rel="noopener" class="inline-fig-link frizzle-cursor">
                             → {p.figureLinkLabel}
+                          </a>
+                        </>
+                      )}
+                      {p.paperLink && (
+                        <>
+                          {" "}
+                          <a href={p.paperLink} target="_blank" rel="noopener" class="inline-fig-link frizzle-cursor">
+                            → View paper
                           </a>
                         </>
                       )}
