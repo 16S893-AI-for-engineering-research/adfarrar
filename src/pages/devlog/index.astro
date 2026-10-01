@@ -2,181 +2,222 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
 /**
- * Dev log entries.
+ * Dev log — two-level structure.
  *
- * Add new entries at the TOP of this array (newest first). Each `body` item is
- * one paragraph; give it a `badge` of "delegated" | "checked" | "rejected" to get
- * the coloured label, or leave the badge off for a plain paragraph.
- *
- * `open: true` starts the entry expanded.
+ * weeks[]  — outer accordions, one per week (newest first).
+ *   .days[] — inner accordions, one per session day within the week.
+ *     .body[] — paragraphs with optional badge.
  */
+
 interface LogParagraph {
   badge?: string;
   text: string;
-}
-
-interface LogEntry {
-  date: string;
-  title: string;
-  open: boolean;
-  body: LogParagraph[];
   figureLink?: string;
   figureLinkLabel?: string;
 }
 
-const entries: LogEntry[] = [
+interface DayEntry {
+  date: string;
+  title: string;
+  open: boolean;
+  body: LogParagraph[];
+}
+
+interface WeekGroup {
+  week: string;          // e.g. "Week 4"
+  dateRange: string;     // e.g. "27 – 30 September 2026"
+  open: boolean;
+  days: DayEntry[];
+}
+
+const weeks: WeekGroup[] = [
+  // ── WEEK 4 ──────────────────────────────────────────────────────────────
   {
-    date: "30 September 2026",
-    title: "Week 4 — Reproducing Figure 9 with the physics",
+    week: "Week 4",
+    dateRange: "27 – 30 September 2026",
     open: true,
-    body: [
+    days: [
       {
-        badge: "delegated",
-        text: `While learning a lot developing the subagent workflow for reproducing the figure, it was taking longer than anticipated so I wanted to try a quicker approach. Because this was a complex task that required a lot of reasoning, I set the model to Opus and the thinking effort to xhigh. I gave it a single prompt: "Look at @IEEE_GNSSR_Tutorial_06985926.pdf and recreate Figure 9" and the agent was able to reference the physics equations and effectively reproduce the figure.`,
+        date: "30 September 2026",
+        title: "Reproducing Figure 9 with the physics",
+        open: true,
+        body: [
+          {
+            badge: "delegated",
+            text: `While learning a lot developing the subagent workflow for reproducing the figure, it was taking longer than anticipated so I wanted to try a quicker approach. Because this was a complex task that required a lot of reasoning, I set the model to Opus and the thinking effort to xhigh. I gave it a single prompt: "Look at @IEEE_GNSSR_Tutorial_06985926.pdf and recreate Figure 9" and the agent was able to reference the physics equations and effectively reproduce the figure.`,
+          },
+          {
+            badge: "checked",
+            text: "Rather than tracing the bitmap, the agent regenerated the DDM from the paper's own bistatic radar equation (Eq. 11), the geometric-optics Kirchhoff approximation for σ₀ (Eq. 12), and the L-band-filtered mean-square slopes at U₁₀ = 5 m/s. It also digitised the published figure by inverting the colourbar in native CMYK space, then ran a verification comparing peak power, peak cell location, and full-grid correlation. Peak matched to within 3% (−169.3 dBW simulated vs −169.2 dBW published), correct cell location (0.00 kHz, +0.38 chips), and a full-grid correlation of 0.975.",
+          },
+          {
+            text: "I didn't explicitly say to use the physics equations — the agent chose that over bitmap tracing on its own, which I thought was interesting. I'll still continue finishing the test and function subagents from the Sept 29 session, as implementing that workflow will be useful for the overall research project.",
+            figureLink: "/adfarrar/images/figure9_comparison.png",
+            figureLinkLabel: "View figure9_comparison.png",
+          },
+        ],
       },
       {
-        badge: "checked",
-        text: "Rather than tracing the bitmap, the agent regenerated the DDM from the paper's own bistatic radar equation (Eq. 11), the geometric-optics Kirchhoff approximation for σ₀ (Eq. 12), and the L-band-filtered mean-square slopes at U₁₀ = 5 m/s. It also digitised the published figure by inverting the colourbar in native CMYK space, then ran a verification comparing peak power, peak cell location, and full-grid correlation. Peak matched to within 3% (−169.3 dBW simulated vs −169.2 dBW published), correct cell location (0.00 kHz, +0.38 chips), and a full-grid correlation of 0.975.",
+        date: "29 September 2026",
+        title: "First test, subagent workflow",
+        open: false,
+        body: [
+          {
+            badge: "delegated",
+            text: "Started developing the first test based on the first assignment. Imported the subagents extension and explored how to set up subagents and assign them to independent tasks after the conversation with Prashanth after class. Set one agent to develop and run tests and another to develop and run the function.",
+          },
+          {
+            text: "Also learned that it's helpful to rely on heavier agents like Opus for planning sessions, then once a plan is in place, break it down into smaller, specific, and executable tasks to feed a cheaper agent like Sonnet to implement. Got as far as deciding on all the necessary checks for the test model — implementation to follow.",
+          },
+        ],
       },
       {
-        text: "I didn't explicitly say to use the physics equations — the agent chose that over bitmap tracing on its own, which I thought was interesting. I'll still continue finishing the test and function subagents from the Sept 29 session, as implementing that workflow will be useful for the overall research project. See the comparison figure linked here.",
-      },
-    ],
-    figureLink: "/adfarrar/images/figure9_comparison.png",
-    figureLinkLabel: "View figure9_comparison.png",
-  },
-  {
-    date: "29 September 2026",
-    title: "Week 4 — First test, subagent workflow",
-    open: false,
-    body: [
-      {
-        badge: "delegated",
-        text: "Started developing the first test based on the first assignment. Imported the subagents extension and explored how to set up subagents and assign them to independent tasks after the conversation with Prashanth after class. Set one agent to develop and run tests and another to develop and run the function.",
-      },
-      {
-        text: "Also learned that it's helpful to rely on heavier agents like Opus for planning sessions, then once a plan is in place, break it down into smaller, specific, and executable tasks to feed a cheaper agent like Sonnet to implement. Got as far as deciding on all the necessary checks for the test model — implementation to follow.",
-      },
-    ],
-  },
-  {
-    date: "27 September 2026",
-    title: "Week 4 — Skills, model thinking, and website iteration",
-    open: false,
-    body: [
-      {
-        badge: "delegated",
-        text: "Started playing around with model thinking capacity, setting it to high or xhigh for heavy inferencing tasks. Used the grill-me skill to evaluate the project proposal with the model set to Opus and thinking effort to high.",
-      },
-      {
-        badge: "checked",
-        text: "Was impressed by how well the agent found relevant papers from reputable sites like arXiv that actually existed. With standard Sonnet from previous experiences, it would either hallucinate papers and make up DOI links, or give only marginally relevant results. With Opus at high thinking, it compared papers to the proposal and pointed out places where claims were unclear or were expressing novelty in areas that already had significant contributions.",
-      },
-      {
-        text: "Also continued iterating on the website and exploring different stylistic changes. Noticed that rendering stylistic changes in a local HTML file to preview them before pushing is a cheaper choice. Also went back and forth between Sonnet and Opus to reduce cost — looking forward to learning more targeted ways of switching between models.",
-      },
-    ],
-  },
-  {
-    date: "24 September 2026",
-    title: "Week 3 — Writing skill and adding project proposal to website",
-    open: false,
-    body: [
-      {
-        badge: "delegated",
-        text: `Started writing a grant/fellowship proposal writing skill capable of taking a draft in bullet-point or sentence structure — possibly a collection of fragmented ideas — and turning it into a stronger draft based on my writing style and structure. Started by giving the agent two example statements I've written, but explicitly instructed it to "not analyze the entire statement yet."`,
-      },
-      {
-        text: `Then shared a paragraph from each statement and asked it to "analyze them both for their style and structure" while I did the same in parallel, then compared responses. The agent did a much deeper analysis than I did - going into sentence structure, paragraph structure, common word choices, and categories of words I lean heavily on. I focused more on the overall flow of ideas and the reasoning behind structural choices. It compared the two analyses and drafted a first set of rules for the skill. Next step: give it a prompt, ask it to write a paragraph while I do the same in real time, then compare results and refine the rules.`,
+        date: "27 September 2026",
+        title: "Skills, model thinking, and website iteration",
+        open: false,
+        body: [
+          {
+            badge: "delegated",
+            text: "Started playing around with model thinking capacity, setting it to high or xhigh for heavy inferencing tasks. Used the grill-me skill to evaluate the project proposal with the model set to Opus and thinking effort to high.",
+          },
+          {
+            badge: "checked",
+            text: "Was impressed by how well the agent found relevant papers from reputable sites like arXiv that actually existed. With standard Sonnet from previous experiences, it would either hallucinate papers and make up DOI links, or give only marginally relevant results. With Opus at high thinking, it compared papers to the proposal and pointed out places where claims were unclear or were expressing novelty in areas that already had significant contributions.",
+          },
+          {
+            text: "Also continued iterating on the website and exploring different stylistic changes. Noticed that rendering stylistic changes in a local HTML file to preview them before pushing is a cheaper choice. Also went back and forth between Sonnet and Opus to reduce cost — looking forward to learning more targeted ways of switching between models.",
+          },
+        ],
       },
     ],
   },
+
+  // ── WEEK 3 ──────────────────────────────────────────────────────────────
   {
-    date: "14 & 16 September 2026",
-    title: "Week 2 — Website development and project scope",
+    week: "Week 3",
+    dateRange: "24 September 2026",
     open: false,
-    body: [
+    days: [
       {
-        badge: "delegated",
-        text: `Continued working on the website and honing in on the scope of the class project. Tried continuing to prompt the agent with website examples I liked but with explicit instruction on what to pay attention to and what to implement from each site. Also gave it descriptions like "I want the website theme to be reflective of the research" and "choose colors that complement each other and the theme of hurricanes and earth science."`,
-      },
-      {
-        badge: "rejected",
-        text: "It still struggled to meet expectations with this prompting and started leading the website astray. The approach of pointing at style examples without precise constraints kept producing results that drifted from what I wanted.",
+        date: "24 September 2026",
+        title: "Writing skill and adding project proposal to website",
+        open: false,
+        body: [
+          {
+            badge: "delegated",
+            text: `Started writing a grant/fellowship proposal writing skill capable of taking a draft in bullet-point or sentence structure — possibly a collection of fragmented ideas — and turning it into a stronger draft based on my writing style and structure. Started by giving the agent two example statements I've written, but explicitly instructed it to "not analyze the entire statement yet."`,
+          },
+          {
+            text: `Then shared a paragraph from each statement and asked it to "analyze them both for their style and structure" while I did the same in parallel, then compared responses. The agent did a much deeper analysis than I did — going into sentence structure, paragraph structure, common word choices, and categories of words I lean heavily on. I focused more on the overall flow of ideas and the reasoning behind structural choices. It compared the two analyses and drafted a first set of rules for the skill. Next step: give it a prompt, ask it to write a paragraph while I do the same in real time, then compare results and refine the rules.`,
+          },
+        ],
       },
     ],
   },
+
+  // ── WEEK 2 ──────────────────────────────────────────────────────────────
   {
-    date: "10 September 2026",
-    title: "Week 1 — Getting set up",
+    week: "Week 2",
+    dateRange: "14 – 17 September 2026",
     open: false,
-    body: [
+    days: [
       {
-        badge: "delegated",
-        text: "First week was focused on setup. Downloaded pi and configured the Parley extension. Set up the initial repository and project structure in GitHub titled adfarrar, linked it to the class repository. Once setup was complete, began working on the first assignment — the website. Used pi to play around with different models and asked the agent to create a portfolio website using Astro.",
+        date: "17 September 2026",
+        title: "Redesign — new palette, orbital system, timeline, CV and dev log",
+        open: false,
+        body: [
+          {
+            badge: "delegated",
+            text: `Full visual redesign after the first version came out looking generic. Pulled the colour scheme directly out of my JPL SURP deck rather than picking accents by hand — the agent unzipped the .pptx, read the theme XML, and found the "Ocean-darkmode" scheme (bright blue #00AFFF, cyan #52CADB, coral #FA5A67, sand #F9D095, deep navy #031154). Site now matches the deck I actually present from.`,
+          },
+          {
+            badge: "delegated",
+            text: "Replaced the home hero animation. Old one was a flat hurricane spiral I didn't like; new one is an abstract graticule Earth with three satellites in inclined orbits, where only some passes acquire a target — the target lights coral and the satellite opens a beam. That is the adaptive sensing idea in one loop instead of a caption.",
+          },
+          {
+            badge: "delegated",
+            text: "Built the interactive inner solar system for the About page: Sun, Mercury, Venus, Earth, Mars on tilted elliptical orbits, the Moon orbiting Earth, and Sun–Earth L2 marked on the anti-Sun line with a small hexagonal JWST. Earth, Mars, Moon and L2 are clickable and open modals rather than new pages. Canvas hit-testing, keyboard arrow navigation as a fallback.",
+          },
+          {
+            badge: "checked",
+            text: "The world map inside the Earth modal is real data, not a hand-drawn approximation. Pulled Natural Earth 110m land vectors (public domain), reprojected to plate carrée in Python, simplified with Ramer–Douglas–Peucker down to 28 KB of SVG path, and dropped islands below an area threshold. Plate carrée specifically so pin placement from lat/lon is plain arithmetic with no projection library at runtime. Rendered it to PNG and looked at it before wiring it in.",
+          },
+          {
+            badge: "checked",
+            text: "Verified the shooting stars were actually gone from the starfield, not just turned down — the old Starfield component was deleted outright rather than left in with a flag, since nothing uses it any more. Confirmed the rain-on-window canvas is also gone from the project page.",
+          },
+          {
+            badge: "rejected",
+            text: "Did not let the agent write my bio, motivation, or timeline detail. It has my real dates from the CV and the structure I asked for, but every content section is marked [Placeholder] where the wording is mine to write. Same for the JWST internship and the dance section — structure is up so I can see the layout, words come later.",
+          },
+          {
+            text: "Verification path: full npm run build after each page; Playwright screenshots of every page at desktop and mobile widths; console-error check on all five routes; the Natural Earth path rendered to PNG and inspected before use. Not yet verified: no cross-browser pass beyond Chromium, and the inline PDF <object> viewer is untested in Firefox and Safari.",
+          },
+        ],
       },
       {
-        badge: "rejected",
-        text: "The main struggle was giving the agent too much context without enough clear, targeted instructions. Pointed the agent to the class repository and other student examples already live on the class website — which I later regretted, as it locked onto other students' style choices and copied them. Also gave it a lot of supplemental material (a presentation slide deck, my CV, a grant and fellowship proposal) intending to give the agent a better sense of my work and style. This ended up being too much information and it copied from those materials instead of creating something original.",
+        date: "17 September 2026",
+        title: "First scaffold — Astro site, three pages, Mrs. Frizzle cursor",
+        open: false,
+        body: [
+          {
+            badge: "delegated",
+            text: "Scaffolded the initial Astro project with Home, About and Project pages, a shared layout and nav, and a GitHub Actions workflow for Pages deployment. Also three canvas animations: twinkling starfield, rain-on-window, and a satellite sweeping a hurricane.",
+          },
+          {
+            badge: "delegated",
+            text: "Easter egg: the agent took my Mrs. Frizzle PNG, flood-filled the solid white background to transparent with Pillow, trimmed and resized it to 34×64, and wired it up as a CSS custom cursor on every link and button.",
+          },
+          {
+            badge: "rejected",
+            text: "Rejected most of this design on review. It looked like a generic dark portfolio template — not my style, the hurricane hero graphic did not read as anything, the shooting stars were disorienting, and the abstract Earth/Mars circles on the About page sat on top of the text. Kept the Astro setup, the Frizzle cursor, and the deployment workflow; everything visual got rebuilt.",
+          },
+          {
+            text: "Verification path: build passed, Playwright screenshots of all three pages, no console errors, and the cursor PNG confirmed loading 200 on every route. The thing screenshots could not tell me was whether I liked it — that took actually opening it.",
+          },
+        ],
       },
       {
-        text: "Learned that I needed to give the agent explicit instructions on what to implement and especially what not to implement, and to clarify upfront whether we're doing development and implementation or just planning.",
+        date: "14 & 16 September 2026",
+        title: "Website development and project scope",
+        open: false,
+        body: [
+          {
+            badge: "delegated",
+            text: `Continued working on the website and honing in on the scope of the class project. Tried continuing to prompt the agent with website examples I liked but with explicit instruction on what to pay attention to and what to implement from each site. Also gave it descriptions like "I want the website theme to be reflective of the research" and "choose colors that complement each other and the theme of hurricanes and earth science."`,
+          },
+          {
+            badge: "rejected",
+            text: "It still struggled to meet expectations with this prompting and started leading the website astray. The approach of pointing at style examples without precise constraints kept producing results that drifted from what I wanted.",
+          },
+        ],
       },
     ],
   },
+
+  // ── WEEK 1 ──────────────────────────────────────────────────────────────
   {
-    date: "17 September 2026",
-    title: "Redesign — new palette, orbital system, timeline, CV and dev log",
+    week: "Week 1",
+    dateRange: "10 September 2026",
     open: false,
-    body: [
+    days: [
       {
-        badge: "delegated",
-        text: `Full visual redesign after the first version came out looking generic. Pulled the colour scheme directly out of my JPL SURP deck rather than picking accents by hand — the agent unzipped the .pptx, read the theme XML, and found the "Ocean-darkmode" scheme (bright blue #00AFFF, cyan #52CADB, coral #FA5A67, sand #F9D095, deep navy #031154). Site now matches the deck I actually present from.`,
-      },
-      {
-        badge: "delegated",
-        text: "Replaced the home hero animation. Old one was a flat hurricane spiral I didn't like; new one is an abstract graticule Earth with three satellites in inclined orbits, where only some passes acquire a target — the target lights coral and the satellite opens a beam. That is the adaptive sensing idea in one loop instead of a caption.",
-      },
-      {
-        badge: "delegated",
-        text: "Built the interactive inner solar system for the About page: Sun, Mercury, Venus, Earth, Mars on tilted elliptical orbits, the Moon orbiting Earth, and Sun–Earth L2 marked on the anti-Sun line with a small hexagonal JWST. Earth, Mars, Moon and L2 are clickable and open modals rather than new pages. Canvas hit-testing, keyboard arrow navigation as a fallback.",
-      },
-      {
-        badge: "checked",
-        text: "The world map inside the Earth modal is real data, not a hand-drawn approximation. Pulled Natural Earth 110m land vectors (public domain), reprojected to plate carrée in Python, simplified with Ramer–Douglas–Peucker down to 28 KB of SVG path, and dropped islands below an area threshold. Plate carrée specifically so pin placement from lat/lon is plain arithmetic with no projection library at runtime. Rendered it to PNG and looked at it before wiring it in.",
-      },
-      {
-        badge: "checked",
-        text: "Verified the shooting stars were actually gone from the starfield, not just turned down — the old Starfield component was deleted outright rather than left in with a flag, since nothing uses it any more. Confirmed the rain-on-window canvas is also gone from the project page.",
-      },
-      {
-        badge: "rejected",
-        text: "Did not let the agent write my bio, motivation, or timeline detail. It has my real dates from the CV and the structure I asked for, but every content section is marked [Placeholder] where the wording is mine to write. Same for the JWST internship and the dance section — structure is up so I can see the layout, words come later.",
-      },
-      {
-        text: "Verification path: full npm run build after each page; Playwright screenshots of every page at desktop and mobile widths; console-error check on all five routes; the Natural Earth path rendered to PNG and inspected before use. Not yet verified: no cross-browser pass beyond Chromium, and the inline PDF <object> viewer is untested in Firefox and Safari.",
-      },
-    ],
-  },
-  {
-    date: "17 September 2026",
-    title: "First scaffold — Astro site, three pages, Mrs. Frizzle cursor",
-    open: false,
-    body: [
-      {
-        badge: "delegated",
-        text: "Scaffolded the initial Astro project with Home, About and Project pages, a shared layout and nav, and a GitHub Actions workflow for Pages deployment. Also three canvas animations: twinkling starfield, rain-on-window, and a satellite sweeping a hurricane.",
-      },
-      {
-        badge: "delegated",
-        text: "Easter egg: the agent took my Mrs. Frizzle PNG, flood-filled the solid white background to transparent with Pillow, trimmed and resized it to 34×64, and wired it up as a CSS custom cursor on every link and button.",
-      },
-      {
-        badge: "rejected",
-        text: "Rejected most of this design on review. It looked like a generic dark portfolio template — not my style, the hurricane hero graphic did not read as anything, the shooting stars were disorienting, and the abstract Earth/Mars circles on the About page sat on top of the text. Kept the Astro setup, the Frizzle cursor, and the deployment workflow; everything visual got rebuilt.",
-      },
-      {
-        text: "Verification path: build passed, Playwright screenshots of all three pages, no console errors, and the cursor PNG confirmed loading 200 on every route. The thing screenshots could not tell me was whether I liked it — that took actually opening it.",
+        date: "10 September 2026",
+        title: "Getting set up",
+        open: false,
+        body: [
+          {
+            badge: "delegated",
+            text: "First week was focused on setup. Downloaded pi and configured the Parley extension. Set up the initial repository and project structure in GitHub titled adfarrar, linked it to the class repository. Once setup was complete, began working on the first assignment — the website. Used pi to play around with different models and asked the agent to create a portfolio website using Astro.",
+          },
+          {
+            badge: "rejected",
+            text: "The main struggle was giving the agent too much context without enough clear, targeted instructions. Pointed the agent to the class repository and other student examples already live on the class website — which I later regretted, as it locked onto other students' style choices and copied them. Also gave it a lot of supplemental material (a presentation slide deck, my CV, a grant and fellowship proposal) intending to give the agent a better sense of my work and style. This ended up being too much information and it copied from those materials instead of creating something original.",
+          },
+          {
+            text: "Learned that I needed to give the agent explicit instructions on what to implement and especially what not to implement, and to clarify upfront whether we're doing development and implementation or just planning.",
+          },
+        ],
       },
     ],
   },
@@ -212,34 +253,54 @@ const badgeLabel: Record<string, string> = {
 
   <section class="reveal">
     <div class="wrap">
-      {entries.map((entry) => (
-        <article class="log-entry">
-          <p class="log-date">{entry.date}</p>
-          <h2
-            class="log-toggle frizzle-cursor"
+      {weeks.map((wk) => (
+        <article class="week-entry">
+          <div
+            class="week-toggle frizzle-cursor"
             tabindex="0"
             role="button"
-            aria-expanded={entry.open ? "true" : "false"}
+            aria-expanded={wk.open ? "true" : "false"}
           >
-            <span class="log-chevron" aria-hidden="true"></span>
-            {entry.title}
-          </h2>
-          <div class="log-body" hidden={!entry.open}>
-            {entry.body.map((p) => (
-              <p>
-                {p.badge && (
-                  <span class:list={["badge", p.badge]}>{badgeLabel[p.badge]}</span>
-                )}
-                {p.text}
-              </p>
+            <span class="week-chevron" aria-hidden="true"></span>
+            <div class="week-header-text">
+              <span class="week-label">{wk.week}</span>
+              <span class="week-range">{wk.dateRange}</span>
+            </div>
+          </div>
+
+          <div class="week-body" hidden={!wk.open}>
+            {wk.days.map((day) => (
+              <article class="log-entry">
+                <p class="log-date">{day.date}</p>
+                <h2
+                  class="log-toggle frizzle-cursor"
+                  tabindex="0"
+                  role="button"
+                  aria-expanded={day.open ? "true" : "false"}
+                >
+                  <span class="log-chevron" aria-hidden="true"></span>
+                  {day.title}
+                </h2>
+                <div class="log-body" hidden={!day.open}>
+                  {day.body.map((p) => (
+                    <p>
+                      {p.badge && (
+                        <span class:list={["badge", p.badge]}>{badgeLabel[p.badge]}</span>
+                      )}
+                      {p.text}
+                      {p.figureLink && (
+                        <>
+                          {" "}
+                          <a href={p.figureLink} target="_blank" rel="noopener" class="inline-fig-link frizzle-cursor">
+                            → {p.figureLinkLabel}
+                          </a>
+                        </>
+                      )}
+                    </p>
+                  ))}
+                </div>
+              </article>
             ))}
-            {"figureLink" in entry && entry.figureLink && (
-              <p class="figure-link">
-                <a href={entry.figureLink} target="_blank" rel="noopener" class="frizzle-cursor">
-                  → {entry.figureLinkLabel}
-                </a>
-              </p>
-            )}
           </div>
         </article>
       ))}
@@ -296,10 +357,73 @@ const badgeLabel: Record<string, string> = {
     border: 1px solid rgba(250, 90, 103, 0.35);
   }
 
+  /* ── Week-level accordion ────────────────────────────────────────────── */
+  .week-entry {
+    margin-bottom: 28px;
+    border: 1px solid var(--card-bd);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .week-toggle {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 22px;
+    cursor: pointer;
+    user-select: none;
+    background: rgba(255, 255, 255, 0.03);
+    transition: background 0.18s ease;
+  }
+
+  .week-toggle:hover { background: rgba(255, 255, 255, 0.06); }
+  .week-toggle:focus-visible { outline: 2px solid var(--blue); outline-offset: -2px; }
+
+  .week-chevron {
+    flex: none;
+    width: 9px;
+    height: 9px;
+    border-right: 2px solid var(--blue);
+    border-bottom: 2px solid var(--blue);
+    transform: rotate(45deg);
+    transition: transform 0.22s ease;
+    margin-top: 2px;
+  }
+
+  .week-toggle[aria-expanded="true"] .week-chevron { transform: rotate(-135deg); }
+
+  .week-header-text {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .week-label {
+    font-size: clamp(16px, 2vw, 19px);
+    font-weight: 600;
+    color: var(--fg);
+    letter-spacing: 0.01em;
+  }
+
+  .week-range {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--blue);
+  }
+
+  .week-body {
+    padding: 6px 22px 18px 22px;
+    border-top: 1px solid var(--card-bd);
+  }
+
+  /* ── Day-level accordion (inside week) ──────────────────────────────── */
   .log-entry {
     border-left: 2px solid var(--card-bd);
     padding-left: 22px;
-    margin-bottom: 34px;
+    margin-top: 22px;
     position: relative;
   }
 
@@ -317,21 +441,21 @@ const badgeLabel: Record<string, string> = {
 
   .log-date {
     font-family: var(--mono);
-    font-size: 12px;
+    font-size: 11.5px;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--blue);
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
 
   .log-toggle {
-    font-size: clamp(17px, 2.1vw, 21px);
+    font-size: clamp(15px, 1.8vw, 18px);
     line-height: 1.3;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     cursor: pointer;
     display: flex;
     align-items: flex-start;
-    gap: 11px;
+    gap: 10px;
     user-select: none;
     transition: color 0.18s ease;
   }
@@ -341,8 +465,8 @@ const badgeLabel: Record<string, string> = {
 
   .log-chevron {
     flex: none;
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
     margin-top: 0.44em;
     border-right: 2px solid var(--blue);
     border-bottom: 2px solid var(--blue);
@@ -361,17 +485,39 @@ const badgeLabel: Record<string, string> = {
 
   .log-body p:last-child { margin-bottom: 0; }
 
-  .figure-link a {
+  .inline-fig-link {
     color: var(--blue);
     text-decoration: none;
     font-family: var(--mono);
     font-size: 13px;
+    white-space: nowrap;
   }
 
-  .figure-link a:hover { text-decoration: underline; }
+  .inline-fig-link:hover { text-decoration: underline; }
 </style>
 
 <script>
+  // Week-level toggles
+  document.querySelectorAll<HTMLElement>(".week-toggle").forEach((toggle) => {
+    const body = toggle.nextElementSibling as HTMLElement | null;
+    if (!body) return;
+
+    function flip() {
+      const open = toggle.getAttribute("aria-expanded") === "true";
+      toggle.setAttribute("aria-expanded", open ? "false" : "true");
+      body!.hidden = open;
+    }
+
+    toggle.addEventListener("click", flip);
+    toggle.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        flip();
+      }
+    });
+  });
+
+  // Day-level toggles
   document.querySelectorAll<HTMLElement>(".log-toggle").forEach((toggle) => {
     const body = toggle.nextElementSibling as HTMLElement | null;
     if (!body) return;
