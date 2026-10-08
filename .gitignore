@@ -26,3 +26,7 @@ pnpm-debug.log*
 # working source material, not published
 /supplemental-info/
 /personal_pictures/
+/background-pictures/
+/write-ups/
+/context-summaries/
+/web_pics/
