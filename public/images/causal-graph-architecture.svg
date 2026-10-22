@@ -1,0 +1,311 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 1110" width="1280" height="1110" role="img" aria-labelledby="t d">
+<title id="t">Evidence loop for building the causal graph</title>
+<desc id="d">A human director owns the node list, regimes and data roles. A literature agent extracts claims with their scope; a blind test agent runs calibrated tests on data from the user's regimes; scripts compare the two; the human decides per graph element. The graph is generated from signed decisions and then used, never edited, by training and inference.</desc>
+
+<style>
+  :root{
+    --bg:#ffffff; --ink:#1f2328; --muted:#57606a; --line:#8c959f; --rule:#d8dee4;
+    --doc-f:#e9f1fb;  --doc-s:#3b6ea5;
+    --key-f:#fff2e8;  --key-s:#c2410c;
+    --log-f:#e6f4ec;  --log-s:#2b7a4b;
+    --code-f:#f2eafb; --code-s:#6f42c1;
+    --data-f:#f1f2f4; --data-s:#6e7781;
+    --think-f:#fdeaf0;--think-s:#b02a4a;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0d1117; --ink:#e6edf3; --muted:#9198a1; --line:#6e7681; --rule:#30363d;
+      --doc-f:#10233a;  --doc-s:#5b9bd5;
+      --key-f:#3a1d0c;  --key-s:#f0883e;
+      --log-f:#0d2a1a;  --log-s:#3fb950;
+      --code-f:#231437; --code-s:#a371f7;
+      --data-f:#161b22; --data-s:#8b949e;
+      --think-f:#3a1020;--think-s:#f0637c;
+    }
+  }
+  .bg{fill:var(--bg)}
+  text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--ink)}
+  .h1{font-size:22px;font-weight:700}
+  .h2{font-size:12px;font-weight:700;fill:var(--muted);letter-spacing:.7px}
+  .sub{font-size:12.5px;fill:var(--muted)}
+  .bt{font-size:13.5px;font-weight:700}
+  .btm{font-size:12px;font-weight:700}
+  .bd{font-size:10.6px;fill:var(--ink)}
+  .bm{font-size:10.6px;fill:var(--muted)}
+  .it{font-size:9.8px;fill:var(--muted);font-style:italic}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  .el{font-size:9.8px;fill:var(--muted)}
+  .pill{font-size:9px;font-weight:700;letter-spacing:.5px;text-anchor:middle}
+
+  .doc{fill:var(--doc-f);stroke:var(--doc-s);stroke-width:1.4}
+  .key{fill:var(--key-f);stroke:var(--key-s);stroke-width:1.8}
+  .log{fill:var(--log-f);stroke:var(--log-s);stroke-width:1.4}
+  .code{fill:var(--code-f);stroke:var(--code-s);stroke-width:1.4}
+  .data{fill:var(--data-f);stroke:var(--data-s);stroke-width:1.2;stroke-dasharray:4 3}
+  .think{fill:var(--think-f);stroke:var(--think-s);stroke-width:1.4}
+  .pk{fill:var(--key-s)} .pd{fill:var(--doc-s)} .pg{fill:var(--log-s)} .pc{fill:var(--code-s)} .pt{fill:var(--think-s)}
+  .pw{fill:#ffffff}
+
+  .edge{fill:none;stroke:var(--line);stroke-width:1.6;marker-end:url(#ah)}
+  .dash{fill:none;stroke:var(--line);stroke-width:1.4;stroke-dasharray:5 4;marker-end:url(#ah)}
+  .tl{fill:none;stroke:var(--think-s);stroke-width:1.8;marker-end:url(#aht)}
+  .loop{fill:none;stroke:var(--think-s);stroke-width:2.4;marker-end:url(#aht)}
+  .ah{fill:var(--line)} .aht{fill:var(--think-s)}
+  .rule{stroke:var(--rule);stroke-width:1}
+</style>
+
+<defs>
+  <marker id="ah"  viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path class="ah"  d="M0,0 L10,5 L0,10 z"/></marker>
+  <marker id="aht" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse"><path class="aht" d="M0,0 L10,5 L0,10 z"/></marker>
+</defs>
+
+<rect class="bg" width="1280" height="1110"/>
+
+<!-- Header -->
+<text class="h1" x="40" y="38">Building the causal graph from conflicting literature</text>
+<text class="sub" x="40" y="60">Papers make claims under conditions you can't fully see · don't ask "is it true?" ask "does it hold in my regimes?" · you decide, the graph is generated from your decisions</text>
+
+<!-- Legend -->
+<g transform="translate(1000,20)">
+  <rect class="key" x="0" y="0" width="14" height="10" rx="2"/><text class="el" x="20" y="9">human-only</text>
+  <rect class="think" x="100" y="0" width="14" height="10" rx="2"/><text class="el" x="120" y="9">agent judgment</text>
+  <rect class="code" x="0" y="18" width="14" height="10" rx="2"/><text class="el" x="20" y="27">deterministic script</text>
+  <rect class="data" x="100" y="18" width="14" height="10" rx="2"/><text class="el" x="120" y="27">data / artifact</text>
+</g>
+
+<!-- ① ROLES -->
+<line class="rule" x1="40" y1="80" x2="1240" y2="80"/>
+<text class="h2" x="40" y="99">① ROLES — you direct and decide · agents extract and test · neither agent sees the other's work</text>
+
+<rect class="key" x="40" y="112" width="320" height="92" rx="8"/>
+<text class="bt" x="56" y="134">You — Scientific Director</text>
+<text class="bd" x="56" y="153">Own the node list, regimes, data roles.</text>
+<text class="bd" x="56" y="168">Pick which conflict to work on.</text>
+<text class="bd" x="56" y="183">Read review cards and sign every decision.</text>
+<text class="it" x="56" y="198">The graph only changes through you.</text>
+
+<rect class="doc" x="480" y="112" width="320" height="92" rx="8"/>
+<text class="bt" x="496" y="134">Orchestrator</text>
+<text class="bd" x="496" y="153">Reads STATUS.md first, picks the next item,</text>
+<text class="bd" x="496" y="168">hands it to one agent, then updates STATUS.md</text>
+<text class="bd" x="496" y="183">and appends to LOG.md.</text>
+<text class="it" x="496" y="198">Coordinates — makes no science calls.</text>
+
+<rect class="think" x="920" y="108" width="320" height="46" rx="8"/>
+<text class="btm" x="936" y="127">Literature agent — extraction only</text>
+<text class="bm" x="936" y="144">paper → claims + scope · no conclusions of its own</text>
+<rect class="think" x="920" y="162" width="320" height="46" rx="8"/>
+<text class="btm" x="936" y="181">Test agent — blind</text>
+<text class="bm" x="936" y="198">runs the test bench · never sees the papers</text>
+
+<path class="edge" d="M360,145 H478"/>
+<text class="el" x="372" y="139">a question / conflict</text>
+<path class="edge" d="M480,175 H362"/>
+<text class="el" x="372" y="190">review cards + STATUS</text>
+<path class="edge" d="M800,145 H918"/>
+<path class="edge" d="M800,175 H918"/>
+
+<!-- ② STANDING FILES -->
+<line class="rule" x1="40" y1="228" x2="1240" y2="228"/>
+<text class="h2" x="40" y="247">② STANDING FILES — the system's memory between sessions (read STATUS first)</text>
+
+<g>
+  <rect class="doc" x="40" y="258" width="190" height="104" rx="7"/>
+  <rect class="pd" x="152" y="264" width="70" height="15" rx="7"/><text class="pill pw" x="187" y="275" style="fill:#fff">READ FIRST</text>
+  <text class="btm mono" x="52" y="276">STATUS.md</text>
+  <text class="bd" x="52" y="296">current graph version</text>
+  <text class="bd" x="52" y="310">open conflicts · next item</text>
+  <text class="bd" x="52" y="324">every node-list change +</text>
+  <text class="bd" x="52" y="338">what re-ran because of it</text>
+  <text class="it" x="52" y="355">kept short, pruned</text>
+
+  <rect class="doc" x="242" y="258" width="190" height="104" rx="7"/>
+  <text class="btm mono" x="254" y="276">HANDOFF.md</text>
+  <text class="bd" x="254" y="296">goal · settled decisions</text>
+  <text class="bd" x="254" y="310">how to run · gotchas</text>
+  <text class="bd" x="254" y="324">what was ruled out</text>
+  <text class="it" x="254" y="355">edit in place</text>
+
+  <rect class="key" x="444" y="258" width="190" height="104" rx="7"/>
+  <rect class="pk" x="556" y="264" width="70" height="15" rx="7"/><text class="pill" x="591" y="275" style="fill:#fff">HUMAN-ONLY</text>
+  <text class="btm mono" x="456" y="276">CONTEXT.md</text>
+  <text class="bd" x="456" y="296">node list</text>
+  <text class="bd" x="456" y="310">regime definitions (early</text>
+  <text class="bd" x="456" y="324">development · RI · neither)</text>
+  <text class="bd" x="456" y="338">variable definitions</text>
+  <text class="it" x="456" y="355">candidates inbox for new vars</text>
+
+  <rect class="key" x="646" y="258" width="190" height="104" rx="7"/>
+  <rect class="pk" x="758" y="264" width="70" height="15" rx="7"/><text class="pill" x="793" y="275" style="fill:#fff">HUMAN-ONLY</text>
+  <text class="btm mono" x="658" y="276">LOOP.md</text>
+  <text class="bd" x="658" y="296">what agents may / may not do</text>
+  <text class="bd" x="658" y="310">evidence grades</text>
+  <text class="bd" x="658" y="324">compare rules</text>
+  <text class="bd" x="658" y="338">stop rules (see ⑥)</text>
+
+  <rect class="key" x="848" y="258" width="190" height="104" rx="7"/>
+  <rect class="pk" x="960" y="264" width="70" height="15" rx="7"/><text class="pill" x="995" y="275" style="fill:#fff">HUMAN-ONLY</text>
+  <text class="btm mono" x="860" y="276">data-registry</text>
+  <text class="bd" x="860" y="296">every dataset, tagged:</text>
+  <text class="bd" x="860" y="310">test · train · inference</text>
+  <text class="bd" x="860" y="324">storm split: evidence /</text>
+  <text class="bd" x="860" y="338">training / held-out</text>
+
+  <rect class="log" x="1050" y="258" width="190" height="104" rx="7"/>
+  <rect class="pg" x="1150" y="264" width="82" height="15" rx="7"/><text class="pill" x="1191" y="275" style="fill:#fff">APPEND-ONLY</text>
+  <text class="btm mono" x="1062" y="276">LOG.md</text>
+  <text class="bd" x="1062" y="296">every extraction batch,</text>
+  <text class="bd" x="1062" y="310">test run, comparison,</text>
+  <text class="bd" x="1062" y="324">and decision</text>
+  <text class="it" x="1062" y="355">never edit a past entry</text>
+</g>
+<text class="it" x="40" y="378">Change the node list in CONTEXT.md → orchestrator notes it in STATUS.md, re-extracts stored papers for the new node, queues its candidate edges (removed nodes are archived, not deleted).</text>
+
+<!-- ③ EVIDENCE LOOP -->
+<line class="rule" x1="40" y1="396" x2="1240" y2="396"/>
+<text class="h2" x="40" y="415">③ THE EVIDENCE LOOP — from a paper's claim to a graph decision · opens only where claims conflict or evidence is weak</text>
+
+<g>
+  <rect class="think" x="40" y="428" width="180" height="96" rx="7"/>
+  <text class="btm" x="52" y="447">1 · Extract</text>
+  <text class="bd" x="52" y="465">claim + scope card:</text>
+  <text class="bd" x="52" y="479">phase, basin, data, model,</text>
+  <text class="bd" x="52" y="493">stated assumptions</text>
+  <text class="it" x="52" y="508">unstated = "unknown"</text>
+  <text class="it" x="52" y="520">one paper → many claims</text>
+
+  <rect class="code" x="244" y="428" width="180" height="96" rx="7"/>
+  <text class="btm" x="256" y="447">2 · Scope check</text>
+  <text class="bd" x="256" y="465">claim's conditions vs</text>
+  <text class="bd" x="256" y="479">your regimes</text>
+  <text class="bd" x="256" y="499">→ match / mismatch /</text>
+  <text class="bd" x="256" y="513">   unknown</text>
+
+  <rect class="think" x="448" y="428" width="180" height="96" rx="7"/>
+  <text class="btm" x="460" y="447">3 · Translate</text>
+  <text class="bd" x="460" y="465">what it would change:</text>
+  <text class="bd" x="460" y="479">node · edge · delay ·</text>
+  <text class="bd" x="460" y="493">footprint · regime ·</text>
+  <text class="bd" x="460" y="507">"can't represent"</text>
+
+  <rect class="think" x="652" y="428" width="180" height="96" rx="7"/>
+  <text class="btm" x="664" y="447">4 · Blind test</text>
+  <text class="bd" x="664" y="465">test agent runs bench ④</text>
+  <text class="bd" x="664" y="479">on data from your regime</text>
+  <text class="it" x="664" y="499">sees "test X → Y",</text>
+  <text class="it" x="664" y="512">not the paper's answer</text>
+
+  <rect class="code" x="856" y="428" width="180" height="96" rx="7"/>
+  <text class="btm" x="868" y="447">5 · Compare</text>
+  <text class="bd" x="868" y="465">test result vs claim,</text>
+  <text class="bd" x="868" y="479">using rules in LOOP.md</text>
+  <text class="bd" x="868" y="499">→ agrees / conflicts /</text>
+  <text class="bd" x="868" y="513">   untestable</text>
+
+  <rect class="doc" x="1060" y="428" width="180" height="96" rx="7"/>
+  <text class="btm" x="1072" y="447">6 · Review card</text>
+  <text class="bd" x="1072" y="465">one per graph element:</text>
+  <text class="bd" x="1072" y="479">every claim side by side,</text>
+  <text class="bd" x="1072" y="493">its scope, its test result</text>
+  <text class="it" x="1072" y="512">conflicts highlighted</text>
+
+  <path class="tl" d="M220,476 H242"/>
+  <path class="tl" d="M424,476 H446"/>
+  <path class="tl" d="M628,476 H650"/>
+  <path class="tl" d="M832,476 H854"/>
+  <path class="tl" d="M1036,476 H1058"/>
+</g>
+
+<rect class="data" x="40" y="552" width="384" height="52" rx="7"/>
+<text class="btm mono" x="52" y="572">claims/ ledger</text>
+<text class="bm" x="52" y="590">every claim + scope card + page/quote, from every paper</text>
+
+<rect class="key" x="448" y="552" width="384" height="52" rx="7"/>
+<text class="btm" x="460" y="572">You decide → decisions/E-xx.md</text>
+<text class="bm" x="460" y="590">include · exclude · regime-dependent · delay/footprint value</text>
+
+<rect class="code" x="856" y="552" width="384" height="52" rx="7"/>
+<text class="btm mono" x="868" y="572">graph.yaml</text>
+<text class="bm" x="868" y="590">generated from signed decisions only · provenance-checked</text>
+
+<path class="edge" d="M130,524 V550"/>
+<path class="edge" d="M1150,524 V540 H640 V550"/>
+<path class="edge" d="M832,578 H854"/>
+<path class="loop" d="M448,596 H436 V620 H30 V476 H38"/>
+<text class="el" x="200" y="616">next conflict</text>
+<text class="it" x="460" y="620">≤ ~4 tests per conflict, then stop and report · tests guide your judgment, they never decide for you</text>
+
+<!-- ④ TEST BENCH -->
+<line class="rule" x1="40" y1="640" x2="1240" y2="640"/>
+<text class="h2" x="40" y="659">④ THE TEST BENCH — deterministic · a test is used only after it proves it works</text>
+
+<rect class="code" x="40" y="672" width="360" height="130" rx="8"/>
+<text class="bt" x="56" y="694">Calibration gate — does the test work?</text>
+<text class="bd" x="56" y="714">Synthetic system: Gee &amp; Ravela intensity</text>
+<text class="bd" x="56" y="728">equation + edges and delays you set, so the</text>
+<text class="bd" x="56" y="742">right answer is known.</text>
+<text class="bd" x="56" y="762">Benchmarks from papers: treated as claims —</text>
+<text class="bd" x="56" y="776">scope-checked and re-tested, not trusted.</text>
+<text class="it" x="56" y="794">fails here → its results never reach a card</text>
+
+<rect class="code" x="430" y="672" width="470" height="130" rx="8"/>
+<text class="bt" x="446" y="694">Fixed tests (versioned scripts)</text>
+<text class="bd mono" x="446" y="716">T0</text><text class="bd" x="476" y="716">is it a cause or a definition? (u, v → wind speed)</text>
+<text class="bd mono" x="446" y="732">T1</text><text class="bd" x="476" y="732">lagged response, other parents controlled → delay</text>
+<text class="bd mono" x="446" y="748">T2</text><text class="bd" x="476" y="748">conditional independence, named edges only</text>
+<text class="bd mono" x="446" y="764">T3</text><text class="bd" x="476" y="764">drop a node from Gee &amp; Ravela, refit → does it earn its place?</text>
+<text class="bd mono" x="446" y="780">S</text><text class="bd" x="476" y="780">response vs radius / layer → footprint</text>
+<text class="bd mono" x="446" y="796">T4</text><text class="bm" x="476" y="796">emulator perturbation (stretch)</text>
+
+<rect class="data" x="930" y="672" width="310" height="130" rx="8"/>
+<text class="btm mono" x="946" y="694">results/&lt;label&gt;/</text>
+<text class="bd" x="946" y="716">result.json</text>
+<text class="bd" x="946" y="732">lag and footprint plots</text>
+<text class="bd" x="946" y="748">provenance.json (data, code, seed)</text>
+<text class="it" x="946" y="772">same inputs → same numbers</text>
+
+<path class="edge" d="M400,737 H428"/>
+<text class="el" x="403" y="729">pass</text>
+<path class="edge" d="M900,737 H928"/>
+<text class="it" x="946" y="792">→ read by step 5 (Compare)</text>
+
+<!-- ⑤ DOWNSTREAM -->
+<line class="rule" x1="40" y1="826" x2="1240" y2="826"/>
+<text class="h2" x="40" y="845">⑤ DOWNSTREAM — uses graph.yaml, never edits it · findings come back to you as notes</text>
+
+<path class="edge" d="M1240,578 H1262 V856 H230 V866"/>
+<path class="edge" d="M640,856 V866"/>
+<path class="edge" d="M1050,856 V866"/>
+
+<rect class="think" x="40" y="868" width="380" height="112" rx="8"/>
+<text class="bt" x="56" y="890">Regime loop</text>
+<text class="bd" x="56" y="910">Does an edge's strength change between</text>
+<text class="bd" x="56" y="924">early development, RI, and neither?</text>
+<text class="bd" x="56" y="944">Proposes "regime-dependent" to you —</text>
+<text class="bd" x="56" y="958">goes back through ③ as a new conflict.</text>
+
+<rect class="code" x="450" y="868" width="380" height="112" rx="8"/>
+<text class="bt" x="466" y="890">Training — learn edge weights</text>
+<text class="bd" x="466" y="910">graph.yaml + training data</text>
+<text class="bd" x="466" y="924">(dense and complete, e.g. ERA5)</text>
+<text class="bd" x="466" y="938">→ DAG-GP edge weights</text>
+<text class="it" x="466" y="958">Changes the model. Training storms ≠ evidence storms.</text>
+
+<rect class="code" x="860" y="868" width="380" height="112" rx="8"/>
+<text class="bt" x="876" y="890">Inference — what survives your inputs</text>
+<text class="bd" x="876" y="910">trained model + inference data (what's</text>
+<text class="bd" x="876" y="924">actually available, e.g. CYGNSS) + orbit stats</text>
+<text class="bd" x="876" y="938">→ which part of the graph still works</text>
+<text class="it" x="876" y="958">Doesn't change the model. An unseen edge is still real.</text>
+<path class="edge" d="M830,924 H858"/>
+
+<!-- ⑥ STOP RULES -->
+<rect class="key" x="40" y="1000" width="1200" height="80" rx="8"/>
+<text class="bt" x="56" y="1022">STOP — agents ask you first before they:</text>
+<text class="bd" x="56" y="1042">· add or remove a node, change a regime definition, or change a dataset's role (test / train / inference)</text>
+<text class="bd" x="56" y="1057">· add a new test to the bench, or use one that hasn't passed calibration</text>
+<text class="bd" x="56" y="1072">· write to graph.yaml without a signed decision, or mix evidence, training and held-out storms</text>
+<text class="it" x="760" y="1042">Agents never supply an edge, delay, footprint,</text>
+<text class="it" x="760" y="1057">threshold, or causal conclusion. They extract,</text>
+<text class="it" x="760" y="1072">test, and keep provenance. You decide.</text>
+</svg>
