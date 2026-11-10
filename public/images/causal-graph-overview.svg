@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 760" width="1280" height="760" role="img" aria-labelledby="t d">
-<title id="t">Evidence system for building the causal graph — overview</title>
-<desc id="d">Five modules joined by files. A queue of open questions feeds extraction from papers; claims are matched to benchmarks, tested blind, summarized on a card, and decided by the human. Decisions generate graph.yaml, tagged by regime, which the separate DAG-GP model reads but never edits.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 1391" width="1280" height="1391" role="img" aria-labelledby="t d">
+<title id="t">Evidence system for building the causal graph — overview (who writes what)</title>
+<desc id="d">One person, one main agent (the orchestrator) and two subagents (literature, test). Five pipeline steps joined by files: a queue of open questions feeds extraction from papers; every claim triggers a search for corroborating and contradicting papers; claims (including those from equations) are tested blind against benchmarks and fixed causal tests, rated supported → tested → established, summarized on a card, and decided by the human. Only the human writes CONTEXT.md, PROTOCOL.md and the decisions. Decisions generate graph.yaml, tagged by regime, which the separate DAG-GP model reads but never edits.</desc>
 
 <style>
   :root{
@@ -11,6 +11,7 @@
     --code-f:#f2eafb; --code-s:#6f42c1;
     --data-f:#f1f2f4; --data-s:#6e7781;
     --think-f:#fdeaf0;--think-s:#b02a4a;
+    --wr-f:#fff4c2;   --wr-s:#9a6700;
   }
   @media (prefers-color-scheme: dark){
     :root{
@@ -21,6 +22,7 @@
       --code-f:#231437; --code-s:#a371f7;
       --data-f:#161b22; --data-s:#8b949e;
       --think-f:#3a1020;--think-s:#f0637c;
+      --wr-f:#3b2e00;   --wr-s:#d4a72c;
     }
   }
   .bg{fill:var(--bg)}
@@ -44,6 +46,13 @@
   .code{fill:var(--code-f);stroke:var(--code-s);stroke-width:1.4}
   .data{fill:var(--data-f);stroke:var(--data-s);stroke-width:1.2;stroke-dasharray:4 3}
   .think{fill:var(--think-f);stroke:var(--think-s);stroke-width:1.4}
+  .wr{fill:var(--wr-f);stroke:var(--wr-s);stroke-width:1.2}
+  .rd{fill:none;stroke:var(--rule);stroke-width:1}
+  .wt{font-size:10.6px;font-weight:700;fill:var(--ink)}
+  .rt{font-size:10.6px;fill:var(--ink)}
+  .nt{font-size:10.6px;fill:var(--muted)}
+  .badge{font-size:8.6px;font-weight:700;letter-spacing:.7px;fill:var(--muted)}
+  .wl{font-size:9.8px;font-weight:700;fill:var(--ink)}
   .pk{fill:var(--key-s)} .pd{fill:var(--doc-s)} .pc{fill:var(--code-s)} .pt{fill:var(--think-s)}
 
   .edge{fill:none;stroke:var(--line);stroke-width:1.6;marker-end:url(#ah)}
@@ -57,195 +66,362 @@
   <marker id="aht" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse"><path class="aht" d="M0,0 L10,5 L0,10 z"/></marker>
 </defs>
 
-<rect class="bg" width="1280" height="760"/>
-
-<!-- Header -->
+<rect class="bg" width="1280" height="1391"/>
 <text class="h1" x="40" y="38">Building the causal graph from the literature — overview</text>
-<text class="sub" x="40" y="60">Five modules joined by files · a paper's claim is tested in your regimes, not taken on trust · you make every call</text>
-
-<g transform="translate(1000,20)">
-  <rect class="key" x="0" y="0" width="14" height="10" rx="2"/><text class="el" x="20" y="9">human-only</text>
-  <rect class="think" x="100" y="0" width="14" height="10" rx="2"/><text class="el" x="120" y="9">agent</text>
-  <rect class="code" x="0" y="18" width="14" height="10" rx="2"/><text class="el" x="20" y="27">script</text>
-  <rect class="doc" x="100" y="18" width="14" height="10" rx="2"/><text class="el" x="120" y="27">file / doc</text>
-</g>
-
-<!-- ① ROLES -->
-<line class="rule" x1="40" y1="78" x2="1240" y2="78"/>
-<text class="h2" x="40" y="96">① ROLES</text>
-<rect class="key" x="40" y="104" width="285" height="44" rx="7"/>
-<text class="btm" x="54" y="122">You — Scientific Director</text>
-<text class="bm" x="54" y="139">set the queue order · triage papers · decide</text>
-<rect class="doc" x="345" y="104" width="285" height="44" rx="7"/>
-<text class="btm" x="359" y="122">Orchestrator</text>
-<text class="bm" x="359" y="139">reads STATUS.md · hands off · logs · no science calls</text>
-<rect class="think" x="650" y="104" width="285" height="44" rx="7"/>
-<text class="btm" x="664" y="122">Literature agent — extracts only</text>
-<text class="bm" x="664" y="139">claims · delays · benchmarks, with page + quote</text>
-<rect class="think" x="955" y="104" width="285" height="44" rx="7"/>
-<text class="btm" x="969" y="122">Test agent — blind</text>
-<text class="bm" x="969" y="139">runs fixed tests · never sees the papers</text>
-
-<!-- ② FILES -->
-<line class="rule" x1="40" y1="166" x2="1240" y2="166"/>
-<text class="h2" x="40" y="184">② STANDING FILES</text>
-<g>
-  <rect class="doc" x="40" y="192" width="162" height="52" rx="6"/>
-  <text class="btm mono" x="50" y="209">STATUS.md</text>
-  <text class="bm" x="50" y="224">read first · where we are</text>
-  <text class="bm" x="50" y="237">node-list changes · next</text>
-
-  <rect class="doc" x="214" y="192" width="162" height="52" rx="6"/>
-  <text class="btm mono" x="224" y="209">HANDOFF.md</text>
-  <text class="bm" x="224" y="224">goal · decisions · how to run</text>
-
-  <rect class="key" x="388" y="192" width="162" height="52" rx="6"/>
-  <text class="btm mono" x="398" y="209">CONTEXT.md</text>
-  <text class="bm" x="398" y="224">nodes · regimes · definitions</text>
-  <text class="bm" x="398" y="237">pinned sources (BAMS, arXiv…)</text>
-
-  <rect class="key" x="562" y="192" width="162" height="52" rx="6"/>
-  <text class="btm mono" x="572" y="209">LOOP.md</text>
-  <text class="bm" x="572" y="224">agent rules · stop rules</text>
-  <text class="bm" x="572" y="237">decision table (set in advance)</text>
-
-  <rect class="doc" x="736" y="192" width="162" height="52" rx="6"/>
-  <text class="btm mono" x="746" y="209">benchmarks.yaml</text>
-  <text class="bm" x="746" y="224">nodes covered · valid when</text>
-  <text class="bm" x="746" y="237">candidate → vetted → in use</text>
-
-  <rect class="log" x="910" y="192" width="162" height="52" rx="6"/>
-  <text class="btm mono" x="920" y="209">TRIED.md</text>
-  <text class="bm" x="920" y="224">append-only · every claim</text>
-  <text class="bm" x="920" y="237">tested + outcome, pass or fail</text>
-
-  <rect class="log" x="1084" y="192" width="156" height="52" rx="6"/>
-  <text class="btm mono" x="1094" y="209">LOG.md</text>
-  <text class="bm" x="1094" y="224">append-only · every run</text>
-</g>
-
-<!-- ③ PIPELINE -->
-<line class="rule" x1="40" y1="262" x2="1240" y2="262"/>
-<text class="h2" x="40" y="280">③ THE PIPELINE — each module takes a file in and hands a file on</text>
-
-<!-- Queue -->
-<rect class="doc" x="40" y="296" width="180" height="170" rx="8"/>
-<text class="bt" x="54" y="317">Queue</text>
-<text class="bd" x="54" y="336">open questions, e.g.</text>
-<text class="bd mono" x="54" y="350">SST → RH : lag?</text>
-<text class="bm" x="54" y="370">from: current graph</text>
-<text class="bm" x="54" y="384">      node-list pairs</text>
-<text class="bm" x="54" y="398">      new claims in papers</text>
-<text class="bm" x="54" y="412">      missing benchmarks</text>
-<text class="it" x="54" y="434">≤ 3 claims in testing</text>
-<text class="it" x="54" y="447">at once · you set order</text>
-
-<!-- Modules -->
-<g>
-  <rect class="think" x="250" y="296" width="180" height="170" rx="8"/>
-  <circle class="pt" cx="268" cy="315" r="9"/><text class="num" x="268" y="319">1</text>
-  <text class="bt" x="284" y="320">Extract</text>
-  <text class="bd" x="262" y="342">read paper, pull out claims</text>
-  <text class="bd" x="262" y="356">as fields: exists · sign ·</text>
-  <text class="bd" x="262" y="370">lag · footprint · scope</text>
-  <text class="bd" x="262" y="384">+ benchmarks it uses</text>
-  <text class="it" x="262" y="402">not pinned → triage card</text>
-  <text class="io" x="262" y="438">in : paper</text>
-  <text class="io" x="262" y="452">out: claims.yaml</text>
-
-  <rect class="code" x="450" y="296" width="180" height="170" rx="8"/>
-  <circle class="pc" cx="468" cy="315" r="9"/><text class="num" x="468" y="319">2</text>
-  <text class="bt" x="484" y="320">Plan the test</text>
-  <text class="bd" x="462" y="342">count independent papers</text>
-  <text class="bd" x="462" y="356">map each field → fixed test</text>
-  <text class="bd" x="462" y="370">pick benchmarks that fit</text>
-  <text class="bd" x="462" y="384">write the prediction first</text>
-  <text class="it" x="462" y="402">checks TRIED.md first</text>
-  <text class="io" x="462" y="438">in : claims.yaml</text>
-  <text class="io" x="462" y="452">out: test_request.yaml</text>
-
-  <rect class="code" x="650" y="296" width="180" height="170" rx="8"/>
-  <circle class="pc" cx="668" cy="315" r="9"/><text class="num" x="668" y="319">3</text>
-  <text class="bt" x="684" y="320">Test bench</text>
-  <text class="bd" x="662" y="342">pass 1: matched benchmarks</text>
-  <text class="bd" x="662" y="356">pass 2: fixed causal tests</text>
-  <text class="bd" x="662" y="370">run once per regime</text>
-  <text class="it" x="662" y="402">blind: no claimed values</text>
-  <text class="io" x="662" y="438">in : test_request.yaml</text>
-  <text class="io" x="662" y="452">out: result.json</text>
-
-  <rect class="code" x="850" y="296" width="180" height="170" rx="8"/>
-  <circle class="pc" cx="868" cy="315" r="9"/><text class="num" x="868" y="319">4</text>
-  <text class="bt" x="884" y="320">Card</text>
-  <text class="bd" x="862" y="342">papers: n independent</text>
-  <text class="bd" x="862" y="356">  (≥3 good · ≥5 strong)</text>
-  <text class="bd" x="862" y="370">benchmark · tests: ✓ ✗ n/a</text>
-  <text class="bd" x="862" y="384">one plot · rule's verdict</text>
-  <text class="it" x="862" y="402">built by script, no prose</text>
-  <text class="io" x="862" y="438">in : claims + result</text>
-  <text class="io" x="862" y="452">out: card.md</text>
-
-  <rect class="key" x="1050" y="296" width="190" height="170" rx="8"/>
-  <circle class="pk" cx="1068" cy="315" r="9"/><text class="num" x="1068" y="319">5</text>
-  <text class="bt" x="1084" y="320">You decide</text>
-  <text class="bd" x="1062" y="342">1–3 min per card:</text>
-  <text class="bd" x="1062" y="356">confirm or override</text>
-  <text class="bd" x="1062" y="370">the rule's verdict</text>
-  <text class="bd" x="1062" y="384">(override = one-line reason)</text>
-  <text class="it" x="1062" y="402">verdict per regime</text>
-  <text class="io" x="1062" y="438">in : card.md</text>
-  <text class="io" x="1062" y="452">out: decisions/E-xx.md</text>
-</g>
-
-<path class="edge" d="M220,350 H248"/>
-<path class="edge" d="M430,381 H448"/>
-<path class="edge" d="M630,381 H648"/>
-<path class="edge" d="M830,381 H848"/>
-<path class="edge" d="M1030,381 H1048"/>
-
-<!-- Inputs under modules -->
-<rect class="data" x="250" y="488" width="180" height="52" rx="7"/>
-<text class="btm" x="262" y="506">Papers</text>
-<text class="bm" x="262" y="521">targeted search per question</text>
-<text class="bm" x="262" y="534">+ background alerts</text>
-<path class="edge" d="M340,488 V468"/>
-
-<rect class="data" x="650" y="488" width="180" height="52" rx="7"/>
-<text class="btm" x="662" y="506">Synthetic system</text>
-<text class="bm" x="662" y="521">each test proven once on</text>
-<text class="bm" x="662" y="534">known answers before use</text>
-<path class="edge" d="M740,488 V468"/>
-
-<!-- Loops back to queue -->
-<path class="loop" d="M260,466 V476 H232 V430 H222"/>
-<text class="el" x="140" y="484">new claims</text>
-<path class="loop" d="M940,466 V560 H130 V468"/>
-<text class="el" x="460" y="555">conflict → deciding experiment · no benchmark → find one</text>
-
-<!-- ④ OUTPUT -->
-<line class="rule" x1="40" y1="584" x2="1240" y2="584"/>
-<text class="h2" x="40" y="602">④ OUTPUT — one file leaves the system</text>
-
-<rect class="doc" x="40" y="616" width="660" height="92" rx="8"/>
-<text class="bt" x="56" y="638">Regimes</text>
-<text class="bd" x="56" y="658">Each edge gets a verdict for each regime (early development · rapid intensification · neither),</text>
-<text class="bd" x="56" y="673">defined in CONTEXT.md. graph.yaml tags each edge with the regimes it holds in, so</text>
-<text class="bd" x="56" y="688">picking a regime gives you that regime's graph.</text>
-<text class="it" x="56" y="702">Rare regimes will return more "untestable" — that is a finding, not a failure.</text>
-
-<rect class="code" x="1050" y="616" width="190" height="92" rx="8"/>
-<text class="bt mono" x="1066" y="640">graph.yaml</text>
-<text class="bd" x="1066" y="660">nodes · edges · lags ·</text>
-<text class="bd" x="1066" y="674">footprints · regimes</text>
-<text class="it" x="1066" y="696">signed decisions only</text>
-<path class="edge" d="M1145,466 V614"/>
-
-<rect class="data" x="740" y="616" width="270" height="92" rx="8"/>
-<text class="bt" x="756" y="640">DAG-GP model</text>
-<text class="bd" x="756" y="660">separate · reads graph.yaml</text>
-<text class="bd" x="756" y="674">never edits it</text>
-<text class="it" x="756" y="696">training and inference live here</text>
-<path class="edge" d="M1050,662 H1012"/>
-
-<text class="it" x="40" y="740">Agents never supply an edge, lag, footprint, threshold, or causal conclusion. They may propose a new node, with a source, to the CONTEXT.md inbox — never remove one.</text>
+<text class="sub" x="40" y="60">Five pipeline steps joined by files · a paper's claim is tested in your regimes, not taken on trust · you make every call</text>
+<rect class="key" x="40" y="72" width="14" height="10" rx="2"/><text class="el" x="60" y="81">yours: you, or a file only you write</text>
+<rect class="think" x="290" y="72" width="14" height="10" rx="2"/><text class="el" x="310" y="81">agent (LLM)</text>
+<rect class="code" x="390" y="72" width="14" height="10" rx="2"/><text class="el" x="410" y="81">script (no LLM)</text>
+<rect class="doc" x="510" y="72" width="14" height="10" rx="2"/><text class="el" x="530" y="81">file an agent writes — writer named on it</text>
+<rect class="data" x="800" y="72" width="14" height="10" rx="2"/><text class="el" x="820" y="81">outside the loop · never edited by it</text>
+<path class="loop" d="M1040,77 H1062" style="stroke-width:1.8"/><text class="el" x="1070" y="81">literature agent writes here</text>
+<text class="badge" x="40" y="99">APPEND-ONLY</text><text class="el" x="112" y="99">badge on a file = past entries are never edited · new entries only added at the end</text>
+<text class="sub" x="40" y="118"><tspan font-weight="700">“Yours”</tspan> (human-only) = only you can change it. It is a file or a decision — never an agent.</text>
+<line class="rule" x1="40" y1="130" x2="1240" y2="130"/>
+<text class="h2" x="40" y="148">① ROLES — one person · one main agent · two subagents</text>
+<rect class="key" x="40" y="158" width="285" height="70" rx="7"/>
+<text class="btm" x="54" y="177">You — Scientific Director</text>
+<text class="badge" x="315" y="176" text-anchor="end">PERSON</text>
+<text class="bm" x="54" y="193">set queue order · triage papers · decide</text>
+<text class="bm" x="54" y="206">you write: CONTEXT.md · PROTOCOL.md</text>
+<text class="bm" x="54" y="219">and decisions/E-xx.md</text>
+<rect class="think" x="345" y="158" width="285" height="70" rx="7"/>
+<text class="btm" x="359" y="177">Orchestrator</text>
+<text class="badge" x="620" y="176" text-anchor="end">MAIN AGENT</text>
+<text class="bm" x="359" y="193">the session you talk to · launches both subagents</text>
+<text class="bm" x="359" y="206">writes: STATUS · TRIED · LOG · queue</text>
+<text class="bm" x="359" y="219">no science calls</text>
+<rect class="think" x="650" y="158" width="285" height="70" rx="7"/>
+<text class="btm" x="664" y="177">Literature agent</text>
+<text class="badge" x="925" y="176" text-anchor="end">SUBAGENT</text>
+<text class="bm" x="664" y="193">extracts only: claims · delays · benchmarks ·</text>
+<text class="bm" x="664" y="206">equations, each with page + quote</text>
+<text class="bm" x="664" y="219">writes: claims.yaml · INBOX · benchmarks</text>
+<rect class="think" x="955" y="158" width="285" height="70" rx="7"/>
+<text class="btm" x="969" y="177">Test agent — blind</text>
+<text class="badge" x="1230" y="176" text-anchor="end">SUBAGENT</text>
+<text class="bm" x="969" y="193">runs the test bench (step 3) · never sees papers</text>
+<text class="bm" x="969" y="206">writes: result.json</text>
+<path class="edge" d="M326,188 H343" marker-start="url(#ah)"/>
+<path class="edge" d="M487,228 V244 H1097 V230"/>
+<path class="edge" d="M792,244 V230"/>
+<text class="el" x="830" y="240">launches each one · hands off one job at a time</text>
+<line class="rule" x1="40" y1="258" x2="1240" y2="258"/>
+<text class="h2" x="40" y="276">② STANDING FILES — memory between sessions · read STATUS.md first · orange = only you write · blue = an agent writes (named on the box)</text>
+<rect class="doc" x="40" y="286" width="143" height="78" rx="6"/>
+<text class="btm mono" x="50" y="303">STATUS.md</text>
+<text class="badge" x="50" y="316">FILE</text>
+<text class="bm" x="50" y="330">where we are in the chain</text>
+<text class="bm" x="50" y="342">node-list changes · next</text>
+<text class="wl" x="50" y="357">Orchestrator writes</text>
+<rect class="doc" x="191" y="286" width="143" height="78" rx="6"/>
+<text class="btm mono" x="201" y="303">INBOX.md</text>
+<text class="badge" x="201" y="316">FILE · APPEND-ONLY</text>
+<text class="bm" x="201" y="330">proposed new nodes</text>
+<text class="bm" x="201" y="342">each with its source</text>
+<text class="wl" x="201" y="357">Literature agent adds</text>
+<rect class="doc" x="342" y="286" width="143" height="78" rx="6"/>
+<text class="btm mono" x="352" y="303">benchmarks.yaml</text>
+<text class="badge" x="352" y="316">FILE</text>
+<text class="bm" x="352" y="330">datasets + equations</text>
+<text class="bm" x="352" y="342">candidate → in use</text>
+<text class="wl" x="352" y="357">Lit. agent adds</text>
+<rect class="doc" x="493" y="286" width="143" height="78" rx="6"/>
+<text class="btm mono" x="503" y="303">TRIED.md</text>
+<text class="badge" x="503" y="316">FILE · APPEND-ONLY</text>
+<text class="bm" x="503" y="330">every claim tested</text>
+<text class="bm" x="503" y="342">+ outcome, pass or fail</text>
+<text class="wl" x="503" y="357">Orchestrator appends</text>
+<rect class="doc" x="644" y="286" width="143" height="78" rx="6"/>
+<text class="btm mono" x="654" y="303">LOG.md</text>
+<text class="badge" x="654" y="316">FILE · APPEND-ONLY</text>
+<text class="bm" x="654" y="330">every run, every step</text>
+<text class="wl" x="654" y="357">Orchestrator appends</text>
+<rect class="key" x="795" y="286" width="143" height="78" rx="6"/>
+<text class="btm mono" x="805" y="303">CONTEXT.md</text>
+<text class="badge" x="805" y="316">FILE · YOURS</text>
+<text class="bm" x="805" y="330">goal · nodes · regimes</text>
+<text class="bm" x="805" y="342">terms · pinned journals</text>
+<text class="wl" x="805" y="357">You write</text>
+<rect class="key" x="946" y="286" width="143" height="78" rx="6"/>
+<text class="btm mono" x="956" y="303">PROTOCOL.md</text>
+<text class="badge" x="956" y="316">FILE · YOURS</text>
+<text class="bm" x="956" y="330">rules · how to run</text>
+<text class="bm" x="956" y="342">stop rules · verdict table</text>
+<text class="wl" x="956" y="357">You write</text>
+<rect class="key" x="1097" y="286" width="143" height="78" rx="6"/>
+<text class="btm mono" x="1107" y="303">decisions/</text>
+<text class="badge" x="1107" y="316">FOLDER · YOURS</text>
+<text class="bm" x="1107" y="330">E-xx.md: verdict + why</text>
+<text class="bm" x="1107" y="342">INDEX.md: script-built</text>
+<text class="wl" x="1107" y="357">You write</text>
+<line class="rule" x1="40" y1="380" x2="1240" y2="380"/>
+<text class="h2" x="40" y="398">③ THE PIPELINE</text>
+<rect class="doc" x="40" y="412" width="180" height="222" rx="8"/>
+<text class="bt" x="54" y="436">Queue</text>
+<text class="badge" x="54" y="450">FILE · queue.yaml</text>
+<text class="bd" x="54" y="470">open questions, e.g.</text>
+<text class="bd mono" x="54" y="484">SST → RH : lag?</text>
+<text class="bm" x="54" y="502">from: current graph</text>
+<text class="bm" x="54" y="514">      node-list pairs</text>
+<text class="bm" x="54" y="526">      new claims in papers</text>
+<text class="bm" x="54" y="538">      corroboration searches</text>
+<text class="bm" x="54" y="550">      missing benchmarks</text>
+<text class="it" x="54" y="564">≤ 3 claims in testing</text>
+<text class="it" x="54" y="577">at once · you set the order</text>
+<text class="wl" x="54" y="608">Orchestrator adds items</text>
+<text class="wl" x="54" y="621">You set the order</text>
+<rect class="think" x="250" y="412" width="180" height="222" rx="8"/>
+<circle class="pt" cx="268" cy="431" r="9"/><text class="num" x="268" y="435">1</text>
+<text class="bt" x="284" y="436">Extract</text>
+<text class="badge" x="262" y="450">LITERATURE SUBAGENT</text>
+<text class="bd" x="262" y="469">pull out claims as fields:</text>
+<text class="bd" x="262" y="482">exists · sign · lag ·</text>
+<text class="bd" x="262" y="495">footprint · scope</text>
+<text class="bd" x="262" y="508">equations → claims too</text>
+<text class="it" x="262" y="529">not pinned → triage card</text>
+<line class="rule" x1="260" y1="539" x2="420" y2="539"/>
+<text class="io" x="262" y="554">in : queue item + paper</text>
+<text class="io" x="262" y="566.5">     papers/to-scan/</text>
+<text class="io" x="262" y="582.0">out: claims.yaml</text>
+<text class="io" x="262" y="594.5">     INBOX.md</text>
+<text class="io" x="262" y="607.0">     benchmarks.yaml</text>
+<rect class="code" x="450" y="412" width="180" height="222" rx="8"/>
+<circle class="pc" cx="468" cy="431" r="9"/><text class="num" x="468" y="435">2</text>
+<text class="bt" x="484" y="436">Plan the test</text>
+<text class="badge" x="462" y="450">SCRIPT (no LLM)</text>
+<text class="bd" x="462" y="469">count independent papers</text>
+<text class="bd" x="462" y="482">map each field → fixed test</text>
+<text class="bd" x="462" y="495">pick benchmarks that fit</text>
+<text class="bd" x="462" y="508">write the prediction first</text>
+<text class="it" x="462" y="529">checks TRIED.md first</text>
+<line class="rule" x1="460" y1="539" x2="620" y2="539"/>
+<text class="io" x="462" y="554">in : claims.yaml</text>
+<text class="io" x="462" y="566.5">     TRIED.md</text>
+<text class="io" x="462" y="579.0">     benchmarks.yaml</text>
+<text class="io" x="462" y="591.5">     PROTOCOL.md</text>
+<text class="io" x="462" y="607.0">out: test_request.yaml</text>
+<rect class="code" x="650" y="412" width="180" height="222" rx="8"/>
+<circle class="pc" cx="668" cy="431" r="9"/><text class="num" x="668" y="435">3</text>
+<text class="bt" x="684" y="436">Test bench</text>
+<text class="badge" x="662" y="450">TEST SUBAGENT + SCRIPTS</text>
+<text class="bd" x="662" y="469">pass 1: benchmark datasets</text>
+<text class="bd" x="662" y="482">pass 2: fixed causal tests</text>
+<text class="bd" x="662" y="495">  (T0 · T1 · T2 · spurious ·</text>
+<text class="bd" x="662" y="508">  S · T3 note · T4 stretch)</text>
+<text class="bd" x="662" y="521">run once per regime</text>
+<text class="it" x="662" y="542">blind: no claimed values</text>
+<line class="rule" x1="660" y1="539" x2="820" y2="539"/>
+<text class="io" x="662" y="554">in : test_request.yaml</text>
+<text class="io" x="662" y="569.5">out: result.json</text>
+<rect class="code" x="850" y="412" width="180" height="222" rx="8"/>
+<circle class="pc" cx="868" cy="431" r="9"/><text class="num" x="868" y="435">4</text>
+<text class="bt" x="884" y="436">Card</text>
+<text class="badge" x="862" y="450">SCRIPT (no LLM)</text>
+<text class="bd" x="862" y="469">tier: supported → tested →</text>
+<text class="bd" x="862" y="482">  established (cumulative)</text>
+<text class="bd" x="862" y="495">papers: n independent</text>
+<text class="bd" x="862" y="508">tests ✓ ✗ n/a · one plot</text>
+<text class="it" x="862" y="529">built by script, no prose</text>
+<line class="rule" x1="860" y1="539" x2="1020" y2="539"/>
+<text class="io" x="862" y="554">in : claims.yaml</text>
+<text class="io" x="862" y="566.5">     result.json</text>
+<text class="io" x="862" y="582.0">out: card.md</text>
+<rect class="key" x="1050" y="412" width="190" height="222" rx="8"/>
+<circle class="pk" cx="1068" cy="431" r="9"/><text class="num" x="1068" y="435">5</text>
+<text class="bt" x="1084" y="436">You decide</text>
+<text class="badge" x="1062" y="450">YOU</text>
+<text class="bd" x="1062" y="469">1–3 min per card:</text>
+<text class="bd" x="1062" y="482">write your decision + why</text>
+<text class="bd" x="1062" y="495">(override = one-line reason)</text>
+<text class="it" x="1062" y="516">verdict per regime</text>
+<line class="rule" x1="1060" y1="539" x2="1230" y2="539"/>
+<text class="io" x="1062" y="554">in : card.md</text>
+<text class="io" x="1062" y="569.5">out: decisions/E-xx.md</text>
+<text class="io" x="1062" y="582.0">script rebuilds INDEX.md</text>
+<path class="edge" d="M220,466 H248"/>
+<path class="edge" d="M430,502 H448"/>
+<path class="edge" d="M630,502 H648"/>
+<path class="edge" d="M830,502 H848"/>
+<path class="edge" d="M1030,502 H1048"/>
+<path class="loop" d="M290,412 V366"/>
+<text class="el" x="282" y="404" text-anchor="end">proposed nodes</text>
+<path class="loop" d="M410,412 V366"/>
+<text class="el" x="418" y="404">candidate benchmarks</text>
+<path class="edge" d="M1190,412 V366"/>
+<text class="el" x="1182" y="404" text-anchor="end">your signed decision is saved here</text>
+<rect class="data" x="250" y="656" width="180" height="52" rx="7"/>
+<text class="btm" x="262" y="674">Papers</text>
+<text class="bm" x="262" y="689">search per question + per claim</text>
+<text class="bm" x="262" y="702">alerts · your papers/to-scan/</text>
+<path class="edge" d="M340,656 V636"/>
+<rect class="data" x="650" y="656" width="180" height="52" rx="7"/>
+<text class="btm" x="662" y="674">Synthetic system</text>
+<text class="bm" x="662" y="689">each test proven once on</text>
+<text class="bm" x="662" y="702">known answers before use</text>
+<path class="edge" d="M740,656 V636"/>
+<path class="loop" d="M260,634 V644 H232 V546 H222"/>
+<text class="el" x="140" y="652">new claims</text>
+<path class="loop" d="M940,634 V728 H130 V636"/>
+<text class="el" x="460" y="723">conflict → deciding experiment · no benchmark → find one</text>
+<text class="it" x="40" y="750">Steps are jobs, not files or agents: the badge says who does each job, IN / OUT list the files it reads and writes. OUT files are written automatically by that step — except decisions/E-xx.md, which you write.</text>
+<text class="bd" x="40" y="770"><tspan font-weight="700">Equations.</tspan> An empirical equation becomes claims (exists · sign · lag) and goes through the same benchmarks and causal tests. No stated direction → it cannot support an edge.</text>
+<text class="bd" x="40" y="784"><tspan font-weight="700">Your papers.</tspan> PDFs you put in papers/to-scan/ skip the triage card and go straight to extraction and testing.</text>
+<line class="rule" x1="40" y1="798" x2="1240" y2="798"/>
+<text class="h2" x="40" y="816">④ OUTPUT — one file leaves the system</text>
+<rect class="doc" x="40" y="830" width="660" height="92" rx="8"/>
+<text class="bt" x="56" y="852">Regimes</text>
+<text class="bd" x="56" y="872">Each edge gets a verdict for each regime (early development · rapid intensification · neither),</text>
+<text class="bd" x="56" y="887">defined in CONTEXT.md. graph.yaml tags each edge with the regimes it holds in, so</text>
+<text class="bd" x="56" y="902">picking a regime gives you that regime's graph.</text>
+<text class="it" x="56" y="916">Rare regimes will return more "untestable" — that is a finding, not a failure.</text>
+<rect class="code" x="1050" y="830" width="190" height="92" rx="8"/>
+<text class="bt mono" x="1066" y="854">graph.yaml</text>
+<text class="bd" x="1066" y="874">nodes · edges · lags ·</text>
+<text class="bd" x="1066" y="888">footprints · regimes</text>
+<text class="it" x="1066" y="910">signed decisions only</text>
+<path class="edge" d="M1100,634 V828"/>
+<text class="el" x="1092" y="684" text-anchor="end">script writes it from your signed decisions</text>
+<rect class="data" x="740" y="830" width="270" height="92" rx="8"/>
+<text class="bt" x="756" y="854">DAG-GP model</text>
+<text class="bd" x="756" y="874">separate · reads graph.yaml</text>
+<text class="bd" x="756" y="888">never edits it</text>
+<text class="it" x="756" y="910">training and inference live here</text>
+<path class="edge" d="M1050,876 H1012"/>
+<text class="it" x="40" y="944">Agents never supply an edge, lag, footprint, threshold, or causal conclusion. They may propose a new node, with a source, to INBOX.md — never remove one. You move accepted nodes into CONTEXT.md.</text>
+<line class="rule" x1="40" y1="960" x2="1240" y2="960"/>
+<text class="h2" x="40" y="978">⑤ ACCESS — who can read or change each standing file (proposed)</text>
+<rect class="wr" x="880" y="969" width="14" height="10" rx="2"/><text class="el" x="900" y="978">can change it</text>
+<rect class="rd" x="1000" y="969" width="14" height="10" rx="2"/><text class="el" x="1020" y="978">reads only</text>
+<text class="el" x="1100" y="978">— no access</text>
+<text class="btm mono" x="296.5" y="1000" text-anchor="middle" style="font-size:10.5px">STATUS.md</text>
+<text class="btm mono" x="421.5" y="1000" text-anchor="middle" style="font-size:10.5px">INBOX.md</text>
+<text class="btm mono" x="546.5" y="1000" text-anchor="middle" style="font-size:10.5px">benchmarks.yaml</text>
+<text class="btm mono" x="671.5" y="1000" text-anchor="middle" style="font-size:10.5px">TRIED.md</text>
+<text class="btm mono" x="796.5" y="1000" text-anchor="middle" style="font-size:10.5px">LOG.md</text>
+<text class="btm mono" x="921.5" y="1000" text-anchor="middle" style="font-size:10.5px">CONTEXT.md</text>
+<text class="btm mono" x="1046.5" y="1000" text-anchor="middle" style="font-size:10.5px">PROTOCOL.md</text>
+<text class="btm mono" x="1171.5" y="1000" text-anchor="middle" style="font-size:10.5px">decisions/</text>
+<rect class="key" x="40" y="1018" width="14" height="10" rx="2"/><text class="btm" x="62" y="1027">You</text><text class="bm" x="168" y="1027">person</text>
+<rect class="rd" x="236.0" y="1011" width="121" height="24" rx="4"/>
+<text class="rt" x="296.5" y="1027" text-anchor="middle">reads</text>
+<rect class="wr" x="361.0" y="1011" width="121" height="24" rx="4"/>
+<text class="wt" x="421.5" y="1027" text-anchor="middle">moves accepted</text>
+<rect class="wr" x="486.0" y="1011" width="121" height="24" rx="4"/>
+<text class="wt" x="546.5" y="1027" text-anchor="middle">approves</text>
+<rect class="rd" x="611.0" y="1011" width="121" height="24" rx="4"/>
+<text class="rt" x="671.5" y="1027" text-anchor="middle">reads</text>
+<rect class="rd" x="736.0" y="1011" width="121" height="24" rx="4"/>
+<text class="rt" x="796.5" y="1027" text-anchor="middle">reads</text>
+<rect class="wr" x="861.0" y="1011" width="121" height="24" rx="4"/>
+<text class="wt" x="921.5" y="1027" text-anchor="middle">writes</text>
+<rect class="wr" x="986.0" y="1011" width="121" height="24" rx="4"/>
+<text class="wt" x="1046.5" y="1027" text-anchor="middle">writes</text>
+<rect class="wr" x="1111.0" y="1011" width="121" height="24" rx="4"/>
+<text class="wt" x="1171.5" y="1027" text-anchor="middle">writes</text>
+<rect class="think" x="40" y="1044" width="14" height="10" rx="2"/><text class="btm" x="62" y="1053">Orchestrator</text><text class="bm" x="168" y="1053">main agent</text>
+<rect class="wr" x="236.0" y="1037" width="121" height="24" rx="4"/>
+<text class="wt" x="296.5" y="1053" text-anchor="middle">writes</text>
+<rect class="rd" x="361.0" y="1037" width="121" height="24" rx="4"/>
+<text class="rt" x="421.5" y="1053" text-anchor="middle">reads</text>
+<rect class="rd" x="486.0" y="1037" width="121" height="24" rx="4"/>
+<text class="rt" x="546.5" y="1053" text-anchor="middle">reads</text>
+<rect class="wr" x="611.0" y="1037" width="121" height="24" rx="4"/>
+<text class="wt" x="671.5" y="1053" text-anchor="middle">appends</text>
+<rect class="wr" x="736.0" y="1037" width="121" height="24" rx="4"/>
+<text class="wt" x="796.5" y="1053" text-anchor="middle">appends</text>
+<rect class="rd" x="861.0" y="1037" width="121" height="24" rx="4"/>
+<text class="rt" x="921.5" y="1053" text-anchor="middle">reads</text>
+<rect class="rd" x="986.0" y="1037" width="121" height="24" rx="4"/>
+<text class="rt" x="1046.5" y="1053" text-anchor="middle">reads</text>
+<rect class="rd" x="1111.0" y="1037" width="121" height="24" rx="4"/>
+<text class="rt" x="1171.5" y="1053" text-anchor="middle">reads</text>
+<rect class="think" x="40" y="1070" width="14" height="10" rx="2"/><text class="btm" x="62" y="1079">Literature agent</text><text class="bm" x="168" y="1079">subagent</text>
+<rect class="rd" x="236.0" y="1063" width="121" height="24" rx="4"/>
+<text class="nt" x="296.5" y="1079" text-anchor="middle">—</text>
+<rect class="wr" x="361.0" y="1063" width="121" height="24" rx="4"/>
+<text class="wt" x="421.5" y="1079" text-anchor="middle">appends</text>
+<rect class="wr" x="486.0" y="1063" width="121" height="24" rx="4"/>
+<text class="wt" x="546.5" y="1079" text-anchor="middle">adds candidates</text>
+<rect class="rd" x="611.0" y="1063" width="121" height="24" rx="4"/>
+<text class="nt" x="671.5" y="1079" text-anchor="middle">—</text>
+<rect class="rd" x="736.0" y="1063" width="121" height="24" rx="4"/>
+<text class="nt" x="796.5" y="1079" text-anchor="middle">—</text>
+<rect class="rd" x="861.0" y="1063" width="121" height="24" rx="4"/>
+<text class="rt" x="921.5" y="1079" text-anchor="middle">reads</text>
+<rect class="rd" x="986.0" y="1063" width="121" height="24" rx="4"/>
+<text class="rt" x="1046.5" y="1079" text-anchor="middle">reads</text>
+<rect class="rd" x="1111.0" y="1063" width="121" height="24" rx="4"/>
+<text class="nt" x="1171.5" y="1079" text-anchor="middle">—</text>
+<rect class="think" x="40" y="1096" width="14" height="10" rx="2"/><text class="btm" x="62" y="1105">Test agent</text><text class="bm" x="168" y="1105">subagent</text>
+<rect class="rd" x="236.0" y="1089" width="121" height="24" rx="4"/>
+<text class="nt" x="296.5" y="1105" text-anchor="middle">—</text>
+<rect class="rd" x="361.0" y="1089" width="121" height="24" rx="4"/>
+<text class="nt" x="421.5" y="1105" text-anchor="middle">—</text>
+<rect class="rd" x="486.0" y="1089" width="121" height="24" rx="4"/>
+<text class="rt" x="546.5" y="1105" text-anchor="middle">"in use" only</text>
+<rect class="rd" x="611.0" y="1089" width="121" height="24" rx="4"/>
+<text class="nt" x="671.5" y="1105" text-anchor="middle">—</text>
+<rect class="rd" x="736.0" y="1089" width="121" height="24" rx="4"/>
+<text class="nt" x="796.5" y="1105" text-anchor="middle">—</text>
+<rect class="rd" x="861.0" y="1089" width="121" height="24" rx="4"/>
+<text class="rt" x="921.5" y="1105" text-anchor="middle">reads regimes</text>
+<rect class="rd" x="986.0" y="1089" width="121" height="24" rx="4"/>
+<text class="rt" x="1046.5" y="1105" text-anchor="middle">reads</text>
+<rect class="rd" x="1111.0" y="1089" width="121" height="24" rx="4"/>
+<text class="nt" x="1171.5" y="1105" text-anchor="middle">—</text>
+<text class="it" x="40" y="1128">Only you write CONTEXT.md, PROTOCOL.md and decisions/ — no pipeline agent has write access to them. That is what “yours” means.</text>
+<text class="it" x="40" y="1142">The test agent never sees TRIED.md, STATUS.md, decisions/ or the papers. Proposed access, not yet confirmed — once you agree, it goes into PROTOCOL.md as the agents' rules.</text>
+<line class="rule" x1="40" y1="1158" x2="1240" y2="1158"/>
+<text class="h2" x="40" y="1176">⑥ QUICK REFERENCE — who writes each file · who does each step</text>
+<text class="badge" x="62" y="1198">FILE</text>
+<text class="badge" x="190" y="1198">WRITTEN BY</text>
+<line class="rule" x1="40" y1="1203" x2="610" y2="1203"/>
+<rect class="doc" x="40" y="1208" width="12" height="9" rx="2"/>
+<text class="btm mono" x="62" y="1216" style="font-size:10.5px">STATUS.md</text>
+<text class="bd" x="190" y="1216">Orchestrator</text>
+<rect class="doc" x="40" y="1225" width="12" height="9" rx="2"/>
+<text class="btm mono" x="62" y="1233" style="font-size:10.5px">queue.yaml</text>
+<text class="bd" x="190" y="1233">Orchestrator adds items · you set the order</text>
+<rect class="doc" x="40" y="1242" width="12" height="9" rx="2"/>
+<text class="btm mono" x="62" y="1250" style="font-size:10.5px">INBOX.md</text>
+<text class="bd" x="190" y="1250">Literature agent (appends)</text>
+<rect class="doc" x="40" y="1259" width="12" height="9" rx="2"/>
+<text class="btm mono" x="62" y="1267" style="font-size:10.5px">benchmarks.yaml</text>
+<text class="bd" x="190" y="1267">Literature agent adds candidates · you approve</text>
+<rect class="doc" x="40" y="1276" width="12" height="9" rx="2"/>
+<text class="btm mono" x="62" y="1284" style="font-size:10.5px">TRIED.md</text>
+<text class="bd" x="190" y="1284">Orchestrator (appends)</text>
+<rect class="doc" x="40" y="1293" width="12" height="9" rx="2"/>
+<text class="btm mono" x="62" y="1301" style="font-size:10.5px">LOG.md</text>
+<text class="bd" x="190" y="1301">Orchestrator (appends)</text>
+<rect class="key" x="40" y="1310" width="12" height="9" rx="2"/>
+<text class="btm mono" x="62" y="1318" style="font-size:10.5px">CONTEXT.md</text>
+<text class="bd" x="190" y="1318">You</text>
+<rect class="key" x="40" y="1327" width="12" height="9" rx="2"/>
+<text class="btm mono" x="62" y="1335" style="font-size:10.5px">PROTOCOL.md</text>
+<text class="bd" x="190" y="1335">You</text>
+<rect class="key" x="40" y="1344" width="12" height="9" rx="2"/>
+<text class="btm mono" x="62" y="1352" style="font-size:10.5px">decisions/</text>
+<text class="bd" x="190" y="1352">You · INDEX.md rebuilt by script</text>
+<text class="badge" x="650" y="1198">STEP</text>
+<text class="badge" x="772" y="1198">DONE BY</text>
+<text class="badge" x="940" y="1198">WRITES</text>
+<line class="rule" x1="650" y1="1203" x2="1240" y2="1203"/>
+<text class="btm" x="650" y="1216">1  Extract</text>
+<text class="bd" x="772" y="1216">Literature subagent</text>
+<text class="io" x="940" y="1216">claims.yaml · INBOX.md · benchmarks.yaml</text>
+<text class="btm" x="650" y="1233">2  Plan the test</text>
+<text class="bd" x="772" y="1233">Script (no LLM)</text>
+<text class="io" x="940" y="1233">test_request.yaml</text>
+<text class="btm" x="650" y="1250">3  Test bench</text>
+<text class="bd" x="772" y="1250">Test subagent + scripts</text>
+<text class="io" x="940" y="1250">result.json</text>
+<text class="btm" x="650" y="1267">4  Card</text>
+<text class="bd" x="772" y="1267">Script (no LLM)</text>
+<text class="io" x="940" y="1267">card.md</text>
+<text class="btm" x="650" y="1284">5  You decide</text>
+<text class="bd" x="772" y="1284">You</text>
+<text class="io" x="940" y="1284">decisions/E-xx.md</text>
+<text class="it" x="650" y="1309">The orchestrator (main agent) is not a step — it launches the subagents and keeps the files above.</text>
 </svg>
