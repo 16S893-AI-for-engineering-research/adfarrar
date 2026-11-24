@@ -32,12 +32,278 @@ interface WeekGroup {
 }
 
 const weeks: WeekGroup[] = [
+  // ── WEEK 8 ──────────────────────────────────────────────────────────────
+  {
+    week: "Week 8",
+    dateRange: "October – 1 November 2026",
+    open: true,
+    days: [
+      {
+        date: "1 November 2026",
+        title: "Retrospective",
+        open: true,
+        body: [
+          {
+            badge: "delegated",
+            text: "Put together a short summary of the project for my instructor, then had the agent go back over the whole session and sort everything into what I accepted and delegated, what I had to verify and how, and what I turned down or left open. The agent did almost all of the literature search, the document drafting, and the code reading.",
+          },
+          {
+            badge: "checked",
+            text: "I did almost all of the deciding, the pushing back, and the domain checking. Where I supplied a paper or an example from my own work, things moved fast. Where I let the agent run on its own reasoning about the science, it tended to produce something plausible and confident that I then had to unpick. The sort was more useful than I expected because it made the shape of the collaboration visible.",
+          },
+          {
+            badge: "rejected",
+            text: "The project started as an agent searching for better graph structures with a second agent converting the output into infrastructure risk. It ended as adding time and physical delays to a fixed literature graph and measuring whether naming the dominant driver survives the sampling rate I actually have. That is a much smaller and much more honest project, and I don't think I would have gotten there without handing off the literature search or being willing to argue with the answers.",
+          },
+        ],
+      },
+      {
+        date: "October 2026 (day not recorded)",
+        title: "New portfolio ideas and first CYGNSS demo figures",
+        open: false,
+        body: [
+          {
+            text: "Started playing around with some different ideas for the portfolio website now that I have more experience with the agents, which models are good for which tasks, and what prompts work well for them.",
+          },
+          {
+            badge: "delegated",
+            text: "Got the first round of figures back for the CYGNSS demo tool I intend to make part of my portfolio.",
+          },
+          {
+            badge: "rejected",
+            text: "The agent confused a lot of aspects of the image with jargon from random parts of our discussion and wasn't following the formats in the paper. I then had to work with the agent to … (this entry is unfinished in my notes).",
+          },
+        ],
+      },
+    ],
+  },
+
+  // ── WEEK 7 ──────────────────────────────────────────────────────────────
+  {
+    week: "Week 7",
+    dateRange: "20 – 22 October 2026",
+    open: false,
+    days: [
+      {
+        date: "22 October 2026",
+        title: "Finishing the curation plan and the final project scope",
+        open: false,
+        body: [
+          {
+            badge: "delegated",
+            text: "Finished the curation plan for the class project. After going through the different options the agent came up with and talking with Prashanth, I decided to focus on the graph formulation piece. The agent interfaces by searching for papers on variable interactions relevant to the nodes I pick. Several experiments then test what those papers claim against 1. benchmark datasets and 2. causal graph laws (acyclicity, spurious links, etc.). I asked the agent to draft an .svg of this setup for the pod clinic, and the draft it came up with was helpful.",
+            figureLink: "https://16s893-ai-for-engineering-research.github.io/adfarrar/images/causal-graph-architecture.svg",
+            figureLinkLabel: "View architecture figure",
+          },
+          {
+            badge: "rejected",
+            text: "Dropped the part of the proposal that explored the renewable energy angle. The project started as an agent searching for better graph structures, a second agent converting the output into infrastructure risk estimates with fragility curves, and a Pareto front plus risk assessment tool as the deliverable. It ended as a series of experiments that add time and per-arrow physical delays to a literature-verified graph, then measure whether naming the dominant driver survives the sampling rate I actually have, with the satellite-only case as the central test.",
+          },
+          {
+            text: "What survived from the original design: the evaluation graph harness as the main code deliverable, the sparse-data region motivation, and choosing test cases in Puerto Rico / the Caribbean.",
+          },
+          {
+            badge: "rejected",
+            text: "Still open: what is the architecture of each box in the diagram? Is it a function, a subagent, or just book-keeping? If agents are used, how do I keep the context window from growing too large (relaunch a new subagent every time?). Are there new skills I should develop? I plan to iterate on the design next week to nail down a setup and start implementing.",
+          },
+        ],
+      },
+      {
+        date: "20 October 2026",
+        title: "Delay discrepancy in the DDM figure",
+        open: false,
+        body: [
+          {
+            badge: "delegated",
+            text: "While reproducing the figure, the agent pointed out a discrepancy in the delay calculations and tested an empirical formula to correct it.",
+          },
+          {
+            badge: "checked",
+            text: "I brought the discrepancy and the agent's analysis to my colleague Scott, who verified the formula as well.",
+          },
+          {
+            badge: "rejected",
+            text: "Open: we are both stumped as to why the formula works. Scott supported accepting it until he can talk with the science team about what is driving the need for the correction, so I accepted the agent's suggestion for now, provisionally.",
+          },
+        ],
+      },
+      {
+        date: "20 October 2026",
+        title: "Handoff documentation",
+        open: false,
+        body: [
+          {
+            badge: "delegated",
+            text: "Spent the week consolidating. Had the agent write a handoff file so another session could pick the project up without me re-explaining six weeks of decisions. I specifically asked it to record what had been considered and cut, with reasons, so I don't re-litigate the same options. I also asked it to keep my own corrections in there as data, including the three cases where it was confidently wrong, since that's a real finding for a class about working with agents.",
+          },
+          {
+            badge: "checked",
+            text: "I asked where the three failure signatures it had been labelling as results actually came from. They had been derived in the session rather than taken from any paper, and the agent had been referencing them by label before I had even seen the file that defined them.",
+          },
+          {
+            badge: "rejected",
+            text: "The failure signatures are now written down as needing empirical validation. If only one of them shows up when I run the experiment, the other two were speculation, and I say so. Still open on my end: the variable list with a specific paper behind each arrow, the numerical backend choice, and writing down the target accuracy before I run anything.",
+          },
+        ],
+      },
+    ],
+  },
+
+  // ── WEEK 6 ──────────────────────────────────────────────────────────────
+  {
+    week: "Week 6",
+    dateRange: "October 2026",
+    open: false,
+    days: [
+      {
+        date: "14 October 2026",
+        title: "Model formulation and catching confident mistakes",
+        open: false,
+        body: [
+          {
+            badge: "delegated",
+            text: "The most productive week, and also the week I had to check the agent the hardest. I brought in the AcyGP paper from Ayton, Camilli and Williams because it was close to what I'd been doing, and asked the agent to break it down against my own background in planning under uncertainty and Markov models. That one paper collapsed about four rounds of architecture speculation into a single concrete formulation with the property I wanted: observing one variable updates the uncertainty on all the others. By the end of the week the agent had written three files: methodology notes on the model, project manuscript notes with the evaluation procedures, and an upgrade document for my existing repository covering what I built, what it gets wrong, what assumptions are baked in, and what needs to change.",
+          },
+          {
+            text: "Accepted: the build ladder it proposed (no time, then time in the input, then per-arrow physical delays), the recommendation to use a Matern kernel instead of the usual squared exponential since the atmosphere isn't infinitely smooth, and the recommendation to start from Gee and Ravela's published intensity equation rather than writing my own dynamics.",
+          },
+          {
+            badge: "checked",
+            text: "Three times the agent told me something confidently and was wrong. (1) It said information only flows along the arrows, which would have meant only children of observed variables were usable and would have gutted inferring sea surface temperature from observed roughness. I pushed back from first principles: conditioning a joint Gaussian is symmetric. (2) It said six hours was a hard floor on the weather emulator step. Pangu released one, three, six and twenty-four hour models. (3) When I asked where a set of stochastic differential equations came from, they turned out to have been invented and presented without saying so.",
+          },
+          {
+            badge: "checked",
+            text: "None of those were knowledge gaps. They were the agent being agreeable and filling in confidently rather than saying it didn't know. The project got better every time I refused an answer, and none of those errors would have surfaced on their own. I also flagged twice that the explanations were drifting into jargon and asked it to drop acronyms entirely, which helped a lot.",
+          },
+          {
+            badge: "rejected",
+            text: "The agent pushed structure learning on me again after I had already said no, and I called that out.",
+          },
+        ],
+      },
+      {
+        date: "October 2026 (day not recorded)",
+        title: "CYGNSS handbook gaps and the figure-demo plan",
+        open: false,
+        body: [
+          {
+            badge: "delegated",
+            text: "The agent identified documentation describing variables that exist in the CYGNSS handbook but are no longer part of the latest Level 1 data I'm working with. It also pointed out a discrepancy in how the delay is determined for the Delay Doppler Map (DDM). I finished the planning session with the agent for the figure demo and we settled on a class of functions where you feed a module the [lat, lon] regional boundaries and the time period (the rest of this note is unfinished).",
+          },
+          {
+            badge: "checked",
+            text: "I reached out to a colleague and author of the paper I'm building from, Scott Gleason, who led the Level 1 processing that runs onboard the satellite. The paper the handbook cites didn't exist on any online platform. Scott confirmed it was not published documentation, shared it with me, and confirmed the agent's suspicion that those variables are outdated.",
+          },
+          {
+            badge: "rejected",
+            text: "Open: Scott and I have started a conversation about determining these values by calculating them from other provided variables.",
+          },
+        ],
+      },
+    ],
+  },
+
+  // ── WEEK 5 ──────────────────────────────────────────────────────────────
+  {
+    week: "Week 5",
+    dateRange: "5 – 6 October 2026",
+    open: false,
+    days: [
+      {
+        date: "6 October 2026",
+        title: "Delegated tasks",
+        open: false,
+        body: [
+          {
+            text: "No notes recorded for this day yet.",
+          },
+        ],
+      },
+      {
+        date: "5 October 2026",
+        title: "Literature review and rescoping the project",
+        open: false,
+        body: [
+          {
+            badge: "delegated",
+            text: "Picked the grill-me session back up, this time running grill-with-docs so it would check my proposal against the code I already have. I delegated the entire literature search across causal inference, Earth system causal discovery, hurricane intensity prediction, sensor placement, and agentic structure search, and did not re-run any of those searches myself. I had the agent write the literature landscape up into a file with a novelty scoreboard so I could see which of my claims were actually unoccupied.",
+          },
+          {
+            text: "Four findings I accepted immediately, which killed most of my original one-pager: all four of the \"graph edit types\" I proposed were already published ideas. A paper with Runge on it had already done causal feature selection for hurricane intensity and recovered the same drivers I was using as motivation. A 2026 paper already runs wind fields through fragility curves to transmission line risk, with leave-one-storm-out validation on 11 typhoons. And the field's current position is that agents should not supply graph edges or orientations at all, because they lose to decades-old statistical methods in head-to-head tests.",
+          },
+          {
+            badge: "checked",
+            text: "I had to explicitly tell the agent to stop relying on memory and go search. When I asked for citations the first time it gave me a mix of real papers and things it half-remembered, so I started requiring it to flag anything it hadn't verified. It did start tagging those, but only after I asked.",
+          },
+          {
+            badge: "rejected",
+            text: "Cut: the agent-driven structure search, the infrastructure risk subagent, the Hazus fragility curves, and all the US grid asset data. I also caught myself repeating the week-one mistake of giving too much context without a clear ask. Sessions went much better when I picked one question and made the agent answer it before moving on.",
+          },
+        ],
+      },
+      {
+        date: "5 October 2026",
+        title: "Expanding the figure reproduction and curation plan",
+        open: false,
+        body: [
+          {
+            badge: "delegated",
+            text: "Decided to build an expanded version of the figure reproduction as a demo tool, in parallel with the class project, and to use the agent to learn the signal processing of the satellite I'm using as a case study (CYGNSS). I'm starting with a curation plan, working with the Claude Opus 5.5 model. The goals: 1. translate the Level 1 format into a more interpretable geophysical format using the paper's transformation equations (including Fig. 9, the DDM in geophysical coordinates), and 2. produce figures showing how the earliest measurements change with time before heavy cal/val and filtering, to see whether key information is being lost.",
+          },
+          {
+            badge: "delegated",
+            text: "The session ended with the agent writing a literature review markdown file in my thesis repository, which I keep updating with the sources it finds. It has 8 sections, a novelty scoreboard, the \"persisting gaps\" paragraph backing my thesis claim, and the node-complexity math note. I asked for LaTeX format for easy integration with Overleaf and accepted it as written. I'll edit it once I merge it with the rest of my writing.",
+          },
+          {
+            badge: "checked",
+            text: "Ran a grill-me session on my approach from the one-pager I submitted at the start of the class. The agent verified my suspicion that having an agent decide on its own which nodes and edges to add or delete is not a good approach, and added paper sources confirming it. It also gave me useful language for the work: \"a causal graph data assimilation stand-in for single-pass operational valuation under a shifting observation node\".",
+          },
+          {
+            badge: "rejected",
+            text: "The agent deciding nodes and edges on its own was turned down, with the literature as backing.",
+          },
+        ],
+      },
+    ],
+  },
+
   // ── WEEK 4 ──────────────────────────────────────────────────────────────
   {
     week: "Week 4",
-    dateRange: "27 – 30 September 2026",
-    open: true,
+    dateRange: "27 September – 1 October 2026",
+    open: false,
     days: [
+      {
+        date: "1 October 2026",
+        title: "Accepted, delegated, and checked: reviewing the proposal",
+        open: false,
+        body: [
+          {
+            badge: "delegated",
+            text: "Literature search across causal inference, Earth-system causal discovery, hurricane intensity, sensor placement, and agentic structure search. I didn't re-run these searches myself.",
+          },
+          {
+            badge: "delegated",
+            text: "The finding that my original proposal's four \"edit types\" were all existing published ideas. I accepted this and dropped the structure-search framing.",
+          },
+          {
+            badge: "delegated",
+            text: "The finding that an existing paper (Ganesh et al., with Runge) already did causal feature selection for hurricane intensity with the same driver story I was motivating with. Accepted; repositioned.",
+          },
+          {
+            badge: "delegated",
+            text: "The finding that a 2026 paper already does storm wind → fragility curve → grid risk with stronger validation. Accepted; cut that half of the project.",
+          },
+          {
+            badge: "checked",
+            text: "Did the AI actually justify itself in each option? I asked directly why AI mattered in the option I liked most, and the agent had skipped the question.",
+          },
+          {
+            badge: "rejected",
+            text: "Pushing on it got the real answer: AI mostly didn't matter there, and the agent had changed the subject rather than saying so. That option got cut.",
+          },
+        ],
+      },
       {
         date: "30 September 2026",
         title: "Reproducing Figure 9 with the physics",
